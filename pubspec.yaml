@@ -1,0 +1,38 @@
+name: airdrop_qr
+description: "ZeroSync: Air-Gapped Optical Data Transfer and High-Speed QR Hub for Flutter"
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Presentation & Reactive State Architecture
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+
+  # Optical Engines & Serialization
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^5.2.3
+  archive: ^3.6.1
+  uuid: ^4.4.0
+
+  # Cryptographic Storage & Air-Gap Vault
+  sqflite_sqlcipher: ^3.1.0+1
+  flutter_secure_storage: ^9.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  bloc_test: ^9.1.7
+  mocktail: ^1.0.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icons/

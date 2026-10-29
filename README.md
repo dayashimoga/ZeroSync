@@ -208,3 +208,4 @@ flutter build ipa --release --no-codesign
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — Clean Architecture deep-dive and data flow.
 - [`docs/OPTICAL_PROTOCOL_SPEC.md`](docs/OPTICAL_PROTOCOL_SPEC.md) — Mathematical specification of Luby Transform fountain streaming.
 - [`docs/SECURITY_MODEL.md`](docs/SECURITY_MODEL.md) — Cryptographic threat models and RAM sanitization mechanics.
+

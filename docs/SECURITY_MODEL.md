@@ -117,3 +117,4 @@ The application security model is validated under an automated fuzzing suite (`t
 2. **Oversized Payloads:** Submits payload buffers exceeding the QR Version 40 physical capacity (7,089 numeric characters / 2,953 binary bytes). Engine cleanly rejects with `ArgumentError`.
 3. **SQL Injection Fuzzing:** Injects SQL syntax (`' OR '1'='1' --`, `DROP TABLE scans;`) and cross-site scripting vectors (`<script>alert(1)</script>`) through search filters and tags. All queries are strictly parameterized; 0 injection vectors succeeded.
 4. **Wire Tampering Rejection:** Injects random bit-flips into Visual ZeroSync frames. The pure-Dart CRC32 engine rejects 100.0% of corrupted datagrams prior to chunk accumulation.
+

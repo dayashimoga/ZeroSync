@@ -129,3 +129,4 @@ flowchart TD
   - Standard devices: 15–20 FPS (optimal for mid-range camera sensors).
   - High-performance mode: 30–60 FPS (high-end sensors with manual exposure lock).
   - Contrast Inversion: Transmitters can toggle dark-on-light or light-on-dark for optimal scanning under direct sunlight or OLED glare.
+

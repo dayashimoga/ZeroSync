@@ -127,3 +127,4 @@ The Data layer bridges domain entities with persistent encrypted storage and opt
   - **Serious (43–47°C):** 15 FPS, 4x downsampling.
   - **Critical ($\ge$47°C):** 5 FPS, 8x downsampling.
 - Auto-suspends camera sensor stream after 3 minutes of continuous optical inactivity.
+

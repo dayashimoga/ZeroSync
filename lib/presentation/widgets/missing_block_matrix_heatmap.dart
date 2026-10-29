@@ -387,3 +387,4 @@ class MissingBlockMatrixHeatmap extends StatelessWidget {
     );
   }
 }
+

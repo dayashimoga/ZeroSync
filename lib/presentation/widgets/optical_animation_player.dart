@@ -346,3 +346,4 @@ class _OpticalAnimationPlayerState extends State<OpticalAnimationPlayer> {
     );
   }
 }
+

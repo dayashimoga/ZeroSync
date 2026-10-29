@@ -2,16 +2,16 @@
     "$schema":  "https://json-schema.org/draft/2020-12/schema",
     "project_name":  "AirDrop-QR / ZeroSync",
     "contract_version":  "2.0.0",
-    "last_updated":  "2026-10-29T14:16:07Z",
+    "last_updated":  "2026-10-29T14:22:09Z",
     "active_pointer":  {
                            "stage_id":  "STAGE_4",
                            "phase_id":  "PHASE_4_2",
-                           "subphase_id":  "SUBPHASE_4_2_1"
+                           "subphase_id":  "SUBPHASE_4_2_2"
                        },
     "metrics":  {
                     "total_subphases":  47,
-                    "completed_subphases":  29,
-                    "progress_percentage":  61.7,
+                    "completed_subphases":  30,
+                    "progress_percentage":  63.83,
                     "domain_test_coverage":  100.0
                 },
     "stages":  [
@@ -650,13 +650,13 @@
                                                             {
                                                                 "id":  "SUBPHASE_4_2_1",
                                                                 "title":  "Luby Transform (LT) / RaptorQ Mathematical Engine",
-                                                                "status":  "IN_PROGRESS",
+                                                                "status":  "COMPLETED",
                                                                 "dependencies":  [
                                                                                      "SUBPHASE_4_1_3"
                                                                                  ],
                                                                 "started_at":  "2026-10-29T14:16:07Z",
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
+                                                                "completed_at":  "2026-10-29T14:21:47Z",
+                                                                "commit_hash":  "9f955cdeb38f5f62b8d3c5e0d09d0f8fe63ec051",
                                                                 "verification_criteria":  [
                                                                                               "Implement degree-distribution soliton transforms generating rateless recovery droplets",
                                                                                               "Enable receiver to rebuild original file using any N + epsilon distinct valid packets without synchronized frame starts"
@@ -669,11 +669,11 @@
                                                             {
                                                                 "id":  "SUBPHASE_4_2_2",
                                                                 "title":  "Dynamic Frame Rate Throttling \u0026 Visual Modulation",
-                                                                "status":  "PENDING",
+                                                                "status":  "IN_PROGRESS",
                                                                 "dependencies":  [
                                                                                      "SUBPHASE_4_2_1"
                                                                                  ],
-                                                                "started_at":  null,
+                                                                "started_at":  "2026-10-29T14:22:09Z",
                                                                 "completed_at":  null,
                                                                 "commit_hash":  null,
                                                                 "verification_criteria":  [

@@ -2,16 +2,16 @@
     "$schema":  "https://json-schema.org/draft/2020-12/schema",
     "project_name":  "AirDrop-QR / ZeroSync",
     "contract_version":  "2.0.0",
-    "last_updated":  "2026-10-29T13:17:03Z",
+    "last_updated":  "2026-10-29T13:23:40Z",
     "active_pointer":  {
                            "stage_id":  "STAGE_3",
                            "phase_id":  "PHASE_3_1",
-                           "subphase_id":  "SUBPHASE_3_1_1"
+                           "subphase_id":  "SUBPHASE_3_1_2"
                        },
     "metrics":  {
                     "total_subphases":  47,
-                    "completed_subphases":  17,
-                    "progress_percentage":  36.17,
+                    "completed_subphases":  18,
+                    "progress_percentage":  38.3,
                     "domain_test_coverage":  100.0
                 },
     "stages":  [
@@ -401,13 +401,13 @@
                                                             {
                                                                 "id":  "SUBPHASE_3_1_1",
                                                                 "title":  "Camera Feed Lifecycle \u0026 Viewport Matrix",
-                                                                "status":  "IN_PROGRESS",
+                                                                "status":  "COMPLETED",
                                                                 "dependencies":  [
                                                                                      "SUBPHASE_2_3_3"
                                                                                  ],
                                                                 "started_at":  "2026-10-29T13:17:03Z",
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
+                                                                "completed_at":  "2026-10-29T13:23:17Z",
+                                                                "commit_hash":  "932ab3ac9337f2cd6d4338048876319145bbfde1",
                                                                 "verification_criteria":  [
                                                                                               "Implement low-latency camera controller initialization with automatic lifecycle binding",
                                                                                               "Configure hardware-accelerated viewport targeting, pinch-to-zoom controls, auto-exposure locks, and torch toggle"
@@ -419,11 +419,11 @@
                                                             {
                                                                 "id":  "SUBPHASE_3_1_2",
                                                                 "title":  "Dual-Engine Optical Detection Integration",
-                                                                "status":  "PENDING",
+                                                                "status":  "IN_PROGRESS",
                                                                 "dependencies":  [
                                                                                      "SUBPHASE_3_1_1"
                                                                                  ],
-                                                                "started_at":  null,
+                                                                "started_at":  "2026-10-29T13:23:40Z",
                                                                 "completed_at":  null,
                                                                 "commit_hash":  null,
                                                                 "verification_criteria":  [

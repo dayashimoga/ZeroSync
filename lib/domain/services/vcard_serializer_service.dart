@@ -337,7 +337,6 @@ class VCardSerializerService {
         .replaceAll('\n\t', '');
     return normalized
         .split(RegExp(r'\r?\n'))
-        .map((l) => l.trimRight())
         .where((l) => l.isNotEmpty)
         .toList();
   }

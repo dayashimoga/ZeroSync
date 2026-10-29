@@ -20,6 +20,7 @@ dependencies:
   mobile_scanner: ^5.2.3
   archive: ^3.6.1
   uuid: ^4.4.0
+  crypto: ^3.0.8
 
   # Cryptographic Storage & Air-Gap Vault
   sqflite_sqlcipher: ^3.1.0+1

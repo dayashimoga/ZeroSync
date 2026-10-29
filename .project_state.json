@@ -2,16 +2,16 @@
     "$schema":  "https://json-schema.org/draft/2020-12/schema",
     "project_name":  "AirDrop-QR / ZeroSync",
     "contract_version":  "2.0.0",
-    "last_updated":  "2026-10-29T14:42:49Z",
+    "last_updated":  "2026-10-29T14:46:14Z",
     "active_pointer":  {
                            "stage_id":  "STAGE_5",
                            "phase_id":  "PHASE_5_1",
-                           "subphase_id":  "SUBPHASE_5_1_1"
+                           "subphase_id":  "SUBPHASE_5_1_2"
                        },
     "metrics":  {
                     "total_subphases":  47,
-                    "completed_subphases":  34,
-                    "progress_percentage":  72.34,
+                    "completed_subphases":  35,
+                    "progress_percentage":  74.47,
                     "domain_test_coverage":  100.0
                 },
     "stages":  [
@@ -761,13 +761,13 @@
                                                             {
                                                                 "id":  "SUBPHASE_5_1_1",
                                                                 "title":  "Design Tokens \u0026 Visual Theme Engine",
-                                                                "status":  "IN_PROGRESS",
+                                                                "status":  "COMPLETED",
                                                                 "dependencies":  [
                                                                                      "SUBPHASE_4_3_3"
                                                                                  ],
                                                                 "started_at":  "2026-10-29T14:42:49Z",
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
+                                                                "completed_at":  "2026-10-29T14:45:39Z",
+                                                                "commit_hash":  "c4f70b4e9902bce26e7662017b072f403f6498c8",
                                                                 "verification_criteria":  [
                                                                                               "Establish cohesive Dark/Light themes with high-contrast UI modes, strictly typed typography, custom iconography",
                                                                                               "Enforce zero runtime UI thread jank through pure stateless/const widget structures"
@@ -779,11 +779,11 @@
                                                             {
                                                                 "id":  "SUBPHASE_5_1_2",
                                                                 "title":  "Large Screen, Foldable \u0026 Tablet Split-Pane Layouts",
-                                                                "status":  "PENDING",
+                                                                "status":  "IN_PROGRESS",
                                                                 "dependencies":  [
                                                                                      "SUBPHASE_5_1_1"
                                                                                  ],
-                                                                "started_at":  null,
+                                                                "started_at":  "2026-10-29T14:46:14Z",
                                                                 "completed_at":  null,
                                                                 "commit_hash":  null,
                                                                 "verification_criteria":  [

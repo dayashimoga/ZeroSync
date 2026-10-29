@@ -1,0 +1,82 @@
+name: Build Android Artifacts (Split APKs & AAB)
+
+on:
+  push:
+    branches: [main, develop]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-android:
+    name: Compile Android Release Matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Cache Gradle Packages & Wrapper
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-gradle-
+
+      - name: Resolve Flutter Dependencies
+        run: flutter pub get
+
+      - name: Build Split per-ABI APKs
+        run: |
+          flutter build apk --split-per-abi --release --no-tree-shake-icons
+          mkdir -p output/apks
+          cp build/app/outputs/flutter-apk/app-*.apk output/apks/
+          cd output/apks
+          sha256sum app-*.apk > SHA256SUMS_APKS.txt
+          cat SHA256SUMS_APKS.txt
+
+      - name: Build Unsigned App Bundle (AAB)
+        run: |
+          flutter build appbundle --release --no-tree-shake-icons
+          mkdir -p output/bundle
+          cp build/app/outputs/bundle/release/app-release.aab output/bundle/
+          cd output/bundle
+          sha256sum app-release.aab > SHA256SUMS_AAB.txt
+          cat SHA256SUMS_AAB.txt
+
+      - name: Upload Split APK Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: zerosync-android-split-apks
+          path: output/apks/
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Upload Android App Bundle (AAB)
+        uses: actions/upload-artifact@v4
+        with:
+          name: zerosync-android-aab
+          path: output/bundle/
+          retention-days: 14
+          if-no-files-found: error

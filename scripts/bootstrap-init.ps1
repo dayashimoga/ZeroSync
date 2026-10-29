@@ -5,7 +5,7 @@
 .DESCRIPTION
     Verifies development prerequisites (Flutter, Dart, Git, OpenSSL),
     initializes the Git version control repository, creates the strict Clean
-    Architecture directory tree, and ensures .project_state.json is ready.
+    Architecture directory tree, configures git hooks, and validates .project_state.json.
 .EXAMPLE
     ./scripts/bootstrap-init.ps1
 #>
@@ -59,7 +59,7 @@ if (Get-Command flutter -ErrorAction SilentlyContinue) {
     $FlutterRaw = (flutter --version 2>&1 | Select-Object -First 1).ToString().Trim()
     Write-Success "Flutter SDK detected: $FlutterRaw"
 } else {
-    Write-Fail "Flutter SDK is not found on PATH. Please install Flutter 3.10+."
+    Write-Fail "Flutter SDK is not found on PATH. Please install Flutter 3.24+."
     $PrereqsPassed = $false
 }
 
@@ -68,23 +68,23 @@ if (Get-Command dart -ErrorAction SilentlyContinue) {
     $DartRaw = (dart --version 2>&1).ToString().Trim()
     Write-Success "Dart SDK detected: $DartRaw"
 } else {
-    Write-Fail "Dart SDK is not found on PATH."
+    Write-Fail "Dart SDK is not found on PATH (Dart >= 3.5 required)."
     $PrereqsPassed = $false
 }
 
-# Check Android SDK (Optional for pure domain, required for native build)
+# Check Android SDK
 if ($env:ANDROID_HOME -or $env:ANDROID_SDK_ROOT) {
     $AndroidPath = $(if ($env:ANDROID_HOME) { $env:ANDROID_HOME } else { $env:ANDROID_SDK_ROOT })
     Write-Success "Android SDK found at: $AndroidPath"
 } else {
-    Write-Warn "ANDROID_HOME / ANDROID_SDK_ROOT not set. Required later for Android compilation."
+    Write-Warn "ANDROID_HOME / ANDROID_SDK_ROOT not set. Required for native compilation."
 }
 
 # Check OpenSSL
 if (Get-Command openssl -ErrorAction SilentlyContinue) {
     Write-Success "OpenSSL cryptographic CLI detected."
 } else {
-    Write-Warn "OpenSSL CLI not found. Built-in Dart cryptographic fallbacks will be used."
+    Write-Warn "OpenSSL CLI not found. Dart internal cryptographic engines will be used."
 }
 
 if (-not $PrereqsPassed) {
@@ -92,11 +92,13 @@ if (-not $PrereqsPassed) {
     exit 1
 }
 
-Write-Step "Constructing Clean Architecture Directory Tree..."
+Write-Step "Constructing Monorepo Clean Architecture Directory Archetype..."
 
 $Directories = @(
+    ".agents/skills/zerosync-orchestrator",
+    ".agent/skills/zerosync-orchestrator",
     "contracts",
-    "scripts",
+    "scripts/git-hooks",
     ".github/workflows",
     "lib/core/constants",
     "lib/core/errors",
@@ -110,11 +112,14 @@ $Directories = @(
     "lib/data/datasources",
     "lib/data/models",
     "lib/data/repositories",
+    "lib/presentation/blocs/batch_scanner",
     "lib/presentation/blocs/optical_transmitter",
     "lib/presentation/blocs/optical_receiver",
     "lib/presentation/pages",
     "lib/presentation/widgets",
     "lib/presentation/theme",
+    "lib/presentation/services",
+    "lib/l10n",
     "test/unit/domain",
     "test/unit/data",
     "test/unit/core",
@@ -135,7 +140,7 @@ foreach ($Dir in $Directories) {
     }
 }
 $DirCount = $Directories.Count
-Write-Success "Complete directory tree constructed ($DirCount packages)."
+Write-Success "Complete monorepo directory tree constructed ($DirCount packages)."
 
 Write-Step "Validating State Machine Configuration..."
 
@@ -148,14 +153,14 @@ if (-not (Test-Path $StateFile)) {
 try {
     $StateJson = Get-Content -Raw -Path $StateFile | ConvertFrom-Json
     $TotalSubphases = $StateJson.metrics.total_subphases
-    Write-Success "State machine schema valid. Tracked subphases: $TotalSubphases."
+    Write-Success "State machine schema valid. Total tracked subphases: $TotalSubphases across 6 stages."
 } catch {
     Write-Fail "Corrupted JSON in .project_state.json: $_"
     exit 1
 }
 
 if (-not $SkipGitInit) {
-    Write-Step "Verifying Git Version Control..."
+    Write-Step "Configuring Git Version Control & Governance Hooks..."
     $GitDir = Join-Path $WorkspaceRoot ".git"
     if (-not (Test-Path $GitDir)) {
         git init -b main | Out-Null
@@ -163,9 +168,24 @@ if (-not $SkipGitInit) {
     } else {
         Write-Success "Git repository already initialized."
     }
+
+    # Configure core.hooksPath or install hooks into .git/hooks
+    $HooksDir = Join-Path $GitDir "hooks"
+    if (Test-Path $HooksDir) {
+        $PreCommitHook = Join-Path $HooksDir "pre-commit"
+        $PrePushHook = Join-Path $HooksDir "pre-push"
+
+        $HookBashContent = "#!/bin/sh`npwsh -ExecutionPolicy Bypass -File scripts/git-hooks/pre-commit.ps1 || powershell -ExecutionPolicy Bypass -File scripts/git-hooks/pre-commit.ps1`n"
+        Set-Content -Path $PreCommitHook -Value $HookBashContent -Encoding utf8
+        
+        $PushBashContent = "#!/bin/sh`npwsh -ExecutionPolicy Bypass -File scripts/git-hooks/pre-push.ps1 || powershell -ExecutionPolicy Bypass -File scripts/git-hooks/pre-push.ps1`n"
+        Set-Content -Path $PrePushHook -Value $PushBashContent -Encoding utf8
+
+        Write-Success "Git pre-commit and pre-push hooks installed."
+    }
 }
 
 Write-Host "`n==================================================================" -ForegroundColor Green
-Write-Host " [ZeroSync Bootstrap] Workspace successfully initialized!" -ForegroundColor Green
-Write-Host " Run 'pwsh ./scripts/bootstrap-verify.ps1' to view the state engine." -ForegroundColor Green
+Write-Host " [ZeroSync Bootstrap] 6-Stage Monorepo Successfully Initialized!" -ForegroundColor Green
+Write-Host " Run 'pwsh ./scripts/bootstrap-verify.ps1' to view the full progress tree." -ForegroundColor Green
 Write-Host "==================================================================`n" -ForegroundColor Green

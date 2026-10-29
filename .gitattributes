@@ -1,0 +1,33 @@
+# Set default behavior to automatically normalize line endings to LF
+* text=auto eol=lf
+
+# Explicit text files
+*.dart text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.ps1 text eol=lf
+*.sh text eol=lf
+*.gradle text eol=lf
+*.xml text eol=lf
+*.plist text eol=lf
+*.arb text eol=lf
+
+# Explicit binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.jar binary
+*.keystore binary
+*.jks binary
+*.p12 binary
+*.ipa binary
+*.apk binary
+*.aab binary
+*.zip binary
+*.tar.gz binary

@@ -1,0 +1,65 @@
+name: Build iOS Runner & Unsigned IPA
+
+on:
+  push:
+    branches: [main, develop]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-ios:
+    name: Compile iOS Release IPA
+    runs-on: macos-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: ${{ runner.os }}-pods-
+
+      - name: Resolve Flutter Dependencies
+        run: flutter pub get
+
+      - name: Compile iOS Runner (No Codesign)
+        run: |
+          flutter build ios --release --no-codesign
+
+      - name: Package Payload Archive into Unsigned IPA
+        run: |
+          mkdir -p build/ios/payload_dir/Payload
+          cp -r build/ios/iphoneos/Runner.app build/ios/payload_dir/Payload/
+          cd build/ios/payload_dir
+          zip -r -9 ../../../ZeroSync-iOS-unsigned.ipa Payload
+          cd ../../..
+          mkdir -p output/ios
+          mv ZeroSync-iOS-unsigned.ipa output/ios/
+          cd output/ios
+          shasum -a 256 ZeroSync-iOS-unsigned.ipa > SHA256SUMS_IOS.txt
+          cat SHA256SUMS_IOS.txt
+
+      - name: Upload iOS Unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: zerosync-ios-unsigned-ipa
+          path: output/ios/
+          retention-days: 14
+          if-no-files-found: error

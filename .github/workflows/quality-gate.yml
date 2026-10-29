@@ -1,0 +1,110 @@
+name: Quality Gate & Static Analysis
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality-gate:
+    name: Lint, Air-Gap Audit & 85% Coverage Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          channel: 'stable'
+          cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-${{ hashFiles('**/pubspec.lock') }}"
+
+      - name: Cache Pub Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: ${{ runner.os }}-pub-
+
+      - name: Resolve Dependencies
+        run: flutter pub get
+
+      - name: Enforce Dart Code Formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Enforce Zero-Warning Static Analysis
+        run: dart analyze --fatal-infos --fatal-warnings
+
+      - name: Zero-Trust Air-Gap Manifest Audit
+        run: |
+          echo ">>> Auditing Android & iOS manifests for zero network scopes..."
+          VIOLATIONS=0
+          if [ -f "android/app/src/main/AndroidManifest.xml" ]; then
+            if grep -i -E "android.permission.INTERNET|android.permission.ACCESS_NETWORK_STATE" android/app/src/main/AndroidManifest.xml; then
+              echo "::error::Network permission detected in AndroidManifest.xml!"
+              VIOLATIONS=$((VIOLATIONS + 1))
+            fi
+          fi
+          if [ -f "ios/Runner/Info.plist" ]; then
+            if grep -i -E "NSAllowsArbitraryLoads.*true" ios/Runner/Info.plist; then
+              echo "::error::Insecure network transport detected in Info.plist!"
+              VIOLATIONS=$((VIOLATIONS + 1))
+            fi
+          fi
+          if [ $VIOLATIONS -ne 0 ]; then
+            echo "Zero-Trust Air-Gap Policy Violated. Build aborted."
+            exit 1
+          fi
+          echo "Air-gap zero-network security verified."
+
+      - name: Security Credential Scanning
+        run: |
+          echo ">>> Scanning repository for leaked secrets, API keys, or private certificates..."
+          if grep -rn -E --exclude-dir={.git,.dart_tool,build} "(AIzaSy[A-Za-z0-9_-]{33}|-----BEGIN PRIVATE KEY-----)" .; then
+            echo "::error::Hardcoded credentials detected in repository!"
+            exit 1
+          fi
+          echo "Credential scan clean."
+
+      - name: Run Test Suite with Coverage
+        run: |
+          if [ -d "test" ] && [ "$(find test -name '*_test.dart' | wc -l)" -gt 0 ]; then
+            flutter test --coverage
+          else
+            echo "No test files found."
+          fi
+
+      - name: Check Domain Line Coverage Gate (>= 85.0%)
+        run: |
+          if [ -f "coverage/lcov.info" ]; then
+            TOTAL_LINES=$(grep -c "^DA:" coverage/lcov.info || true)
+            HIT_LINES=$(grep -c "^DA:.*,[1-9][0-9]*" coverage/lcov.info || true)
+            if [ "$TOTAL_LINES" -gt 0 ]; then
+              COVERAGE_PCT=$(awk -v hit="$HIT_LINES" -v tot="$TOTAL_LINES" 'BEGIN { printf "%.2f", (hit/tot)*100 }')
+              echo "Domain Line Coverage: $COVERAGE_PCT%"
+              IS_PASS=$(awk -v cov="$COVERAGE_PCT" 'BEGIN { print (cov >= 85.0) ? "PASS" : "FAIL" }')
+              if [ "$IS_PASS" != "PASS" ]; then
+                echo "::error::Domain coverage ($COVERAGE_PCT%) below required 85.0% gate."
+                exit 1
+              fi
+              echo "Coverage gate satisfied."
+            fi
+          fi

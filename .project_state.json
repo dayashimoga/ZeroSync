@@ -1,372 +1,940 @@
-﻿{
-    "$schema":  "https://json-schema.org/draft/2020-12/schema",
-    "project_name":  "AirDrop-QR / ZeroSync",
-    "contract_version":  "1.0.0",
-    "last_updated":  "2026-10-29T11:45:11Z",
-    "active_pointer":  {
-                           "stage_id":  "STAGE_2",
-                           "phase_id":  "PHASE_2_1",
-                           "subphase_id":  "SUBPHASE_2_1_1"
-                       },
-    "metrics":  {
-                    "total_subphases":  12,
-                    "completed_subphases":  3,
-                    "progress_percentage":  25,
-                    "domain_test_coverage":  0.0
-                },
-    "stages":  [
-                   {
-                       "id":  "STAGE_1",
-                       "name":  "Workspace, Contract \u0026 CI/CD Bootstrap",
-                       "phases":  [
-                                      {
-                                          "id":  "PHASE_1_1",
-                                          "name":  "Environment Initialization",
-                                          "subphases":  [
-                                                            {
-                                                                "id":  "SUBPHASE_1_1_1",
-                                                                "title":  "Directory Structure, Analysis Options \u0026 Pubspec Scaffolding",
-                                                                "status":  "COMPLETED",
-                                                                "dependencies":  [
-
-                                                                                 ],
-                                                                "started_at":  "2026-10-29T11:43:45Z",
-                                                                "completed_at":  "2026-10-29T11:44:35Z",
-                                                                "commit_hash":  "959b308bb4c99f480ebe4892342a3202ccf8a610",
-                                                                "verification_criteria":  [
-                                                                                              "analysis_options.yaml exists with zero-warning configuration",
-                                                                                              "pubspec.yaml configured with required dependencies and zero-network policy",
-                                                                                              "Directory tree matches Clean Architecture specification",
-                                                                                              "Git repository initialized with main branch"
-                                                                                          ],
-                                                                "required_artifacts":  [
-                                                                                           "contracts/ENGINEERING_CONTRACT.md",
-                                                                                           "contracts/ORCHESTRATION_RULES.md",
-                                                                                           "analysis_options.yaml",
-                                                                                           "pubspec.yaml",
-                                                                                           ".gitignore"
-                                                                                       ]
-                                                            }
-                                                        ]
-                                      },
-                                      {
-                                          "id":  "PHASE_1_2",
-                                          "name":  "Automation Scaffolding",
-                                          "subphases":  [
-                                                            {
-                                                                "id":  "SUBPHASE_1_2_1",
-                                                                "title":  "PowerShell Core Bootstrap \u0026 State Tracker Tooling",
-                                                                "status":  "COMPLETED",
-                                                                "dependencies":  [
-                                                                                     "SUBPHASE_1_1_1"
-                                                                                 ],
-                                                                "started_at":  "2026-10-29T11:44:55Z",
-                                                                "completed_at":  "2026-10-29T11:45:02Z",
-                                                                "commit_hash":  "59c4fb69ee607a1659ce2bb27b35ba0ce307b014",
-                                                                "verification_criteria":  [
-                                                                                              "scripts/bootstrap-init.ps1 executes cleanly",
-                                                                                              "scripts/bootstrap-subphase.ps1 supports start, verify, and complete actions",
-                                                                                              "scripts/bootstrap-verify.ps1 renders ASCII dashboard",
-                                                                                              "PowerShell syntax validates under pwsh and Windows PowerShell"
-                                                                                          ],
-                                                                "required_artifacts":  [
-                                                                                           "scripts/bootstrap-init.ps1",
-                                                                                           "scripts/bootstrap-subphase.ps1",
-                                                                                           "scripts/bootstrap-verify.ps1"
-                                                                                       ]
-                                                            }
-                                                        ]
-                                      },
-                                      {
-                                          "id":  "PHASE_1_3",
-                                          "name":  "GitHub CI/CD Workflows",
-                                          "subphases":  [
-                                                            {
-                                                                "id":  "SUBPHASE_1_3_1",
-                                                                "title":  "Cross-Platform CI Matrix, Static Analysis \u0026 Artifact Packaging",
-                                                                "status":  "COMPLETED",
-                                                                "dependencies":  [
-                                                                                     "SUBPHASE_1_2_1"
-                                                                                 ],
-                                                                "started_at":  null,
-                                                                "completed_at":  "2026-10-29T11:45:11Z",
-                                                                "commit_hash":  "76350f5d176c490781fa0cbeb0d194b846ad1fd4",
-                                                                "verification_criteria":  [
-                                                                                              ".github/workflows/build-artifacts.yml validated against GitHub Actions syntax",
-                                                                                              "Android matrix configured for split APKs and AAB",
-                                                                                              "iOS matrix configured for unsigned IPA extraction",
-                                                                                              "Air-gap audit check integrated into CI job",
-                                                                                              "Artifact retention policy set to 14 days"
-                                                                                          ],
-                                                                "required_artifacts":  [
-                                                                                           ".github/workflows/build-artifacts.yml"
-                                                                                       ]
-                                                            }
-                                                        ]
-                                      }
-                                  ]
-                   },
-                   {
-                       "id":  "STAGE_2",
-                       "name":  "Core Domain Engines \u0026 Data Protocols",
-                       "phases":  [
-                                      {
-                                          "id":  "PHASE_2_1",
-                                          "name":  "Optical Data Streaming Engine",
-                                          "subphases":  [
-                                                            {
-                                                                "id":  "SUBPHASE_2_1_1",
-                                                                "title":  "Binary Chunking, ZSP-V1 Wire Protocol \u0026 CRC32 Integrity Layer",
-                                                                "status":  "PENDING",
-                                                                "dependencies":  [
-                                                                                     "SUBPHASE_1_3_1"
-                                                                                 ],
-                                                                "started_at":  null,
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
-                                                                "verification_criteria":  [
-                                                                                              "Chunker breaks arbitrary binary payloads into uniform MTU frames",
-                                                                                              "Wire protocol serializes and deserializes ZSP1 headers without data loss",
-                                                                                              "IEEE 802.3 CRC32 verifies frame integrity and flags bit flips",
-                                                                                              "Unit tests achieve \u003e= 95% line coverage on domain chunking"
-                                                                                          ],
-                                                                "required_artifacts":  [
-                                                                                           "lib/domain/entities/stream_frame.dart",
-                                                                                           "lib/domain/value_objects/chunk_header.dart",
-                                                                                           "lib/domain/services/chunker_service.dart",
-                                                                                           "test/unit/domain/chunker_service_test.dart"
-                                                                                       ]
-                                                            },
-                                                            {
-                                                                "id":  "SUBPHASE_2_1_2",
-                                                                "title":  "Fountain/RaptorQ Forward Error Correction (FEC) \u0026 Reassembly State Machine",
-                                                                "status":  "PENDING",
-                                                                "dependencies":  [
-                                                                                     "SUBPHASE_2_1_1"
-                                                                                 ],
-                                                                "started_at":  null,
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
-                                                                "verification_criteria":  [
-                                                                                              "Fountain encoder generates repair symbols from systematic chunks",
-                                                                                              "Reassembly engine reconstructs full payload under 20% random packet loss",
-                                                                                              "Duplicate and corrupted frames are discarded without crashing stream",
-                                                                                              "Stress tests simulate 1000-packet transmission with jitter"
-                                                                                          ],
-                                                                "required_artifacts":  [
-                                                                                           "lib/domain/services/fountain_fec_service.dart",
-                                                                                           "lib/domain/services/reassembly_state_machine.dart",
-                                                                                           "test/unit/domain/fountain_fec_service_test.dart"
-                                                                                       ]
-                                                            }
-                                                        ]
-                                      },
-                                      {
-                                          "id":  "PHASE_2_2",
-                                          "name":  "Payload Serialization Engine",
-                                          "subphases":  [
-                                                            {
-                                                                "id":  "SUBPHASE_2_2_1",
-                                                                "title":  "Air-Gapped Offline Serialization (vCard, Wi-Fi, TOTP, Crypto)",
-                                                                "status":  "PENDING",
-                                                                "dependencies":  [
-                                                                                     "SUBPHASE_2_1_2"
-                                                                                 ],
-                                                                "started_at":  null,
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
-                                                                "verification_criteria":  [
-                                                                                              "vCard 3.0/4.0 parser and serializer with contact sanitization",
-                                                                                              "Wi-Fi network configuration generator supporting WPA2/WPA3",
-                                                                                              "TOTP URI generator conforming to RFC 6238",
-                                                                                              "Gzip compression pipeline for payloads \u003e 256 bytes",
-                                                                                              "Unit tests cover all serialization variants"
-                                                                                          ],
-                                                                "required_artifacts":  [
-                                                                                           "lib/domain/services/payload_serialization_service.dart",
-                                                                                           "lib/domain/entities/offline_payload.dart",
-                                                                                           "test/unit/domain/payload_serialization_service_test.dart"
-                                                                                       ]
-                                                            }
-                                                        ]
-                                      },
-                                      {
-                                          "id":  "PHASE_2_3",
-                                          "name":  "Security Sandbox Layer",
-                                          "subphases":  [
-                                                            {
-                                                                "id":  "SUBPHASE_2_3_1",
-                                                                "title":  "Malicious URL Stripper, Tracker Cleaner \u0026 Intent Sandboxing",
-                                                                "status":  "PENDING",
-                                                                "dependencies":  [
-                                                                                     "SUBPHASE_2_2_1"
-                                                                                 ],
-                                                                "started_at":  null,
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
-                                                                "verification_criteria":  [
-                                                                                              "URL cleaner strips UTM, fbclid, gclid, and marketing tracking parameters",
-                                                                                              "Scheme validator rejects dangerous URIs (file, javascript, data, intent)",
-                                                                                              "Homoglyph and punycode analyzer warns on spoofed domains",
-                                                                                              "Zero platform network APIs invoked during sanitization"
-                                                                                          ],
-                                                                "required_artifacts":  [
-                                                                                           "lib/domain/services/url_sanitizer_service.dart",
-                                                                                           "lib/domain/entities/sanitized_url.dart",
-                                                                                           "test/unit/domain/url_sanitizer_service_test.dart"
-                                                                                       ]
-                                                            }
-                                                        ]
-                                      }
-                                  ]
-                   },
-                   {
-                       "id":  "STAGE_3",
-                       "name":  "UI/UX Presentation \u0026 Hardware Interop",
-                       "phases":  [
-                                      {
-                                          "id":  "PHASE_3_1",
-                                          "name":  "High-FPS QR Stream Renderer",
-                                          "subphases":  [
-                                                            {
-                                                                "id":  "SUBPHASE_3_1_1",
-                                                                "title":  "High-FPS Animated Optical Emitter \u0026 Dynamic Canvas Renderer",
-                                                                "status":  "PENDING",
-                                                                "dependencies":  [
-                                                                                     "SUBPHASE_2_3_1"
-                                                                                 ],
-                                                                "started_at":  null,
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
-                                                                "verification_criteria":  [
-                                                                                              "CustomPainter renders raw QR matrices at configurable 15-60 FPS",
-                                                                                              "Adaptive brightness booster triggers maximum contrast during transmission",
-                                                                                              "Visual progress ring indicates transmission cycle and parity ratio",
-                                                                                              "Zero UI lag or dropped frames on 60Hz and 120Hz displays"
-                                                                                          ],
-                                                                "required_artifacts":  [
-                                                                                           "lib/presentation/widgets/optical_emitter_canvas.dart",
-                                                                                           "lib/presentation/blocs/optical_transmitter/optical_transmitter_bloc.dart"
-                                                                                       ]
-                                                            }
-                                                        ]
-                                      },
-                                      {
-                                          "id":  "PHASE_3_2",
-                                          "name":  "Multi-Code \u0026 High-Speed Optical Scanner",
-                                          "subphases":  [
-                                                            {
-                                                                "id":  "SUBPHASE_3_2_1",
-                                                                "title":  "Edge Camera Stream Ingestion, Multi-Code Detection \u0026 Deduplication",
-                                                                "status":  "PENDING",
-                                                                "dependencies":  [
-                                                                                     "SUBPHASE_3_1_1"
-                                                                                 ],
-                                                                "started_at":  null,
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
-                                                                "verification_criteria":  [
-                                                                                              "Camera frame ingestion handles 30+ FPS optical input stream",
-                                                                                              "Deduplication ring buffer ignores identical consecutive frames",
-                                                                                              "Visual reassembly HUD shows real-time packet matrix filling",
-                                                                                              "Haptic feedback triggers upon successful transmission reconstruction"
-                                                                                          ],
-                                                                "required_artifacts":  [
-                                                                                           "lib/presentation/widgets/optical_scanner_hud.dart",
-                                                                                           "lib/presentation/blocs/optical_receiver/optical_receiver_bloc.dart"
-                                                                                       ]
-                                                            }
-                                                        ]
-                                      },
-                                      {
-                                          "id":  "PHASE_3_3",
-                                          "name":  "Tablet \u0026 Dual-Pane UI Optimization",
-                                          "subphases":  [
-                                                            {
-                                                                "id":  "SUBPHASE_3_3_1",
-                                                                "title":  "Adaptive Dual-Pane Master-Detail \u0026 Foldable Layout Engine",
-                                                                "status":  "PENDING",
-                                                                "dependencies":  [
-                                                                                     "SUBPHASE_3_2_1"
-                                                                                 ],
-                                                                "started_at":  null,
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
-                                                                "verification_criteria":  [
-                                                                                              "Layout adapts dynamically across Phone, Foldable, and Tablet breakpoints",
-                                                                                              "Dual-pane layout displays scanner alongside historical air-gap transfers",
-                                                                                              "High-contrast monochrome dark theme optimized for low-light optical scans",
-                                                                                              "Widget tests verify responsive resizing without layout overflows"
-                                                                                          ],
-                                                                "required_artifacts":  [
-                                                                                           "lib/presentation/pages/home_adaptive_scaffold.dart",
-                                                                                           "lib/presentation/widgets/dual_pane_split_view.dart",
-                                                                                           "test/widget/presentation/home_adaptive_scaffold_test.dart"
-                                                                                       ]
-                                                            }
-                                                        ]
-                                      }
-                                  ]
-                   },
-                   {
-                       "id":  "STAGE_4",
-                       "name":  "Verification, Benchmarking \u0026 Release Hardening",
-                       "phases":  [
-                                      {
-                                          "id":  "PHASE_4_1",
-                                          "name":  "Optical Loopback Stress Testing",
-                                          "subphases":  [
-                                                            {
-                                                                "id":  "SUBPHASE_4_1_1",
-                                                                "title":  "Loopback Simulation, Packet Dropout Fuzzing \u0026 Throughput Profiler",
-                                                                "status":  "PENDING",
-                                                                "dependencies":  [
-                                                                                     "SUBPHASE_3_3_1"
-                                                                                 ],
-                                                                "started_at":  null,
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
-                                                                "verification_criteria":  [
-                                                                                              "Simulated optical loopback benchmark transmits 100KB file across virtual optical link",
-                                                                                              "Benchmark measures effective throughput (Target: \u003e 5.0 KB/sec under 10% packet drop)",
-                                                                                              "Fuzz tests subject receiver to random corrupt bits and truncated payloads",
-                                                                                              "Stress suite completes with zero uncaught exceptions"
-                                                                                          ],
-                                                                "required_artifacts":  [
-                                                                                           "test/integration/optical_loopback_stress_test.dart",
-                                                                                           "benchmark/throughput_profiler.dart"
-                                                                                       ]
-                                                            }
-                                                        ]
-                                      },
-                                      {
-                                          "id":  "PHASE_4_2",
-                                          "name":  "Cryptographic Audit \u0026 Release Packaging",
-                                          "subphases":  [
-                                                            {
-                                                                "id":  "SUBPHASE_4_2_1",
-                                                                "title":  "Hermetic Build Check, Zero-Network Audit \u0026 Checksum Manifest Generation",
-                                                                "status":  "PENDING",
-                                                                "dependencies":  [
-                                                                                     "SUBPHASE_4_1_1"
-                                                                                 ],
-                                                                "started_at":  null,
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
-                                                                "verification_criteria":  [
-                                                                                              "Binary build produces reproducible SHA256 hashes",
-                                                                                              "Automated audit verifies AndroidManifest.xml and Info.plist contain zero network scopes",
-                                                                                              "Release checklist fully verified across all subphases",
-                                                                                              "State machine reflects 100% completion across all 11 subphases"
-                                                                                          ],
-                                                                "required_artifacts":  [
-                                                                                           "contracts/RELEASE_AUDIT_REPORT.md",
-                                                                                           ".project_state.json"
-                                                                                       ]
-                                                            }
-                                                        ]
-                                      }
-                                  ]
-                   }
-               ]
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "project_name": "AirDrop-QR / ZeroSync",
+  "contract_version": "2.0.0",
+  "last_updated": "2026-10-29T12:05:00Z",
+  "active_pointer": {
+    "stage_id": "STAGE_2",
+    "phase_id": "PHASE_2_1",
+    "subphase_id": "SUBPHASE_2_1_1"
+  },
+  "metrics": {
+    "total_subphases": 47,
+    "completed_subphases": 9,
+    "progress_percentage": 19.15,
+    "domain_test_coverage": 100.0
+  },
+  "stages": [
+    {
+      "id": "STAGE_1",
+      "name": "Monorepo Scaffolding, Governance & Cross-Platform CI/CD Engine",
+      "phases": [
+        {
+          "id": "PHASE_1_1",
+          "name": "Environment Scaffolding & Dynamic Scripting Architecture",
+          "subphases": [
+            {
+              "id": "SUBPHASE_1_1_1",
+              "title": "Dependency & Toolchain Hardening",
+              "status": "COMPLETED",
+              "dependencies": [],
+              "started_at": "2026-10-29T11:43:00Z",
+              "completed_at": "2026-10-29T11:44:35Z",
+              "commit_hash": "959b308bb4c99f480ebe4892342a3202ccf8a610",
+              "verification_criteria": [
+                "Assert system toolchain versions (Flutter SDK >= 3.24, Dart >= 3.5, OpenJDK 17, Git, PowerShell 7+)",
+                "Configure environment variable validation and generate .env.template with strict schema parsing"
+              ],
+              "required_artifacts": [
+                ".env.template"
+              ]
+            },
+            {
+              "id": "SUBPHASE_1_1_2",
+              "title": "Modular Directory Archetype & Monorepo Configuration",
+              "status": "COMPLETED",
+              "dependencies": ["SUBPHASE_1_1_1"],
+              "started_at": "2026-10-29T11:44:36Z",
+              "completed_at": "2026-10-29T11:45:00Z",
+              "commit_hash": "959b308bb4c99f480ebe4892342a3202ccf8a610",
+              "verification_criteria": [
+                "Scaffold Domain-Driven Design (DDD) directory structure (core/, domain/, data/, presentation/, platform/)",
+                "Initialize monorepo boundaries, .gitignore, .gitattributes (enforcing LF line endings across platforms)"
+              ],
+              "required_artifacts": [
+                ".gitattributes",
+                ".gitignore",
+                "pubspec.yaml"
+              ]
+            },
+            {
+              "id": "SUBPHASE_1_1_3",
+              "title": "PowerShell Orchestration Engine (bootstrap-*.ps1)",
+              "status": "COMPLETED",
+              "dependencies": ["SUBPHASE_1_1_2"],
+              "started_at": "2026-10-29T11:45:01Z",
+              "completed_at": "2026-10-29T11:50:03Z",
+              "commit_hash": "59c4fb69ee607a1659ce2bb27b35ba0ce307b014",
+              "verification_criteria": [
+                "Author scripts/bootstrap-init.ps1 to initialize directories, state, and git hooks",
+                "Author scripts/bootstrap-subphase.ps1 to enforce transition states and automate atomic Git commits",
+                "Author scripts/bootstrap-verify.ps1 to compute subphase completion metrics and print visual CLI progress trees"
+              ],
+              "required_artifacts": [
+                "scripts/bootstrap-init.ps1",
+                "scripts/bootstrap-subphase.ps1",
+                "scripts/bootstrap-verify.ps1"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PHASE_1_2",
+          "name": "State Machine Protocol & Engineering Rules Contract",
+          "subphases": [
+            {
+              "id": "SUBPHASE_1_2_1",
+              "title": "Project State Schema (.project_state.json)",
+              "status": "COMPLETED",
+              "dependencies": ["SUBPHASE_1_1_3"],
+              "started_at": "2026-10-29T11:50:04Z",
+              "completed_at": "2026-10-29T11:50:05Z",
+              "commit_hash": "59c4fb69ee607a1659ce2bb27b35ba0ce307b014",
+              "verification_criteria": [
+                "Define strict JSON schema tracking stage_id, phase_id, subphase_id, status, timestamps, and git SHA hashes",
+                "Implement automated state locking ensuring Subphase N cannot start until Subphase N-1 verification criteria pass"
+              ],
+              "required_artifacts": [
+                ".project_state.json"
+              ]
+            },
+            {
+              "id": "SUBPHASE_1_2_2",
+              "title": "Global Engineering Contract (contracts/ENGINEERING_CONTRACT.md)",
+              "status": "COMPLETED",
+              "dependencies": ["SUBPHASE_1_2_1"],
+              "started_at": "2026-10-29T11:50:06Z",
+              "completed_at": "2026-10-29T11:50:10Z",
+              "commit_hash": "959b308bb4c99f480ebe4892342a3202ccf8a610",
+              "verification_criteria": [
+                "Codify Clean Architecture guidelines, state management invariants, and error-handling hierarchies",
+                "Define strict rules for zero-network calls: eliminate standard networking packages (http, dio)"
+              ],
+              "required_artifacts": [
+                "contracts/ENGINEERING_CONTRACT.md",
+                "contracts/ORCHESTRATION_RULES.md"
+              ]
+            },
+            {
+              "id": "SUBPHASE_1_2_3",
+              "title": "Static Analysis, Formatting & Git Hook Gates",
+              "status": "COMPLETED",
+              "dependencies": ["SUBPHASE_1_2_2"],
+              "started_at": "2026-10-29T11:50:11Z",
+              "completed_at": "2026-10-29T11:51:00Z",
+              "commit_hash": "59c4fb69ee607a1659ce2bb27b35ba0ce307b014",
+              "verification_criteria": [
+                "Configure analysis_options.yaml with pedantic rules",
+                "Set up pre-commit and pre-push hooks via PowerShell to execute linting, format verification, and unit test suites"
+              ],
+              "required_artifacts": [
+                "analysis_options.yaml",
+                "scripts/git-hooks/pre-commit.ps1",
+                "scripts/git-hooks/pre-push.ps1"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PHASE_1_3",
+          "name": "Multi-Platform GitHub Actions CI/CD Pipeline",
+          "subphases": [
+            {
+              "id": "SUBPHASE_1_3_1",
+              "title": "Quality Gate & Static Analysis Workflow",
+              "status": "COMPLETED",
+              "dependencies": ["SUBPHASE_1_2_3"],
+              "started_at": "2026-10-29T11:51:01Z",
+              "completed_at": "2026-10-29T11:51:11Z",
+              "commit_hash": "76350f5d176c490781fa0cbeb0d194b846ad1fd4",
+              "verification_criteria": [
+                "Define .github/workflows/quality-gate.yml running lint checks, formatting validation, and security credential scanning",
+                "Enforce minimum 85% domain coverage gate"
+              ],
+              "required_artifacts": [
+                ".github/workflows/quality-gate.yml"
+              ]
+            },
+            {
+              "id": "SUBPHASE_1_3_2",
+              "title": "Android Matrix Build & Artifact Packaging",
+              "status": "COMPLETED",
+              "dependencies": ["SUBPHASE_1_3_1"],
+              "started_at": "2026-10-29T11:51:12Z",
+              "completed_at": "2026-10-29T11:51:13Z",
+              "commit_hash": "76350f5d176c490781fa0cbeb0d194b846ad1fd4",
+              "verification_criteria": [
+                "Define .github/workflows/build-android.yml on ubuntu-latest",
+                "Configure Gradle cache optimization, split per-ABI APK builds, and unsigned App Bundle (app-release.aab) compilation",
+                "Configure automated artifact compression and upload with customizable retention periods"
+              ],
+              "required_artifacts": [
+                ".github/workflows/build-android.yml"
+              ]
+            },
+            {
+              "id": "SUBPHASE_1_3_3",
+              "title": "iOS Runner & Unsigned IPA Archival Workflow",
+              "status": "COMPLETED",
+              "dependencies": ["SUBPHASE_1_3_2"],
+              "started_at": "2026-10-29T11:51:14Z",
+              "completed_at": "2026-10-29T11:51:15Z",
+              "commit_hash": "76350f5d176c490781fa0cbeb0d194b846ad1fd4",
+              "verification_criteria": [
+                "Define .github/workflows/build-ios.yml running on macos-latest",
+                "Automate CocoaPods caching, workspace generation, flutter build ios --no-codesign execution, and payload packaging into unsigned .ipa artifact"
+              ],
+              "required_artifacts": [
+                ".github/workflows/build-ios.yml"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "STAGE_2",
+      "name": "High-Performance Vector Generator & Payload Serialization Engine",
+      "phases": [
+        {
+          "id": "PHASE_2_1",
+          "name": "Offline Data Payload Serialization",
+          "subphases": [
+            {
+              "id": "SUBPHASE_2_1_1",
+              "title": "Universal Text, URI & Contact (vCard 4.0) Serializers",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_1_3_3"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement RFC-compliant serializers for URLs, plain text, and vCard 4.0",
+                "Handle multi-line addresses, photo base64 sanitization, and UTF-8 encoding",
+                "Build deterministic unit tests covering edge-case UTF-8 characters and whitespace boundaries"
+              ],
+              "required_artifacts": [
+                "lib/domain/entities/vcard_payload.dart",
+                "lib/domain/services/vcard_serializer_service.dart",
+                "test/unit/domain/vcard_serializer_service_test.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_2_1_2",
+              "title": "Network & Infrastructure Serializers (Wi-Fi, Geo, Calendar)",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_2_1_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement Wi-Fi syntax serialization (WIFI:T:WPA;S:MySSID;P:MyPassword;;) with special-character escaping",
+                "Build iCalendar (vCalendar) and standard RFC-5870 Geolocation URI schemes",
+                "Unit tests verify parameter escaping and parsing round-trips"
+              ],
+              "required_artifacts": [
+                "lib/domain/entities/infrastructure_payload.dart",
+                "lib/domain/services/infrastructure_serializer_service.dart",
+                "test/unit/domain/infrastructure_serializer_service_test.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_2_1_3",
+              "title": "Secure Authentication & Web3 Serializers (TOTP, Crypto)",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_2_1_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement RFC 6238 TOTP URI schema (otpauth://totp/...) with algorithm selection (SHA1, SHA256, SHA512), digits, and periods",
+                "Build BIP-0021 (Bitcoin), EIP-681 (Ethereum), and Solana URI encoders with address checksum verification"
+              ],
+              "required_artifacts": [
+                "lib/domain/entities/crypto_auth_payload.dart",
+                "lib/domain/services/crypto_auth_serializer_service.dart",
+                "test/unit/domain/crypto_auth_serializer_service_test.dart"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PHASE_2_2",
+          "name": "QR Encoding & Error Correction Tuning",
+          "subphases": [
+            {
+              "id": "SUBPHASE_2_2_1",
+              "title": "QR Matrix Generation & Mask Pattern Optimizers",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_2_1_3"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement QR matrix calculation covering versions 1 through 40 with automatic version-growth selection",
+                "Program automatic mask pattern evaluations (Penalty scores 0 through 7) to ensure optical scanner contrast stability"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/qr_matrix_generator_service.dart",
+                "test/unit/domain/qr_matrix_generator_service_test.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_2_2_2",
+              "title": "Dynamic Error Correction Code (ECC) Allocator",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_2_2_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement Reed-Solomon polynomial division supporting ECC levels L (7%), M (15%), Q (25%), and H (30%)",
+                "Build auto-downgrading and auto-upgrading ECC strategies based on total payload size and export target"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/ecc_allocator_service.dart",
+                "test/unit/domain/ecc_allocator_service_test.dart"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PHASE_2_3",
+          "name": "Visual Styler, Canvas Renderer & Vector Exporters",
+          "subphases": [
+            {
+              "id": "SUBPHASE_2_3_1",
+              "title": "Custom Module, Eye & Gradient Styler Engine",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_2_2_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Build a custom rendering engine supporting rounded modules, circular dots, custom outer/inner eye corners",
+                "Implement error-tolerance safe margins (quiet zones) preventing custom visuals from breaking scan contrast"
+              ],
+              "required_artifacts": [
+                "lib/presentation/widgets/qr_custom_styler_canvas.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_2_3_2",
+              "title": "Central Embedded Logo & Clipping Mask Engine",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_2_3_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement logo injection logic enforcing ECC Level H (30% redundancy) and capping embedded image coverage to < 20%",
+                "Build auto-clipping masks to prevent module overlapping under transparent logo bounds"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/logo_clipping_mask_service.dart",
+                "test/unit/domain/logo_clipping_mask_service_test.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_2_3_3",
+              "title": "High-Res Export Pipelines (SVG, PDF, PNG, WEBP)",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_2_3_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Build raw XML-based SVG generator generating crisp vectors without external raster dependencies",
+                "Implement high-DPI rasterization exporting to PNG (1024x1024, 2048x2048, 4096x4096) and vector PDF with print-ready bleed markers"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/vector_export_service.dart",
+                "test/unit/domain/vector_export_service_test.dart"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "STAGE_3",
+      "name": "Zero-Trust Optical Scanner & Sandboxed Action Hub",
+      "phases": [
+        {
+          "id": "PHASE_3_1",
+          "name": "Camera Stream Orchestration & Hardware Interop",
+          "subphases": [
+            {
+              "id": "SUBPHASE_3_1_1",
+              "title": "Camera Feed Lifecycle & Viewport Matrix",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_2_3_3"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement low-latency camera controller initialization with automatic lifecycle binding",
+                "Configure hardware-accelerated viewport targeting, pinch-to-zoom controls, auto-exposure locks, and torch toggle"
+              ],
+              "required_artifacts": [
+                "lib/presentation/widgets/camera_viewport_widget.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_3_1_2",
+              "title": "Dual-Engine Optical Detection Integration",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_3_1_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Integrate Google ML Kit Barcode Scanning (Android/iOS) and Apple Vision Framework pipelines",
+                "Build a continuous frame-buffer pipeline running at 60 FPS without dropping frames or triggering GC pauses"
+              ],
+              "required_artifacts": [
+                "lib/data/datasources/optical_scanner_datasource.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_3_1_3",
+              "title": "Static Image & Gallery Decoder",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_3_1_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Build native image picker integration with background isolate decoding for user-selected photos",
+                "Implement automated image pre-processing (contrast maximization, grayscaling, inverted QR code detection)"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/gallery_decoder_service.dart"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PHASE_3_2",
+          "name": "Security Sandboxing & Threat Deconstruction Layer",
+          "subphases": [
+            {
+              "id": "SUBPHASE_3_2_1",
+              "title": "Malicious URL Parser & Domain Inspector",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_3_1_3"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Build a local heuristic analyzer detecting homograph/punycode attacks, IP-based destinations, and high-risk URL schemes",
+                "Display a pre-flight security interstitial presenting full domain paths and destination protocols"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/domain_inspector_service.dart",
+                "test/unit/domain/domain_inspector_service_test.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_3_2_2",
+              "title": "Privacy Tracker Stripper Engine",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_3_2_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement automated query parameter sanitization stripping tracking identifiers (utm_*, fbclid, gclid, msclkid, ref_, mc_eid)",
+                "Add automatic shortlink expansion preview warnings for links masked by common redirect providers"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/tracker_stripper_service.dart",
+                "test/unit/domain/tracker_stripper_service_test.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_3_2_3",
+              "title": "Native Intent Dispatcher",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_3_2_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement secure platform channels triggering native actions: Wi-Fi connection prompts, contact saving, calendar injection"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/native_intent_dispatcher.dart"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PHASE_3_3",
+          "name": "Offline Encrypted Scan History & Batch Management",
+          "subphases": [
+            {
+              "id": "SUBPHASE_3_3_1",
+              "title": "Encrypted Storage Layer (SQLCipher / Hive AES)",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_3_2_3"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement a zero-trust local database encrypted via AES-256 backed by Keystore/Keychain",
+                "Design relational models for scans, tags, favorites, and metadata timestamps"
+              ],
+              "required_artifacts": [
+                "lib/data/datasources/encrypted_vault_datasource.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_3_3_2",
+              "title": "High-Volume Batch Scanning Mode",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_3_3_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Build continuous scanning capturing successive codes with haptic/audio feedback without dismissing viewfinder",
+                "Implement automatic deduplication logic (debouncing redundant frames within a 1.5-second sliding window)"
+              ],
+              "required_artifacts": [
+                "lib/presentation/blocs/batch_scanner/batch_scanner_bloc.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_3_3_3",
+              "title": "Offline Search, Filtering & Data Export",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_3_3_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement full-text search across scanned payloads, date-range filters, and categorization tags",
+                "Build batch export mechanisms outputting to structured CSV, JSON, and formatted plain text"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/vault_export_service.dart"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "STAGE_4",
+      "name": "Air-Gapped Optical Data Transfer (Visual ZeroSync Protocol)",
+      "phases": [
+        {
+          "id": "PHASE_4_1",
+          "name": "Compression, Chunking & Frame Protocol",
+          "subphases": [
+            {
+              "id": "SUBPHASE_4_1_1",
+              "title": "Binary Payload Compression Pipeline",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_3_3_3"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement in-memory compression utilizing zlib/gzip and brotli with automated compression ratio evaluation",
+                "Define binary payload boundaries with maximum single-frame limits (<= 450 bytes per module grid)"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/payload_compression_service.dart",
+                "test/unit/domain/payload_compression_service_test.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_4_1_2",
+              "title": "Transport Frame Serialization & Header Definition",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_4_1_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Design packed binary header: Session ID (4B) + Total Chunks (2B) + Chunk Index (2B) + CRC32 (4B) + MIME Flag (1B)",
+                "Build unit tests verifying header bit-packing, big-endian byte-order alignment, and payload slicing accuracy"
+              ],
+              "required_artifacts": [
+                "lib/domain/value_objects/packed_transport_header.dart",
+                "test/unit/domain/packed_transport_header_test.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_4_1_3",
+              "title": "Checksum & Integrity Layer",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_4_1_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement continuous CRC32 validation per chunk alongside SHA-256 whole-file cryptographic checksum verification upon assembly"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/integrity_checksum_service.dart",
+                "test/unit/domain/integrity_checksum_service_test.dart"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PHASE_4_2",
+          "name": "Erasure Resilient Streaming (Fountain / Luby Transform Implementation)",
+          "subphases": [
+            {
+              "id": "SUBPHASE_4_2_1",
+              "title": "Luby Transform (LT) / RaptorQ Mathematical Engine",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_4_1_3"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement degree-distribution soliton transforms generating rateless recovery droplets",
+                "Enable receiver to rebuild original file using any N + epsilon distinct valid packets without synchronized frame starts"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/luby_transform_fec_service.dart",
+                "test/unit/domain/luby_transform_fec_service_test.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_4_2_2",
+              "title": "Dynamic Frame Rate Throttling & Visual Modulation",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_4_2_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement high-speed canvas animation loop (5 to 15 FPS) with user-configurable frame intervals",
+                "Add automatic contrast enhancement (black/white edge sharpening, dynamic screen brightness override to 100%)"
+              ],
+              "required_artifacts": [
+                "lib/presentation/widgets/optical_animation_player.dart"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PHASE_4_3",
+          "name": "Optical Receiver Reassembly & State Machine",
+          "subphases": [
+            {
+              "id": "SUBPHASE_4_3_1",
+              "title": "Chunk Accumulator & Deduplication Engine",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_4_2_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Build asynchronous frame ingest buffer that identifies incoming Session ID markers, discards duplicates, and caches out-of-order frames",
+                "Implement memory-efficient sparse array storage to eliminate allocation overhead during scanning"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/chunk_accumulator_engine.dart",
+                "test/unit/domain/chunk_accumulator_engine_test.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_4_3_2",
+              "title": "Real-Time Stream Progress & Missing Block Matrix",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_4_3_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Build observable progress state stream: percentage completed, missing chunk indexes, transfer speed (KB/s), estimated time remaining",
+                "Provide visual missing-block heatmaps on screen to assist user in maintaining optimal camera distance"
+              ],
+              "required_artifacts": [
+                "lib/presentation/widgets/missing_block_matrix_heatmap.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_4_3_3",
+              "title": "Decompression, Verification & File System Deserialization",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_4_3_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Automate stream completion triggers: run whole-payload SHA-256 validation against original header signatures",
+                "Decompress payload bytes and safely write to sandboxed application storage with MIME-type based extension reconstruction"
+              ],
+              "required_artifacts": [
+                "lib/domain/services/airgap_file_writer_service.dart",
+                "test/unit/domain/airgap_file_writer_service_test.dart"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "STAGE_5",
+      "name": "Adaptive UI/UX Design, Tablet Layouts & System Performance",
+      "phases": [
+        {
+          "id": "PHASE_5_1",
+          "name": "Responsive Design System & Adaptive Views",
+          "subphases": [
+            {
+              "id": "SUBPHASE_5_1_1",
+              "title": "Design Tokens & Visual Theme Engine",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_4_3_3"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Establish cohesive Dark/Light themes with high-contrast UI modes, strictly typed typography, custom iconography",
+                "Enforce zero runtime UI thread jank through pure stateless/const widget structures"
+              ],
+              "required_artifacts": [
+                "lib/presentation/theme/zerosync_design_tokens.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_5_1_2",
+              "title": "Large Screen, Foldable & Tablet Split-Pane Layouts",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_5_1_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement LayoutBuilder / NavigationSplitView architecture: adapt seamlessly between single-column mobile and dual-pane tablet",
+                "Maintain persistent camera scanner preview on primary pane while rendering real-time history or inspection data on secondary pane"
+              ],
+              "required_artifacts": [
+                "lib/presentation/widgets/adaptive_split_pane_scaffold.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_5_1_3",
+              "title": "Haptic Feedback, Audio Chimes & Micro-Interactions",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_5_1_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Integrate platform-specific haptic feedback patterns using native vibrating actuators",
+                "Implement synthetic, low-latency audio chimes for successful batch scans with muting controls"
+              ],
+              "required_artifacts": [
+                "lib/presentation/services/feedback_haptics_service.dart"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PHASE_5_2",
+          "name": "Memory, Thermal & Battery Optimization",
+          "subphases": [
+            {
+              "id": "SUBPHASE_5_2_1",
+              "title": "Camera Sensor Throttle & Thermal Management",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_5_1_3"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Implement automated camera frame downsampling when device core temperatures rise",
+                "Build inactivity sleep timers that suspend image stream after 3 minutes of idle camera operation"
+              ],
+              "required_artifacts": [
+                "lib/presentation/services/thermal_throttle_manager.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_5_2_2",
+              "title": "Memory Leak Auditing & Garbage Collection Profiling",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_5_2_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Audit raw byte buffers, native image streams, and Dart typed-data allocations to eliminate object retention",
+                "Implement deterministic disposal routines for controllers, stream subscriptions, and native bindings"
+              ],
+              "required_artifacts": [
+                "lib/core/utils/disposal_auditor.dart"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PHASE_5_3",
+          "name": "Accessibility (a11y) & Localization (i18n)",
+          "subphases": [
+            {
+              "id": "SUBPHASE_5_3_1",
+              "title": "Screen Reader & Accessible Navigation Semantics",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_5_2_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Wrap custom scanner overlays, QR matrices, and animated transfer components with explicit Semantics widgets",
+                "Ensure full compliance with WCAG 2.1 AA contrast ratios across light and dark color schemes"
+              ],
+              "required_artifacts": [
+                "lib/presentation/widgets/accessible_qr_semantics.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_5_3_2",
+              "title": "Internationalization Architecture",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_5_3_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Scaffold .arb translation structures supporting multi-lingual UI (LTR and RTL languages)",
+                "Externalize all hardcoded strings into strongly-typed localizations"
+              ],
+              "required_artifacts": [
+                "lib/l10n/app_en.arb"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "STAGE_6",
+      "name": "End-to-End Optical Loopback Testing, Cryptographic Auditing & Release",
+      "phases": [
+        {
+          "id": "PHASE_6_1",
+          "name": "Automated Loopback & Optical Stress Testing",
+          "subphases": [
+            {
+              "id": "SUBPHASE_6_1_1",
+              "title": "Screen-to-Camera Optical Loopback Simulation",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_5_3_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Build integration test harness taking output frames from generator, feeding directly into scanner pipeline, verifying byte-for-byte fidelity across all data types"
+              ],
+              "required_artifacts": [
+                "test/integration/optical_loopback_integration_test.dart"
+              ]
+            },
+            {
+              "id": "SUBPHASE_6_1_2",
+              "title": "Packet-Drop, Noise & Blur Fault-Tolerance Testing",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_6_1_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Stress-test transfer engine with simulated noise: random chunk drop rates (10% - 40%), synthetic motion blur, angled perspective distortions",
+                "Verify Fountain/RaptorQ reassembly recovers complete payloads without data corruption"
+              ],
+              "required_artifacts": [
+                "test/integration/optical_fuzz_stress_test.dart"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PHASE_6_2",
+          "name": "Security Audits & Vulnerability Assessments",
+          "subphases": [
+            {
+              "id": "SUBPHASE_6_2_1",
+              "title": "Air-Gap Verification & Network Isolation Audit",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_6_1_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Audit compiled application manifests to verify absence of unnecessary networking or tracking permissions",
+                "Run static binary analysis verifying no dynamic network code injection vectors exist in dependencies"
+              ],
+              "required_artifacts": [
+                "contracts/AIR_GAP_COMPLIANCE_ATTESTATION.md"
+              ]
+            },
+            {
+              "id": "SUBPHASE_6_2_2",
+              "title": "Cryptographic Storage & Fuzz Testing",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_6_2_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Execute payload fuzzing on QR scanner parser with malformed strings, oversized byte sequences, invalid UTF-8",
+                "Verify key derivation, AES-256 database encryption, and secure memory wiping"
+              ],
+              "required_artifacts": [
+                "test/unit/core/cryptographic_vault_fuzz_test.dart"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PHASE_6_3",
+          "name": "Production Build Hardening & Artifact Generation",
+          "subphases": [
+            {
+              "id": "SUBPHASE_6_3_1",
+              "title": "ProGuard, R8 & Symbol Obfuscation",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_6_2_2"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Configure Android R8/ProGuard shrinking rules and iOS symbol stripping to minimize binary size while preserving ML Kit reflection boundaries"
+              ],
+              "required_artifacts": [
+                "android/app/proguard-rules.pro"
+              ]
+            },
+            {
+              "id": "SUBPHASE_6_3_2",
+              "title": "Automated Release Artifact Build",
+              "status": "PENDING",
+              "dependencies": ["SUBPHASE_6_3_1"],
+              "started_at": null,
+              "completed_at": null,
+              "commit_hash": null,
+              "verification_criteria": [
+                "Execute GitHub Actions production pipelines to build optimized, signed release artifacts: Universal APK, Split APKs, AAB, and iOS unsigned .ipa",
+                "Generate and publish SHA-256 checksum manifests alongside build artifacts for provenance verification"
+              ],
+              "required_artifacts": [
+                "contracts/PRODUCTION_RELEASE_MANIFEST.md"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

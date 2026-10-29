@@ -74,7 +74,8 @@ void main() {
     });
 
     test('Flags bit-flip corruptions during fromWireBytes', () {
-      final samplePayload = Uint8List.fromList(utf8.encode('Sensitive cryptographic key'));
+      final samplePayload =
+          Uint8List.fromList(utf8.encode('Sensitive cryptographic key'));
       final frames = chunker.chunkPayload(payload: samplePayload);
       final wire = frames.first.toWireBytes();
 
@@ -112,7 +113,8 @@ void main() {
     });
 
     test('Reassembles out-of-order received frames correctly', () {
-      final rawData = Uint8List.fromList(utf8.encode('Reordering resilience test for optical streaming'));
+      final rawData = Uint8List.fromList(
+          utf8.encode('Reordering resilience test for optical streaming'));
       final frames = chunker.chunkPayload(payload: rawData, mtuBytes: 20);
 
       // Reverse frame order to simulate jitter

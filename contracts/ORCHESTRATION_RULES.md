@@ -412,3 +412,4 @@ pwsh -File ./scripts/bootstrap-subphase.ps1 -Stage STAGE_1 -Phase PHASE_1_1 -Sub
 ```
 *Agent Prompt:*
 > "All verification checks have passed. Seal SUBPHASE_1_1_1, generate the atomic git commit, record the commit hash in .project_state.json, advance the active_pointer to the next dependent subphase, and display the project state dashboard."
+

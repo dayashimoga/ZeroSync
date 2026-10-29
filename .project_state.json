@@ -2,16 +2,16 @@
     "$schema":  "https://json-schema.org/draft/2020-12/schema",
     "project_name":  "AirDrop-QR / ZeroSync",
     "contract_version":  "2.0.0",
-    "last_updated":  "2026-10-29T13:31:03Z",
+    "last_updated":  "2026-10-29T13:36:59Z",
     "active_pointer":  {
                            "stage_id":  "STAGE_3",
-                           "phase_id":  "PHASE_3_1",
-                           "subphase_id":  "SUBPHASE_3_1_3"
+                           "phase_id":  "PHASE_3_2",
+                           "subphase_id":  "SUBPHASE_3_2_1"
                        },
     "metrics":  {
                     "total_subphases":  47,
-                    "completed_subphases":  19,
-                    "progress_percentage":  40.43,
+                    "completed_subphases":  20,
+                    "progress_percentage":  42.55,
                     "domain_test_coverage":  100.0
                 },
     "stages":  [
@@ -437,13 +437,13 @@
                                                             {
                                                                 "id":  "SUBPHASE_3_1_3",
                                                                 "title":  "Static Image \u0026 Gallery Decoder",
-                                                                "status":  "IN_PROGRESS",
+                                                                "status":  "COMPLETED",
                                                                 "dependencies":  [
                                                                                      "SUBPHASE_3_1_2"
                                                                                  ],
                                                                 "started_at":  "2026-10-29T13:31:03Z",
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
+                                                                "completed_at":  "2026-10-29T13:36:05Z",
+                                                                "commit_hash":  "fccc1e0f5102311cfde0aca7b00bc61e7e42b3de",
                                                                 "verification_criteria":  [
                                                                                               "Build native image picker integration with background isolate decoding for user-selected photos",
                                                                                               "Implement automated image pre-processing (contrast maximization, grayscaling, inverted QR code detection)"
@@ -461,11 +461,11 @@
                                                             {
                                                                 "id":  "SUBPHASE_3_2_1",
                                                                 "title":  "Malicious URL Parser \u0026 Domain Inspector",
-                                                                "status":  "PENDING",
+                                                                "status":  "IN_PROGRESS",
                                                                 "dependencies":  [
                                                                                      "SUBPHASE_3_1_3"
                                                                                  ],
-                                                                "started_at":  null,
+                                                                "started_at":  "2026-10-29T13:36:59Z",
                                                                 "completed_at":  null,
                                                                 "commit_hash":  null,
                                                                 "verification_criteria":  [

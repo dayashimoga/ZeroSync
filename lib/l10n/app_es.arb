@@ -1,0 +1,17 @@
+{
+  "@@locale": "es",
+  "appTitle": "ZeroSync AirDrop-QR",
+  "scannerTabTitle": "Escáner",
+  "vaultTabTitle": "Bóveda",
+  "transferTabTitle": "Transferencia ZeroSync",
+  "settingsTabTitle": "Ajustes",
+  "scannerAimingGuidance": "Alinee el código dentro de la retícula óptica",
+  "scannerSuspendedMessage": "Cámara suspendida por inactividad. Toque la pantalla para reanudar.",
+  "scanSuccessTitle": "Código Decodificado",
+  "batchScanCounter": "Elementos Capturados: {count}",
+  "streamTransferProgress": "Recibiendo transmisión: {percent}% ({current} de {total} fragmentos)",
+  "streamVerificationSuccess": "Verificación criptográfica exitosa. Coincidencia de integridad SHA-256.",
+  "securityThreatDetected": "¡URL maliciosa o amenaza de seguridad bloqueada!",
+  "offlineAirGapGuaranteed": "Cero permisos de red activos. Seguridad 100% aislada fuera de línea."
+}
+

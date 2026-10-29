@@ -1,0 +1,17 @@
+{
+  "@@locale": "ar",
+  "appTitle": "زيرو سينك AirDrop-QR",
+  "scannerTabTitle": "الماسح الضوئي",
+  "vaultTabTitle": "الخزنة",
+  "transferTabTitle": "نقل زيرو سينك",
+  "settingsTabTitle": "الإعدادات",
+  "scannerAimingGuidance": "قم بمحاذاة الرمز داخل إطار الشبكة البصرية",
+  "scannerSuspendedMessage": "تم إيقاف الكاميرا مؤقتًا بسبب الخمول. انقر على الشاشة للاستئناف.",
+  "scanSuccessTitle": "تم فك تشفير الرمز",
+  "batchScanCounter": "العناصر الملتقطة: {count}",
+  "streamTransferProgress": "جارٍ استقبال التدفق: {percent}٪ ({current} من {total} قطعة)",
+  "streamVerificationSuccess": "نجح التحقق الأمني من الملف. تطابقت سلامة SHA-256.",
+  "securityThreatDetected": "تم حظر رابط ضار أو تهديد أمني!",
+  "offlineAirGapGuaranteed": "أذونات الشبكة معطلة بالكامل. أمان معزول دون اتصال بنسبة 100٪."
+}
+

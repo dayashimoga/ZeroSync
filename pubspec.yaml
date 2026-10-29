@@ -10,6 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   # Presentation & Reactive State Architecture
   flutter_bloc: ^8.1.6
@@ -34,6 +36,7 @@ dev_dependencies:
   mocktail: ^1.0.4
 
 flutter:
+  generate: true
   uses-material-design: true
   assets:
     - assets/icons/

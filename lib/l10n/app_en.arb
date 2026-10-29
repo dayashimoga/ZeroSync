@@ -1,0 +1,72 @@
+{
+  "@@locale": "en",
+  "appTitle": "ZeroSync AirDrop-QR",
+  "@appTitle": {
+    "description": "Primary application title"
+  },
+  "scannerTabTitle": "Scanner",
+  "@scannerTabTitle": {
+    "description": "Navigation label for optical scanner"
+  },
+  "vaultTabTitle": "Vault",
+  "@vaultTabTitle": {
+    "description": "Navigation label for encrypted scan vault"
+  },
+  "transferTabTitle": "ZeroSync Transfer",
+  "@transferTabTitle": {
+    "description": "Navigation label for optical air-gap data transfer"
+  },
+  "settingsTabTitle": "Settings",
+  "@settingsTabTitle": {
+    "description": "Navigation label for app settings"
+  },
+  "scannerAimingGuidance": "Align QR or Barcode inside the optical reticle",
+  "@scannerAimingGuidance": {
+    "description": "User instruction for aiming camera"
+  },
+  "scannerSuspendedMessage": "Camera suspended due to inactivity. Tap screen to resume.",
+  "@scannerSuspendedMessage": {
+    "description": "Status message when thermal or idle suspension activates"
+  },
+  "scanSuccessTitle": "Code Decoded",
+  "@scanSuccessTitle": {
+    "description": "Header title upon successful scan"
+  },
+  "batchScanCounter": "Captured Items: {count}",
+  "@batchScanCounter": {
+    "description": "Item count badge in batch scanning mode",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "streamTransferProgress": "Receiving stream: {percent}% ({current} of {total} chunks)",
+  "@streamTransferProgress": {
+    "description": "Progress readout for Fountain stream reassembly",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "streamVerificationSuccess": "Cryptographic file verification successful. SHA-256 integrity matched.",
+  "@streamVerificationSuccess": {
+    "description": "Success message when decapsulated file checksum passes"
+  },
+  "securityThreatDetected": "Malicious URL or security threat blocked!",
+  "@securityThreatDetected": {
+    "description": "Warning message when malicious domain or tracker is identified"
+  },
+  "offlineAirGapGuaranteed": "Zero network permissions active. 100% offline air-gapped security.",
+  "@offlineAirGapGuaranteed": {
+    "description": "Security banner verifying network isolation"
+  }
+}
+

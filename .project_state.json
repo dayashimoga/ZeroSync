@@ -2,16 +2,16 @@
     "$schema":  "https://json-schema.org/draft/2020-12/schema",
     "project_name":  "AirDrop-QR / ZeroSync",
     "contract_version":  "2.0.0",
-    "last_updated":  "2026-10-29T13:23:40Z",
+    "last_updated":  "2026-10-29T13:31:03Z",
     "active_pointer":  {
                            "stage_id":  "STAGE_3",
                            "phase_id":  "PHASE_3_1",
-                           "subphase_id":  "SUBPHASE_3_1_2"
+                           "subphase_id":  "SUBPHASE_3_1_3"
                        },
     "metrics":  {
                     "total_subphases":  47,
-                    "completed_subphases":  18,
-                    "progress_percentage":  38.3,
+                    "completed_subphases":  19,
+                    "progress_percentage":  40.43,
                     "domain_test_coverage":  100.0
                 },
     "stages":  [
@@ -419,13 +419,13 @@
                                                             {
                                                                 "id":  "SUBPHASE_3_1_2",
                                                                 "title":  "Dual-Engine Optical Detection Integration",
-                                                                "status":  "IN_PROGRESS",
+                                                                "status":  "COMPLETED",
                                                                 "dependencies":  [
                                                                                      "SUBPHASE_3_1_1"
                                                                                  ],
                                                                 "started_at":  "2026-10-29T13:23:40Z",
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
+                                                                "completed_at":  "2026-10-29T13:30:20Z",
+                                                                "commit_hash":  "0f605d69d40195547104ae25146e485244f425f6",
                                                                 "verification_criteria":  [
                                                                                               "Integrate Google ML Kit Barcode Scanning (Android/iOS) and Apple Vision Framework pipelines",
                                                                                               "Build a continuous frame-buffer pipeline running at 60 FPS without dropping frames or triggering GC pauses"
@@ -437,11 +437,11 @@
                                                             {
                                                                 "id":  "SUBPHASE_3_1_3",
                                                                 "title":  "Static Image \u0026 Gallery Decoder",
-                                                                "status":  "PENDING",
+                                                                "status":  "IN_PROGRESS",
                                                                 "dependencies":  [
                                                                                      "SUBPHASE_3_1_2"
                                                                                  ],
-                                                                "started_at":  null,
+                                                                "started_at":  "2026-10-29T13:31:03Z",
                                                                 "completed_at":  null,
                                                                 "commit_hash":  null,
                                                                 "verification_criteria":  [

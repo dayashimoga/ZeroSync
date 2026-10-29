@@ -103,3 +103,4 @@ When assigned to a subphase:
 - **Dependency Issue:** Ensure `flutter pub get` has been run.
 - **Test Failure:** Run `flutter test test/path/to/specific_test.dart` to isolate failures.
 - **State Inconsistency:** Run `pwsh ./scripts/bootstrap-verify.ps1` to detect circular or unmet dependencies.
+

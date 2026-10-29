@@ -53,3 +53,4 @@ if (Test-Path $LcovPath) {
 
 Write-Host "[Git Hook] Pre-push verification passed successfully!`n" -ForegroundColor Green
 exit 0
+

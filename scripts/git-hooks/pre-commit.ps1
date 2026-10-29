@@ -70,3 +70,4 @@ Write-Host "  [OK] Air-gap zero-network security verified." -ForegroundColor Gre
 
 Write-Host "[Git Hook] Pre-commit gates passed successfully!`n" -ForegroundColor Green
 exit 0
+

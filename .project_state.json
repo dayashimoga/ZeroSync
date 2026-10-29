@@ -2,16 +2,16 @@
     "$schema":  "https://json-schema.org/draft/2020-12/schema",
     "project_name":  "AirDrop-QR / ZeroSync",
     "contract_version":  "2.0.0",
-    "last_updated":  "2026-10-29T15:06:37Z",
+    "last_updated":  "2026-10-29T15:14:38Z",
     "active_pointer":  {
                            "stage_id":  "STAGE_6",
                            "phase_id":  "PHASE_6_1",
-                           "subphase_id":  "SUBPHASE_6_1_1"
+                           "subphase_id":  "SUBPHASE_6_1_2"
                        },
     "metrics":  {
                     "total_subphases":  47,
-                    "completed_subphases":  41,
-                    "progress_percentage":  87.23,
+                    "completed_subphases":  42,
+                    "progress_percentage":  89.36,
                     "domain_test_coverage":  100.0
                 },
     "stages":  [
@@ -911,13 +911,13 @@
                                                             {
                                                                 "id":  "SUBPHASE_6_1_1",
                                                                 "title":  "Screen-to-Camera Optical Loopback Simulation",
-                                                                "status":  "IN_PROGRESS",
+                                                                "status":  "COMPLETED",
                                                                 "dependencies":  [
                                                                                      "SUBPHASE_5_3_2"
                                                                                  ],
                                                                 "started_at":  "2026-10-29T15:06:37Z",
-                                                                "completed_at":  null,
-                                                                "commit_hash":  null,
+                                                                "completed_at":  "2026-10-29T15:14:23Z",
+                                                                "commit_hash":  "10d3db80cbcf456f87b0c858d09d3a218b00f370",
                                                                 "verification_criteria":  [
                                                                                               "Build integration test harness taking output frames from generator, feeding directly into scanner pipeline, verifying byte-for-byte fidelity across all data types"
                                                                                           ],
@@ -928,11 +928,11 @@
                                                             {
                                                                 "id":  "SUBPHASE_6_1_2",
                                                                 "title":  "Packet-Drop, Noise \u0026 Blur Fault-Tolerance Testing",
-                                                                "status":  "PENDING",
+                                                                "status":  "IN_PROGRESS",
                                                                 "dependencies":  [
                                                                                      "SUBPHASE_6_1_1"
                                                                                  ],
-                                                                "started_at":  null,
+                                                                "started_at":  "2026-10-29T15:14:38Z",
                                                                 "completed_at":  null,
                                                                 "commit_hash":  null,
                                                                 "verification_criteria":  [

@@ -1,0 +1,3 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- ZeroSync Strict Air-Gap: Network permissions are permanently forbidden even in profile builds. -->
+</manifest>

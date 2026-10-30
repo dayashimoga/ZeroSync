@@ -3,6 +3,14 @@ allprojects {
         google()
         mavenCentral()
     }
+    extra.set("compileSdkVersion", 34)
+    extra.set("targetSdkVersion", 34)
+    extra.set("minSdkVersion", 21)
+    extra.set("flutter", mapOf(
+        "compileSdkVersion" to 34,
+        "targetSdkVersion" to 34,
+        "minSdkVersion" to 21
+    ))
 }
 
 val newBuildDir: Directory =

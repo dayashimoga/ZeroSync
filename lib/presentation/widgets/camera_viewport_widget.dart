@@ -329,8 +329,7 @@ class CameraViewportWidgetState extends State<CameraViewportWidget>
                           color: widget.config.laserColor,
                           boxShadow: [
                             BoxShadow(
-                              color: widget.config.laserColor
-                                  .withValues(alpha: 0.8),
+                              color: widget.config.laserColor.withAlpha(204),
                               blurRadius: 8.0,
                               spreadRadius: 1.5,
                             ),
@@ -474,7 +473,7 @@ class _ViewportOverlayPainter extends CustomPainter {
           RRect.fromRectAndRadius(scanWindow, const Radius.circular(16)));
 
     final Paint maskPaint = Paint()
-      ..color = Colors.black.withValues(alpha: 0.55)
+      ..color = const Color(0x8C000000)
       ..style = PaintingStyle.fill;
     canvas.drawPath(maskPath, maskPaint);
 

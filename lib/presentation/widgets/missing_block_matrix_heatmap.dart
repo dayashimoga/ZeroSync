@@ -187,85 +187,89 @@ class MissingBlockMatrixHeatmap extends StatelessWidget {
         ? '${(metrics.estimatedTimeRemaining!.inMilliseconds / 1000.0).toStringAsFixed(1)}s'
         : '--';
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.centerLeft,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              '${metrics.progressPercentage.toStringAsFixed(1)}%',
-              style: const TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'monospace',
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${metrics.progressPercentage.toStringAsFixed(1)}%',
+                  style: const TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'monospace',
+                  ),
+                ),
+                Text(
+                  '${metrics.receivedChunks} / ${metrics.totalChunks} Chunks',
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.grey.shade700,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              '${metrics.receivedChunks} / ${metrics.totalChunks} Chunks',
-              style: TextStyle(
-                fontSize: 12.0,
-                color: Colors.grey.shade700,
-              ),
+            Row(
+              children: [
+                // Speed Pill
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 4.0),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(8.0),
+                    border: Border.all(color: Colors.blue.shade200),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.speed,
+                          size: 14.0, color: Colors.blue.shade700),
+                      const SizedBox(width: 4.0),
+                      Text(
+                        '${metrics.transferSpeedKbps.toStringAsFixed(1)} KB/s',
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue.shade900,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8.0),
+                // ETA Pill
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 4.0),
+                  decoration: BoxDecoration(
+                    color: Colors.purple.shade50,
+                    borderRadius: BorderRadius.circular(8.0),
+                    border: Border.all(color: Colors.purple.shade200),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.timer_outlined,
+                          size: 14.0, color: Colors.purple.shade700),
+                      const SizedBox(width: 4.0),
+                      Text(
+                        'ETA: $etaStr',
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.purple.shade900,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-        Row(
-          children: [
-            // Speed Pill
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-              decoration: BoxDecoration(
-                color: Colors.blue.shade50,
-                borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(color: Colors.blue.shade200),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.speed, size: 14.0, color: Colors.blue.shade700),
-                  const SizedBox(width: 4.0),
-                  Text(
-                    '${metrics.transferSpeedKbps.toStringAsFixed(1)} KB/s',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue.shade900,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 8.0),
-            // ETA Pill
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-              decoration: BoxDecoration(
-                color: Colors.purple.shade50,
-                borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(color: Colors.purple.shade200),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.timer_outlined,
-                      size: 14.0, color: Colors.purple.shade700),
-                  const SizedBox(width: 4.0),
-                  Text(
-                    'ETA: $etaStr',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.purple.shade900,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
+        ));
   }
 
   Widget _buildGuidanceBanner(ThemeData theme) {

@@ -1,7 +1,7 @@
 # AirDrop-QR / ZeroSync
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![Tests](https://img.shields.io/badge/tests-413%20passed%20(100%25)-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/tests-414%20passed%20(100%25)-brightgreen.svg)]()
 [![Coverage](https://img.shields.io/badge/coverage-91.48%25-brightgreen.svg)]()
 [![Analysis](https://img.shields.io/badge/static%20analysis-0%20issues-brightgreen.svg)]()
 [![Security](https://img.shields.io/badge/air--gap-NIST%20SP%20800--53%20%2F%20EAL4%2B-blue.svg)]()
@@ -120,7 +120,7 @@ qrcode/
 │   ├── bootstrap-init.ps1     # Environment & Git hook initializer
 │   ├── bootstrap-subphase.ps1 # Atomic subphase execution engine
 │   └── bootstrap-verify.ps1   # 4-gate verification & progress tree dashboard
-└── test/                      # 413 unit, widget, and integration tests
+└── test/                      # 414 unit, widget, and integration tests
     ├── integration/           # Screen-to-camera optical loopback & fuzzing
     ├── unit/                  # Domain FEC, cryptography, serializer tests
     └── widget/                # UI accessibility, canvas, and layout tests
@@ -148,13 +148,13 @@ ZeroSync was developed under a **Strict Sequential State Machine** requiring 4 m
 
 1. **Gate 1: Required Artifact Integrity** — 100% of architectural source files verified.
 2. **Gate 2: Static Analysis** — `dart analyze --fatal-infos --fatal-warnings` passes with **0 warnings and 0 infos**.
-3. **Gate 3: Automated Test Suite** — **413 / 413 tests passing (100% pass rate)**.
+3. **Gate 3: Automated Test Suite** — **414 / 414 tests passing (100% pass rate)**.
 4. **Gate 4: Zero-Network Air-Gap Audit** — Automated grep check disallows any introduction of network permissions or remote communication packages.
 
 ### Current Metrics:
 - **Total Subphases:** 47 / 47 (100.0% Complete)
 - **Domain Test Coverage:** 91.48% (Threshold: $\ge 85.0\%$)
-- **Passing Test Suites:** 413 Automated Tests
+- **Passing Test Suites:** 414 Automated Tests
 - **Active Release Tag:** `v1.0.0` (Build `1.0.0+1`)
 
 ---

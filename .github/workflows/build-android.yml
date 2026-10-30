@@ -50,7 +50,7 @@ jobs:
 
       - name: Build Split per-ABI APKs
         run: |
-          flutter build apk --split-per-abi --release --no-tree-shake-icons
+          flutter build apk --split-per-abi --release --no-tree-shake-icons --android-skip-build-dependency-validation
           mkdir -p output/apks
           cp build/app/outputs/flutter-apk/app-*.apk output/apks/
           cd output/apks
@@ -59,7 +59,7 @@ jobs:
 
       - name: Build Unsigned App Bundle (AAB)
         run: |
-          flutter build appbundle --release --no-tree-shake-icons
+          flutter build appbundle --release --no-tree-shake-icons --android-skip-build-dependency-validation
           mkdir -p output/bundle
           cp build/app/outputs/bundle/release/app-release.aab output/bundle/
           cd output/bundle

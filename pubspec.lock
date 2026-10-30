@@ -670,10 +670,10 @@ packages:
     dependency: "direct main"
     description:
       name: sqflite_sqlcipher
-      sha256: "50d05fe0495ed96a85503d9850a49c0936502f44fdba96f403c97e4c9c7043e7"
+      sha256: "2370759ea8b15808d7f6bfe72d6608ee97f404fae5ad7889d8f3476a803a268c"
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.1"
+    version: "3.2.0"
   stack_trace:
     dependency: transitive
     description:

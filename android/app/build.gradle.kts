@@ -5,6 +5,10 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+flutter {
+    source = "../.."
+}
+
 android {
     namespace = "org.zerosync.airdrop_qr"
     compileSdk = flutter.compileSdkVersion
@@ -38,8 +42,4 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
-}
-
-flutter {
-    source = "../.."
 }

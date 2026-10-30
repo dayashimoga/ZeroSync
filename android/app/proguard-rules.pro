@@ -75,8 +75,15 @@
 -dontwarn java.nio.file.**
 -dontwarn org.brotli.**
 
-# --- 7. Don't Warn for Unused Transitive Stubs ---
+# --- 7. Don't Warn for Unused Transitive Stubs & Play Core ---
 -dontwarn okhttp3.**
 -dontwarn okio.**
 -dontwarn retrofit2.**
+-dontwarn com.google.android.play.**
+-dontwarn com.google.android.play.core.**
+-dontwarn com.google.android.play.core.splitcompat.**
+-dontwarn com.google.android.play.core.splitinstall.**
+-dontwarn com.google.android.play.core.tasks.**
+-dontwarn io.flutter.embedding.android.FlutterPlayStoreSplitApplication
+-dontwarn io.flutter.embedding.engine.deferredcomponents.**
 

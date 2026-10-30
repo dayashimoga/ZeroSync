@@ -281,19 +281,8 @@ class ZeroSyncTheme {
       brightness: colorScheme.brightness,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: scaffoldBg,
+      cardColor: cardBg,
       textTheme: baseTextTheme,
-      cardTheme: CardThemeData(
-        color: cardBg,
-        elevation: isOled || isHighContrast ? 0 : 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: ZeroSyncRadii.radiusMd,
-          side: isHighContrast
-              ? const BorderSide(color: ZeroSyncColors.amber, width: 2)
-              : isOled
-                  ? const BorderSide(color: Colors.white24, width: 1)
-                  : BorderSide.none,
-        ),
-      ),
       appBarTheme: AppBarTheme(
         backgroundColor: scaffoldBg,
         foregroundColor: textPrimary,

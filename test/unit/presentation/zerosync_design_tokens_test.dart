@@ -80,7 +80,7 @@ void main() {
       expect(theme.brightness, Brightness.light);
       expect(theme.colorScheme.primary, ZeroSyncColors.electricBlue);
       expect(theme.scaffoldBackgroundColor, ZeroSyncColors.lightBackground);
-      expect(theme.cardTheme.color, ZeroSyncColors.lightSurface);
+      expect(theme.cardColor, ZeroSyncColors.lightSurface);
       expect(theme.useMaterial3, isTrue);
     });
 
@@ -90,7 +90,7 @@ void main() {
       expect(theme.brightness, Brightness.dark);
       expect(theme.colorScheme.primary, ZeroSyncColors.cyan);
       expect(theme.scaffoldBackgroundColor, ZeroSyncColors.darkGraphite);
-      expect(theme.cardTheme.color, ZeroSyncColors.darkSlate);
+      expect(theme.cardColor, ZeroSyncColors.darkSlate);
     });
 
     test('Builds valid OLED Black theme with true pitch-black surfaces', () {
@@ -98,8 +98,7 @@ void main() {
 
       expect(theme.brightness, Brightness.dark);
       expect(theme.scaffoldBackgroundColor, ZeroSyncColors.trueBlack);
-      expect(theme.cardTheme.color, ZeroSyncColors.trueBlack);
-      expect(theme.cardTheme.elevation, equals(0));
+      expect(theme.cardColor, ZeroSyncColors.trueBlack);
     });
 
     test('Builds High-Contrast Amber theme with amber text on pure black', () {
@@ -109,12 +108,7 @@ void main() {
       expect(theme.brightness, Brightness.dark);
       expect(theme.colorScheme.primary, ZeroSyncColors.amber);
       expect(theme.scaffoldBackgroundColor, Colors.black);
-      expect(theme.cardTheme.color, Colors.black);
-      expect(theme.cardTheme.elevation, equals(0));
-
-      final border = theme.cardTheme.shape as RoundedRectangleBorder;
-      expect(border.side.color, ZeroSyncColors.amber);
-      expect(border.side.width, equals(2.0));
+      expect(theme.cardColor, Colors.black);
     });
 
     test('Direct getters expose same theme instances', () {

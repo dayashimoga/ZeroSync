@@ -91,7 +91,8 @@ class ScanRecord {
   }
 
   /// Deserializes a database row map into a [ScanRecord].
-  factory ScanRecord.fromMap(Map<String, dynamic> map, {List<String> tags = const <String>[]}) {
+  factory ScanRecord.fromMap(Map<String, dynamic> map,
+      {List<String> tags = const <String>[]}) {
     return ScanRecord(
       id: map['id'] as String,
       rawValue: map['raw_value'] as String,
@@ -228,7 +229,8 @@ abstract class EncryptedVaultDataSource {
   // --- Scan Record CRUD ---
   Future<ScanRecord> insertScan(ScanRecord scan);
   Future<ScanRecord?> getScanById(String id);
-  Future<List<ScanRecord>> getAllScans({bool favoritesOnly = false, int? limit, int? offset});
+  Future<List<ScanRecord>> getAllScans(
+      {bool favoritesOnly = false, int? limit, int? offset});
   Future<List<ScanRecord>> searchScans(String query);
   Future<List<ScanRecord>> getScansByTag(String tagId);
   Future<void> updateScan(ScanRecord scan);
@@ -262,14 +264,16 @@ class EncryptedVaultDataSourceImpl implements EncryptedVaultDataSource {
   }) : _secureStorage = secureStorage ??
             const FlutterSecureStorage(
               aOptions: AndroidOptions(encryptedSharedPreferences: true),
-              iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
+              iOptions:
+                  IOSOptions(accessibility: KeychainAccessibility.first_unlock),
             );
 
   @override
   bool get isOpen => _db != null && _db!.isOpen;
 
   @override
-  Future<void> initialize({String? customPassword, Database? injectedDb}) async {
+  Future<void> initialize(
+      {String? customPassword, Database? injectedDb}) async {
     if (_isInitialized && isOpen) return;
 
     if (injectedDb != null) {
@@ -595,7 +599,8 @@ class EncryptedVaultDataSourceImpl implements EncryptedVaultDataSource {
   Future<void> deleteTag(String tagId) async {
     _assertDbReady();
     await _db!.delete('tags', where: 'id = ?', whereArgs: <dynamic>[tagId]);
-    await _db!.delete('scan_tags', where: 'tag_id = ?', whereArgs: <dynamic>[tagId]);
+    await _db!
+        .delete('scan_tags', where: 'tag_id = ?', whereArgs: <dynamic>[tagId]);
   }
 
   @override
@@ -624,7 +629,8 @@ class EncryptedVaultDataSourceImpl implements EncryptedVaultDataSource {
 
   void _assertDbReady() {
     if (_db == null || !_db!.isOpen) {
-      throw StateError('EncryptedVaultDataSource is not initialized or database is closed');
+      throw StateError(
+          'EncryptedVaultDataSource is not initialized or database is closed');
     }
   }
 
@@ -637,4 +643,3 @@ class EncryptedVaultDataSourceImpl implements EncryptedVaultDataSource {
     _isInitialized = false;
   }
 }
-

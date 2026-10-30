@@ -29,7 +29,8 @@ void main() {
   });
 
   group('Wi-Fi Native Connection Intent Dispatcher', () {
-    test('Dispatches valid Wi-Fi connection payload to platform channel', () async {
+    test('Dispatches valid Wi-Fi connection payload to platform channel',
+        () async {
       String? invokedMethod;
       dynamic invokedArgs;
 
@@ -60,7 +61,9 @@ void main() {
       expect(map['isHidden'], isTrue);
     });
 
-    test('Fails immediately when SSID is empty without invoking platform channel', () async {
+    test(
+        'Fails immediately when SSID is empty without invoking platform channel',
+        () async {
       bool wasInvoked = false;
       final dispatcher = NativeIntentDispatcher(
         invoker: (method, [args]) async {
@@ -81,24 +84,27 @@ void main() {
       expect(wasInvoked, isFalse);
     });
 
-    test('Handles native channel rejection or platform exceptions gracefully', () async {
+    test('Handles native channel rejection or platform exceptions gracefully',
+        () async {
       final dispatcherReject = NativeIntentDispatcher(
         invoker: (method, [args]) async => false,
       );
 
       final resultReject = await dispatcherReject.promptWifiConnection(
-        const WifiConfigPayload(ssid: 'Office-LAN', securityType: WifiSecurityType.wpa),
+        const WifiConfigPayload(
+            ssid: 'Office-LAN', securityType: WifiSecurityType.wpa),
       );
       expect(resultReject.isSuccess, isFalse);
       expect(resultReject.errorMessage, contains('rejected or cancelled'));
 
       final dispatcherThrow = NativeIntentDispatcher(
-        invoker: (method, [args]) async =>
-            throw PlatformException(code: 'WIFI_UNAVAILABLE', message: 'Radio off'),
+        invoker: (method, [args]) async => throw PlatformException(
+            code: 'WIFI_UNAVAILABLE', message: 'Radio off'),
       );
 
       final resultThrow = await dispatcherThrow.promptWifiConnection(
-        const WifiConfigPayload(ssid: 'Office-LAN', securityType: WifiSecurityType.wpa),
+        const WifiConfigPayload(
+            ssid: 'Office-LAN', securityType: WifiSecurityType.wpa),
       );
       expect(resultThrow.isSuccess, isFalse);
       expect(resultThrow.errorMessage, contains('Radio off'));
@@ -162,14 +168,15 @@ void main() {
 
       final result = await dispatcher.saveContact(emptyContact);
       expect(result.isSuccess, isFalse);
-      expect(result.errorMessage, contains('non-empty formattedName or givenName'));
+      expect(result.errorMessage,
+          contains('non-empty formattedName or givenName'));
       expect(wasInvoked, isFalse);
     });
 
     test('Captures contact saving platform exception cleanly', () async {
       final dispatcher = NativeIntentDispatcher(
-        invoker: (method, [args]) async =>
-            throw PlatformException(code: 'PERMISSION_DENIED', message: 'Contacts access denied'),
+        invoker: (method, [args]) async => throw PlatformException(
+            code: 'PERMISSION_DENIED', message: 'Contacts access denied'),
       );
 
       final result = await dispatcher.saveContact(
@@ -181,7 +188,8 @@ void main() {
   });
 
   group('Native Calendar Event Injection Dispatcher', () {
-    test('Dispatches valid calendar event payload with UTC epoch bounds', () async {
+    test('Dispatches valid calendar event payload with UTC epoch bounds',
+        () async {
       String? invokedMethod;
       dynamic invokedArgs;
 
@@ -245,7 +253,8 @@ void main() {
 
       final result = await dispatcher.injectCalendarEvent(invalidEvent);
       expect(result.isSuccess, isFalse);
-      expect(result.errorMessage, contains('end time cannot precede start time'));
+      expect(
+          result.errorMessage, contains('end time cannot precede start time'));
     });
   });
 
@@ -269,7 +278,8 @@ void main() {
         uncertainty: 2.0,
       );
 
-      final result = await dispatcher.launchGeoLocation(geo, label: 'Googleplex HQ');
+      final result =
+          await dispatcher.launchGeoLocation(geo, label: 'Googleplex HQ');
 
       expect(result.isSuccess, isTrue);
       expect(invokedMethod, equals('openGeoLocation'));
@@ -321,7 +331,8 @@ void main() {
       expect(map['requireInAppBrowser'], isTrue);
     });
 
-    test('Rejects dangerous or non-HTTP schemes (javascript, file, tel)', () async {
+    test('Rejects dangerous or non-HTTP schemes (javascript, file, tel)',
+        () async {
       bool wasInvoked = false;
       final dispatcher = NativeIntentDispatcher(
         invoker: (method, [args]) async {
@@ -332,7 +343,8 @@ void main() {
 
       final resultJs = await dispatcher.openSanitizedUrl('javascript:alert(1)');
       expect(resultJs.isSuccess, isFalse);
-      expect(resultJs.errorMessage, contains('Only HTTP/HTTPS URLs are permitted'));
+      expect(resultJs.errorMessage,
+          contains('Only HTTP/HTTPS URLs are permitted'));
 
       final resultFile = await dispatcher.openSanitizedUrl('file:///etc/hosts');
       expect(resultFile.isSuccess, isFalse);

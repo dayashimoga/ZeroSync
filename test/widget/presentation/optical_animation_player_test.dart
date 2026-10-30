@@ -20,7 +20,8 @@ class MockBrightnessManager implements ScreenBrightnessManager {
 
 void main() {
   group('OpticalAnimationPlayer Widget & Animation Loop Specs', () {
-    testWidgets('Renders initial frame, counter, and telemetry accurately', (tester) async {
+    testWidgets('Renders initial frame, counter, and telemetry accurately',
+        (tester) async {
       final frames = ['PAYLOAD_CHUNK_1', 'PAYLOAD_CHUNK_2', 'PAYLOAD_CHUNK_3'];
       final mockBrightness = MockBrightnessManager();
 
@@ -54,7 +55,8 @@ void main() {
       expect(find.text('Frame 1 / 3'), findsOneWidget);
     });
 
-    testWidgets('Play / Pause toggle pauses and resumes the animation loop', (tester) async {
+    testWidgets('Play / Pause toggle pauses and resumes the animation loop',
+        (tester) async {
       final frames = ['A', 'B', 'C'];
 
       await tester.pumpWidget(
@@ -86,7 +88,8 @@ void main() {
       expect(find.text('Frame 2 / 3'), findsOneWidget);
     });
 
-    testWidgets('Manual step forward and backward controls navigate frames', (tester) async {
+    testWidgets('Manual step forward and backward controls navigate frames',
+        (tester) async {
       final frames = ['FRAME_1', 'FRAME_2', 'FRAME_3'];
       int? lastFrameIndex;
 
@@ -118,7 +121,8 @@ void main() {
       expect(lastFrameIndex, equals(1));
     });
 
-    testWidgets('Contrast inversion toggle switches visual contrast', (tester) async {
+    testWidgets('Contrast inversion toggle switches visual contrast',
+        (tester) async {
       final frames = ['DATA_PAYLOAD'];
 
       await tester.pumpWidget(
@@ -140,7 +144,8 @@ void main() {
       await tester.pump();
     });
 
-    testWidgets('Restores screen brightness on widget disposal', (tester) async {
+    testWidgets('Restores screen brightness on widget disposal',
+        (tester) async {
       final mockBrightness = MockBrightnessManager();
 
       await tester.pumpWidget(
@@ -158,11 +163,14 @@ void main() {
       expect(mockBrightness.restoreCallCount, equals(0));
 
       // Replace widget tree to trigger disposal
-      await tester.pumpWidget(const MaterialApp(home: Scaffold(body: SizedBox())));
+      await tester
+          .pumpWidget(const MaterialApp(home: Scaffold(body: SizedBox())));
       expect(mockBrightness.restoreCallCount, equals(1));
     });
 
-    testWidgets('OpticalAnimationPlayer.fromBytes converts byte frames to strings', (tester) async {
+    testWidgets(
+        'OpticalAnimationPlayer.fromBytes converts byte frames to strings',
+        (tester) async {
       final byteFrames = [
         Uint8List.fromList([65, 66, 67]), // "ABC"
         Uint8List.fromList([68, 69, 70]), // "DEF"
@@ -199,4 +207,3 @@ void main() {
     });
   });
 }
-

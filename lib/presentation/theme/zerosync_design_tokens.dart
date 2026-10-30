@@ -73,7 +73,8 @@ class ZeroSyncRadii {
   static const BorderRadius radiusSm = BorderRadius.all(Radius.circular(sm));
   static const BorderRadius radiusMd = BorderRadius.all(Radius.circular(md));
   static const BorderRadius radiusLg = BorderRadius.all(Radius.circular(lg));
-  static const BorderRadius radiusFull = BorderRadius.all(Radius.circular(full));
+  static const BorderRadius radiusFull =
+      BorderRadius.all(Radius.circular(full));
 }
 
 /// Optical HUD typography scales optimized for legibility at viewing distance.
@@ -265,8 +266,10 @@ class ZeroSyncTheme {
     bool isHighContrast = false,
   }) {
     final baseTextTheme = TextTheme(
-      displayLarge: ZeroSyncTypography.displayLarge.copyWith(color: textPrimary),
-      headlineMedium: ZeroSyncTypography.headlineMedium.copyWith(color: textPrimary),
+      displayLarge:
+          ZeroSyncTypography.displayLarge.copyWith(color: textPrimary),
+      headlineMedium:
+          ZeroSyncTypography.headlineMedium.copyWith(color: textPrimary),
       titleMedium: ZeroSyncTypography.titleMedium.copyWith(color: textPrimary),
       bodyLarge: ZeroSyncTypography.bodyLarge.copyWith(color: textPrimary),
       bodyMedium: ZeroSyncTypography.bodyMedium.copyWith(color: textSecondary),
@@ -301,7 +304,8 @@ class ZeroSyncTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: colorScheme.primary,
           foregroundColor: colorScheme.onPrimary,
-          shape: const RoundedRectangleBorder(borderRadius: ZeroSyncRadii.radiusSm),
+          shape: const RoundedRectangleBorder(
+              borderRadius: ZeroSyncRadii.radiusSm),
           padding: const EdgeInsets.symmetric(
             horizontal: ZeroSyncSpacing.lg,
             vertical: ZeroSyncSpacing.md,

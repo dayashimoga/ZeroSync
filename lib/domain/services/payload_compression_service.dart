@@ -217,7 +217,8 @@ class PayloadCompressionService {
       if (algo == CompressionAlgorithm.none) continue;
       try {
         final result = compress(payload, algorithm: algo);
-        if (bestResult == null || result.compressedSize < bestResult.compressedSize) {
+        if (bestResult == null ||
+            result.compressedSize < bestResult.compressedSize) {
           bestResult = result;
         }
       } catch (_) {
@@ -229,7 +230,8 @@ class PayloadCompressionService {
     // Evaluate savings ratio: 1.0 - (compressed / original)
     if (bestResult != null) {
       final savings = 1.0 - bestResult.compressionRatio;
-      if (savings >= minSavingsRatio && bestResult.compressedSize < payload.length) {
+      if (savings >= minSavingsRatio &&
+          bestResult.compressedSize < payload.length) {
         return bestResult;
       }
     }

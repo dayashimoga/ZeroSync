@@ -137,7 +137,9 @@ void main() {
       );
     });
 
-    test('Throws FormatException when deserializing buffer shorter than 13 bytes', () {
+    test(
+        'Throws FormatException when deserializing buffer shorter than 13 bytes',
+        () {
       expect(
         () => PackedTransportHeader.fromBytes(Uint8List(12)),
         throwsA(isA<FormatException>()),
@@ -189,7 +191,8 @@ void main() {
       wireBytes[14] ^= 0xFF;
 
       expect(
-        () => PackedTransportFrame.fromWireBytes(wireBytes, verifyChecksum: true),
+        () =>
+            PackedTransportFrame.fromWireBytes(wireBytes, verifyChecksum: true),
         throwsA(isA<FormatException>()),
       );
 
@@ -229,7 +232,9 @@ void main() {
       expect(unpacked, equals(payload));
     });
 
-    test('Slices multi-frame payload and guarantees each wire frame <= 450 bytes', () {
+    test(
+        'Slices multi-frame payload and guarantees each wire frame <= 450 bytes',
+        () {
       final payload = Uint8List(1200);
       for (var i = 0; i < payload.length; i++) {
         payload[i] = (i * 3) % 256;
@@ -311,7 +316,8 @@ void main() {
       );
     });
 
-    test('Throws ArgumentError when unpacking frames from different sessions', () {
+    test('Throws ArgumentError when unpacking frames from different sessions',
+        () {
       final frames = PackedTransportFrame.packPayload(
         rawPayload: Uint8List(500),
         sessionId: 100,

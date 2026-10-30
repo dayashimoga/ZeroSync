@@ -73,7 +73,9 @@ void main() {
     // PART 1: SINGLE-CODE MULTI-TYPE OPTICAL LOOPBACK
     // =========================================================================
 
-    test('Loopback Type 1: vCard 4.0 Contact Serialization -> QR Matrix -> Deserialization', () {
+    test(
+        'Loopback Type 1: vCard 4.0 Contact Serialization -> QR Matrix -> Deserialization',
+        () {
       const originalContact = VCardPayload(
         formattedName: 'Dr. Satoshi Nakamoto, PhD',
         familyName: 'Nakamoto',
@@ -92,7 +94,8 @@ void main() {
       );
 
       // 1. Generate optical wire string
-      final String wireString = vcardSerializer.serializeVCard4(originalContact);
+      final String wireString =
+          vcardSerializer.serializeVCard4(originalContact);
       expect(wireString, contains('BEGIN:VCARD'));
       expect(wireString, contains('VERSION:4.0'));
 
@@ -112,8 +115,10 @@ void main() {
       expect(restored.givenName, equals(originalContact.givenName));
       expect(restored.organization, equals(originalContact.organization));
       expect(restored.jobTitle, equals(originalContact.jobTitle));
-      expect(restored.emails.first.address, equals(originalContact.emails.first.address));
-      expect(restored.phones.first.number, equals(originalContact.phones.first.number));
+      expect(restored.emails.first.address,
+          equals(originalContact.emails.first.address));
+      expect(restored.phones.first.number,
+          equals(originalContact.phones.first.number));
     });
 
     test('Loopback Type 2: Wi-Fi WPA2 Network Configuration Loopback', () {
@@ -169,7 +174,8 @@ void main() {
         end: endTime,
       );
 
-      final String wireString = infraSerializer.serializeCalendar(originalEvent);
+      final String wireString =
+          infraSerializer.serializeCalendar(originalEvent);
       final wireBytes = Uint8List.fromList(utf8.encode(wireString));
       final matrix = matrixGenerator.generateMatrix(payload: wireBytes);
       expect(matrix.size, greaterThan(0));
@@ -223,8 +229,11 @@ void main() {
       expect(restored.label, equals(originalBtc.label));
     });
 
-    test('Loopback Type 7: Malicious URL Ingestion & Privacy Sanitization Loopback', () {
-      const rawUrl = 'https://zerosync.example.org/download?fbclid=12345&utm_source=ad&token=secret';
+    test(
+        'Loopback Type 7: Malicious URL Ingestion & Privacy Sanitization Loopback',
+        () {
+      const rawUrl =
+          'https://zerosync.example.org/download?fbclid=12345&utm_source=ad&token=secret';
       final wireBytes = Uint8List.fromList(utf8.encode(rawUrl));
 
       final matrix = matrixGenerator.generateMatrix(payload: wireBytes);
@@ -245,7 +254,8 @@ void main() {
       final jsonObject = <String, dynamic>{
         'device_id': 'ZERO-AIR-2026',
         'key_fingerprint': 'E4A9F200C9B3A1',
-        'entropy_bytes': base64Encode(List<int>.generate(32, (i) => i * 7 % 256)),
+        'entropy_bytes':
+            base64Encode(List<int>.generate(32, (i) => i * 7 % 256)),
       };
       final rawJson = jsonEncode(jsonObject);
       final wireBytes = Uint8List.fromList(utf8.encode(rawJson));
@@ -262,7 +272,9 @@ void main() {
     // PART 2: HIGH-SPEED OPTICAL FOUNTAIN STREAM LOOPBACK (Luby Transform)
     // =========================================================================
 
-    test('Full Visual ZeroSync Fountain Stream Loopback with 30% Optical Drop Simulation', () async {
+    test(
+        'Full Visual ZeroSync Fountain Stream Loopback with 30% Optical Drop Simulation',
+        () async {
       final disposalBag = DeterministicDisposalBag(tag: 'FountainLoopbackTest');
 
       // 1. Generate 2.4 KB realistic payload (e.g., encrypted certificate archive)
@@ -283,7 +295,8 @@ void main() {
 
       // 3. Generate Fountain Droplets (symbol size = 160 bytes)
       const int symbolSize = 160;
-      final int totalSourceBlocks = (compressedEnvelope.length / symbolSize).ceil();
+      final int totalSourceBlocks =
+          (compressedEnvelope.length / symbolSize).ceil();
       final droplets = fecService.generateNDroplets(
         compressedEnvelope,
         totalSourceBlocks * 3, // Generate 3x rateless fountain overhead
@@ -357,7 +370,8 @@ void main() {
       );
 
       // 9. Byte-for-byte fidelity with original input payload!
-      final writtenBytes = await storageAdapter.readBinaryFile(fileResult.filePath);
+      final writtenBytes =
+          await storageAdapter.readBinaryFile(fileResult.filePath);
       expect(writtenBytes, equals(rawFileBytes));
 
       // 10. Verify Whole-File SHA-256 Checksum Matching

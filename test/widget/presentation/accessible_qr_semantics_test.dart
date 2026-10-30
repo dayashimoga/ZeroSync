@@ -5,7 +5,9 @@ import 'package:airdrop_qr/presentation/widgets/accessible_qr_semantics.dart';
 
 void main() {
   group('WcagContrastRatio Specs', () {
-    test('Calculates mathematically sound relative luminance and contrast ratios', () {
+    test(
+        'Calculates mathematically sound relative luminance and contrast ratios',
+        () {
       const black = Colors.black;
       const white = Colors.white;
 
@@ -57,7 +59,9 @@ void main() {
   });
 
   group('AccessibleQrCodeSemantics Specs', () {
-    testWidgets('Exposes full descriptive semantics and obscures sensitive values', (tester) async {
+    testWidgets(
+        'Exposes full descriptive semantics and obscures sensitive values',
+        (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -84,25 +88,30 @@ void main() {
 
       // Verify Semantics properties
       final Semantics semantics = tester.widget<Semantics>(
-        find.ancestor(
-          of: find.byKey(const ValueKey('QrChildWidget')),
-          matching: find.byType(Semantics),
-        ).first,
+        find
+            .ancestor(
+              of: find.byKey(const ValueKey('QrChildWidget')),
+              matching: find.byType(Semantics),
+            )
+            .first,
       );
 
       expect(semantics.properties.image, isTrue);
       expect(semantics.properties.readOnly, isTrue);
       expect(
         semantics.properties.label,
-        contains('Wi-Fi Network QR Code, Type: Wi-Fi Configuration, Error Correction: High (30%)'),
+        contains(
+            'Wi-Fi Network QR Code, Type: Wi-Fi Configuration, Error Correction: High (30%)'),
       );
       // Obscured cryptographic payload assertion
-      expect(semantics.properties.value, equals('Obscured cryptographic credential'));
+      expect(semantics.properties.value,
+          equals('Obscured cryptographic credential'));
     });
   });
 
   group('AccessibleScannerViewportSemantics Specs', () {
-    testWidgets('Announces scanner live state, aiming guidance, and item count', (tester) async {
+    testWidgets('Announces scanner live state, aiming guidance, and item count',
+        (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -121,21 +130,25 @@ void main() {
       );
 
       final Semantics semantics = tester.widget<Semantics>(
-        find.ancestor(
-          of: find.byKey(const ValueKey('ViewportChild')),
-          matching: find.byType(Semantics),
-        ).first,
+        find
+            .ancestor(
+              of: find.byKey(const ValueKey('ViewportChild')),
+              matching: find.byType(Semantics),
+            )
+            .first,
       );
 
       expect(semantics.properties.liveRegion, isTrue);
       expect(semantics.properties.label, contains('Camera scanner active'));
-      expect(semantics.properties.label, contains('Hold steady 8 inches away.'));
+      expect(
+          semantics.properties.label, contains('Hold steady 8 inches away.'));
       expect(semantics.properties.label, contains('(Items captured: 5)'));
     });
   });
 
   group('AccessibleOpticalStreamSemantics Specs', () {
-    testWidgets('Announces transfer percentage progress and completion state', (tester) async {
+    testWidgets('Announces transfer percentage progress and completion state',
+        (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -155,15 +168,18 @@ void main() {
       );
 
       final Semantics inProgressSemantics = tester.widget<Semantics>(
-        find.ancestor(
-          of: find.byKey(const ValueKey('StreamChild')),
-          matching: find.byType(Semantics),
-        ).first,
+        find
+            .ancestor(
+              of: find.byKey(const ValueKey('StreamChild')),
+              matching: find.byType(Semantics),
+            )
+            .first,
       );
 
       expect(inProgressSemantics.properties.liveRegion, isTrue);
       expect(inProgressSemantics.properties.label, contains('45% complete'));
-      expect(inProgressSemantics.properties.label, contains('Frame 45 of 100 at 12 FPS'));
+      expect(inProgressSemantics.properties.label,
+          contains('Frame 45 of 100 at 12 FPS'));
       expect(inProgressSemantics.properties.value, equals('45%'));
 
       // Test completion state
@@ -187,14 +203,16 @@ void main() {
       );
 
       final Semantics completedSemantics = tester.widget<Semantics>(
-        find.ancestor(
-          of: find.byKey(const ValueKey('StreamChildCompleted')),
-          matching: find.byType(Semantics),
-        ).first,
+        find
+            .ancestor(
+              of: find.byKey(const ValueKey('StreamChildCompleted')),
+              matching: find.byType(Semantics),
+            )
+            .first,
       );
 
-      expect(completedSemantics.properties.label, contains('Optical transfer complete'));
+      expect(completedSemantics.properties.label,
+          contains('Optical transfer complete'));
     });
   });
 }
-

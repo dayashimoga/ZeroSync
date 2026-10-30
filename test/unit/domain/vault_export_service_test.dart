@@ -61,15 +61,19 @@ void main() {
   });
 
   group('VaultSearchFilter Multi-Attribute Filtering Tests', () {
-    test('Filters by substring search across rawValue, title, notes, and tags', () {
+    test('Filters by substring search across rawValue, title, notes, and tags',
+        () {
       const filterValue = VaultSearchFilter(searchQuery: 'flutter.dev');
-      expect(exportService.filter(sampleRecords, filterValue).length, equals(1));
+      expect(
+          exportService.filter(sampleRecords, filterValue).length, equals(1));
 
       const filterTitle = VaultSearchFilter(searchQuery: 'router');
-      expect(exportService.filter(sampleRecords, filterTitle).length, equals(1));
+      expect(
+          exportService.filter(sampleRecords, filterTitle).length, equals(1));
 
       const filterNotes = VaultSearchFilter(searchQuery: 'drive-by');
-      expect(exportService.filter(sampleRecords, filterNotes).length, equals(1));
+      expect(
+          exportService.filter(sampleRecords, filterNotes).length, equals(1));
 
       const filterTag = VaultSearchFilter(searchQuery: 'network');
       expect(exportService.filter(sampleRecords, filterTag).length, equals(2));
@@ -124,7 +128,8 @@ void main() {
 
   group('JSON Batch Export Pipeline', () {
     test('Generates valid conforming JSON array with base64 bytes', () {
-      final jsonOutput = exportService.exportToJson(sampleRecords, pretty: true);
+      final jsonOutput =
+          exportService.exportToJson(sampleRecords, pretty: true);
 
       expect(jsonOutput, isNotEmpty);
       final decoded = jsonDecode(jsonOutput) as List<dynamic>;
@@ -138,7 +143,8 @@ void main() {
   });
 
   group('CSV Batch Export Pipeline (RFC 4180)', () {
-    test('Generates conforming CSV table with escaping for quotes and commas', () {
+    test('Generates conforming CSV table with escaping for quotes and commas',
+        () {
       final trickyRecords = [
         ScanRecord.create(
           rawValue: 'Field with, comma and "quotes" and \n newline',
@@ -150,7 +156,10 @@ void main() {
       ];
 
       final csv = exportService.exportToCsv(trickyRecords);
-      expect(csv, contains('ID,Raw Value,Format,Content Type,Created At,Updated At,Favorite,Title,Notes,Threat Severity,Tags'));
+      expect(
+          csv,
+          contains(
+              'ID,Raw Value,Format,Content Type,Created At,Updated At,Favorite,Title,Notes,Threat Severity,Tags'));
       // Escaped quotes are represented as ""
       expect(csv, contains('""quotes""'));
       expect(csv, contains('""Chars""'));
@@ -171,7 +180,9 @@ void main() {
   });
 
   group('High-Level exportBatch Execution', () {
-    test('Applies filter and formats output with metadata and generated file name', () {
+    test(
+        'Applies filter and formats output with metadata and generated file name',
+        () {
       final batchResult = exportService.exportBatch(
         sampleRecords,
         format: VaultExportFormat.json,

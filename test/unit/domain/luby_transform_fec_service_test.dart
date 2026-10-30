@@ -46,7 +46,8 @@ void main() {
       expect(soliton.sampleIndices(1, prng), equals([0]));
     });
 
-    test('K > 1 samples degree in range [1, K] and distinct sorted indices', () {
+    test('K > 1 samples degree in range [1, K] and distinct sorted indices',
+        () {
       final soliton = RobustSolitonDistribution(10);
       final prng = DeterministicPrng(100);
 
@@ -70,7 +71,9 @@ void main() {
   });
 
   group('FountainDroplet Wire Serialization Specs', () {
-    test('Serializes to 12-byte header + data and reconstructs identical droplet', () {
+    test(
+        'Serializes to 12-byte header + data and reconstructs identical droplet',
+        () {
       final data = Uint8List.fromList([10, 20, 30, 40]);
       final droplet = FountainDroplet(
         seed: 777,
@@ -123,7 +126,8 @@ void main() {
       expect(blocks[1], equals(Uint8List.fromList([4, 5, 0]))); // zero padded
     });
 
-    test('Single-block payload (K=1) decodes immediately on the first droplet', () {
+    test('Single-block payload (K=1) decodes immediately on the first droplet',
+        () {
       final payload = Uint8List.fromList('ZeroSync Air-Gap Fountain'.codeUnits);
       final droplets = service.generateNDroplets(payload, 1, symbolSize: 100);
 
@@ -157,7 +161,8 @@ void main() {
     });
 
     test('Rebuilds successfully when droplets arrive out of order', () {
-      const text = 'CONFIDENTIAL_KEY_RATELOCK_LUBY_TRANSFORM_STREAMING_TEST_VECTOR';
+      const text =
+          'CONFIDENTIAL_KEY_RATELOCK_LUBY_TRANSFORM_STREAMING_TEST_VECTOR';
       final payload = Uint8List.fromList(text.codeUnits);
 
       final droplets = service.generateNDroplets(
@@ -175,7 +180,9 @@ void main() {
       expect(restored, equals(payload));
     });
 
-    test('Packet Drop Simulation: Recovers payload when 50% of frames are erased', () {
+    test(
+        'Packet Drop Simulation: Recovers payload when 50% of frames are erased',
+        () {
       final payload = Uint8List(250);
       for (var i = 0; i < payload.length; i++) {
         payload[i] = i % 256;
@@ -197,14 +204,17 @@ void main() {
         }
       }
 
-      expect(receivedDroplets.length, equals(25)); // 25 droplets received for 10 source blocks
+      expect(receivedDroplets.length,
+          equals(25)); // 25 droplets received for 10 source blocks
 
       final restored = service.decodeDroplets(receivedDroplets);
       expect(restored, equals(payload));
     });
 
-    test('Incremental decoding tracks progress and detects redundant droplets', () {
-      final payload = Uint8List.fromList('STREAMING_PROGRESS_OBSERVER'.codeUnits);
+    test('Incremental decoding tracks progress and detects redundant droplets',
+        () {
+      final payload =
+          Uint8List.fromList('STREAMING_PROGRESS_OBSERVER'.codeUnits);
       final droplets = service.generateNDroplets(
         payload,
         15,

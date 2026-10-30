@@ -22,7 +22,9 @@ void main() {
       manager.dispose();
     });
 
-    test('Initializes with nominal thermal state and 3-minute inactivity timeout', () {
+    test(
+        'Initializes with nominal thermal state and 3-minute inactivity timeout',
+        () {
       expect(manager.thermalState, equals(DeviceThermalState.nominal));
       expect(manager.inactivityTimeout, equals(const Duration(minutes: 3)));
       expect(manager.isSuspendedDueToInactivity, isFalse);
@@ -32,7 +34,8 @@ void main() {
       expect(manager.activePolicy.downsampleFactor, equals(1));
     });
 
-    test('Maps core temperatures to appropriate thermal states and policies', () {
+    test('Maps core temperatures to appropriate thermal states and policies',
+        () {
       // 36°C -> Nominal
       manager.updateTemperature(36.0);
       expect(manager.thermalState, equals(DeviceThermalState.nominal));
@@ -64,7 +67,8 @@ void main() {
       // In nominal state, frames at 20ms intervals all pass
       expect(manager.shouldProcessFrame(frameTimestamp: baseTime), isTrue);
       expect(
-        manager.shouldProcessFrame(frameTimestamp: baseTime.add(const Duration(milliseconds: 20))),
+        manager.shouldProcessFrame(
+            frameTimestamp: baseTime.add(const Duration(milliseconds: 20))),
         isTrue,
       );
       expect(manager.totalFramesProcessed, equals(2));
@@ -92,7 +96,9 @@ void main() {
       expect(manager.totalFramesThermalDropped, equals(2));
     });
 
-    test('Suppresses frames when frame arrival interval is below minFrameInterval', () {
+    test(
+        'Suppresses frames when frame arrival interval is below minFrameInterval',
+        () {
       final baseTime = DateTime(2026, 1, 1, 12, 0, 0);
       manager.setThermalState(DeviceThermalState.nominal);
       manager.resetMetrics();
@@ -102,23 +108,28 @@ void main() {
 
       // Second frame arrives after only 5ms (nominal minFrameInterval is 16ms)
       expect(
-        manager.shouldProcessFrame(frameTimestamp: baseTime.add(const Duration(milliseconds: 5))),
+        manager.shouldProcessFrame(
+            frameTimestamp: baseTime.add(const Duration(milliseconds: 5))),
         isFalse,
       );
       expect(manager.totalFramesThermalDropped, equals(1));
     });
 
-    test('Suspends camera stream after 3 minutes of inactivity and wakes on interaction', () {
+    test(
+        'Suspends camera stream after 3 minutes of inactivity and wakes on interaction',
+        () {
       final startTime = manager.lastActivityTime;
 
       // At 2 minutes, stream remains active
-      manager.checkInactivity(currentTime: startTime.add(const Duration(minutes: 2)));
+      manager.checkInactivity(
+          currentTime: startTime.add(const Duration(minutes: 2)));
       expect(manager.isSuspendedDueToInactivity, isFalse);
       expect(manager.isCameraStreamingActive, isTrue);
       expect(suspendCalled, isFalse);
 
       // At 3 minutes, stream suspends
-      manager.checkInactivity(currentTime: startTime.add(const Duration(minutes: 3, seconds: 1)));
+      manager.checkInactivity(
+          currentTime: startTime.add(const Duration(minutes: 3, seconds: 1)));
       expect(manager.isSuspendedDueToInactivity, isTrue);
       expect(manager.isCameraStreamingActive, isFalse);
       expect(suspendCalled, isTrue);
@@ -161,4 +172,3 @@ void main() {
     });
   });
 }
-

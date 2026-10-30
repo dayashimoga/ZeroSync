@@ -36,7 +36,8 @@ class TransferProgressMetrics {
         : 0.0;
 
     final seconds = elapsed.inMilliseconds / 1000.0;
-    final speedKbps = seconds > 0.1 ? (totalBytesReceived / 1024.0) / seconds : 0.0;
+    final speedKbps =
+        seconds > 0.1 ? (totalBytesReceived / 1024.0) / seconds : 0.0;
 
     Duration? eta;
     final missingCount = missingIndices.length;
@@ -112,7 +113,8 @@ class MissingBlockMatrixHeatmap extends StatelessWidget {
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16.0),
         border: Border.all(
-          color: isDone ? Colors.green.shade400 : theme.colorScheme.outlineVariant,
+          color:
+              isDone ? Colors.green.shade400 : theme.colorScheme.outlineVariant,
           width: isDone ? 2.0 : 1.0,
         ),
         boxShadow: const [
@@ -164,12 +166,14 @@ class MissingBlockMatrixHeatmap extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 24.0),
                 child: Text(
                   'Waiting for incoming stream...',
-                  style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                      color: Colors.grey, fontStyle: FontStyle.italic),
                 ),
               ),
             ),
 
-          if (metrics.missingIndices.isNotEmpty && metrics.missingIndices.length <= 15) ...[
+          if (metrics.missingIndices.isNotEmpty &&
+              metrics.missingIndices.length <= 15) ...[
             const SizedBox(height: 10.0),
             _buildMissingChips(theme),
           ],
@@ -210,7 +214,8 @@ class MissingBlockMatrixHeatmap extends StatelessWidget {
           children: [
             // Speed Pill
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
               decoration: BoxDecoration(
                 color: Colors.blue.shade50,
                 borderRadius: BorderRadius.circular(8.0),
@@ -234,7 +239,8 @@ class MissingBlockMatrixHeatmap extends StatelessWidget {
             const SizedBox(width: 8.0),
             // ETA Pill
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
               decoration: BoxDecoration(
                 color: Colors.purple.shade50,
                 borderRadius: BorderRadius.circular(8.0),
@@ -242,7 +248,8 @@ class MissingBlockMatrixHeatmap extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.timer_outlined, size: 14.0, color: Colors.purple.shade700),
+                  Icon(Icons.timer_outlined,
+                      size: 14.0, color: Colors.purple.shade700),
                   const SizedBox(width: 4.0),
                   Text(
                     'ETA: $etaStr',
@@ -277,7 +284,8 @@ class MissingBlockMatrixHeatmap extends StatelessWidget {
       message = 'Finishing stream: hold camera steady at 15-20cm';
       bgColor = Colors.blue.shade50;
       textColor = Colors.blue.shade900;
-    } else if (metrics.missingIndices.isNotEmpty && metrics.transferSpeedKbps < 0.5) {
+    } else if (metrics.missingIndices.isNotEmpty &&
+        metrics.transferSpeedKbps < 0.5) {
       icon = Icons.zoom_in_outlined;
       message = 'Optical lock slow: align screen reticle and reduce glare';
       bgColor = Colors.amber.shade50;
@@ -302,7 +310,10 @@ class MissingBlockMatrixHeatmap extends StatelessWidget {
           Expanded(
             child: Text(
               message,
-              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: textColor),
+              style: TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
+                  color: textColor),
             ),
           ),
         ],
@@ -336,7 +347,8 @@ class MissingBlockMatrixHeatmap extends StatelessWidget {
               color: color,
               borderRadius: BorderRadius.circular(3.0),
               border: Border.all(
-                color: isMissing ? Colors.amber.shade800 : Colors.green.shade800,
+                color:
+                    isMissing ? Colors.amber.shade800 : Colors.green.shade800,
                 width: 0.5,
               ),
             ),
@@ -387,4 +399,3 @@ class MissingBlockMatrixHeatmap extends StatelessWidget {
     );
   }
 }
-

@@ -162,7 +162,7 @@ class TrackerStripperService {
     final String? shortlinkProvider = isShortlink ? host : null;
     final String? shortlinkWarning = isShortlink
         ? 'Destination host is an obscured shortlink redirect provider ($host). '
-          'The ultimate destination domain is hidden and could route through unverified relays.'
+            'The ultimate destination domain is hidden and could route through unverified relays.'
         : null;
 
     // If URL has no query parameters, no query-based stripping is needed

@@ -266,7 +266,8 @@ class DomainInspectorService {
         const SecurityThreat(
           category: ThreatCategory.malformedSyntax,
           severity: ThreatSeverity.critical,
-          description: 'URL contains illegal control characters or null-byte injection',
+          description:
+              'URL contains illegal control characters or null-byte injection',
           evidence: 'Control characters detected',
         ),
       );
@@ -466,7 +467,8 @@ class DomainInspectorService {
     return false;
   }
 
-  bool _evaluateHomoglyphsAndPunycode(String host, List<SecurityThreat> threats) {
+  bool _evaluateHomoglyphsAndPunycode(
+      String host, List<SecurityThreat> threats) {
     bool isPunycode = false;
     final String decodedHost = Uri.decodeComponent(host);
 
@@ -565,12 +567,14 @@ class DomainInspectorService {
       case 'sms':
         protocolDescriptor = 'Telephony / SMS Action ($scheme)';
       default:
-        protocolDescriptor = 'Custom Protocol (${scheme.isEmpty ? "unknown" : scheme})';
+        protocolDescriptor =
+            'Custom Protocol (${scheme.isEmpty ? "unknown" : scheme})';
     }
 
     final String pathAndQuery = query.isNotEmpty ? '$path?$query' : path;
     final List<String> warnings = threats.map((t) => t.description).toList();
-    final bool requiresConsent = overallSeverity.index >= ThreatSeverity.medium.index;
+    final bool requiresConsent =
+        overallSeverity.index >= ThreatSeverity.medium.index;
 
     return PreflightInterstitialData(
       protocolDescriptor: protocolDescriptor,
@@ -587,15 +591,16 @@ class DomainInspectorService {
     List<SecurityThreat> existingThreats,
     String parseError,
   ) {
-    final List<SecurityThreat> threats = List<SecurityThreat>.from(existingThreats)
-      ..add(
-        SecurityThreat(
-          category: ThreatCategory.malformedSyntax,
-          severity: ThreatSeverity.critical,
-          description: 'Failed to parse URI: $parseError',
-          evidence: rawInput,
-        ),
-      );
+    final List<SecurityThreat> threats =
+        List<SecurityThreat>.from(existingThreats)
+          ..add(
+            SecurityThreat(
+              category: ThreatCategory.malformedSyntax,
+              severity: ThreatSeverity.critical,
+              description: 'Failed to parse URI: $parseError',
+              evidence: rawInput,
+            ),
+          );
 
     return DomainInspectionReport(
       rawInput: rawInput,
@@ -619,7 +624,9 @@ class DomainInspectorService {
         registrableRootDomain: 'Invalid',
         fullHost: 'Invalid',
         pathAndQuery: '',
-        warningList: <String>['Syntax is unparseable and may attempt parser differential attacks.'],
+        warningList: <String>[
+          'Syntax is unparseable and may attempt parser differential attacks.'
+        ],
         requiresExplicitConfirmation: true,
       ),
     );

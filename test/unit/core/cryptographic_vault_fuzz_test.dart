@@ -21,6 +21,7 @@ import 'package:airdrop_qr/domain/services/vcard_serializer_service.dart';
 import 'package:airdrop_qr/core/utils/disposal_auditor.dart';
 
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
+
 class MockDatabase extends Mock implements Database {}
 
 void main() {
@@ -32,17 +33,22 @@ void main() {
     setUp(() {
       mockSecureStorage = MockFlutterSecureStorage();
       mockDb = MockDatabase();
-      vaultDataSource = EncryptedVaultDataSourceImpl(secureStorage: mockSecureStorage);
+      vaultDataSource =
+          EncryptedVaultDataSourceImpl(secureStorage: mockSecureStorage);
 
       when(() => mockDb.isOpen).thenReturn(true);
       when(() => mockDb.close()).thenAnswer((_) async {});
       when(() => mockDb.execute(any())).thenAnswer((_) async {});
     });
 
-    test('Derives 256-bit cryptographically secure master key and persists to keystore', () async {
-      when(() => mockSecureStorage.read(key: any(named: 'key'))).thenAnswer((_) async => null);
-      when(() => mockSecureStorage.write(key: any(named: 'key'), value: any(named: 'value')))
-          .thenAnswer((_) async {});
+    test(
+        'Derives 256-bit cryptographically secure master key and persists to keystore',
+        () async {
+      when(() => mockSecureStorage.read(key: any(named: 'key')))
+          .thenAnswer((_) async => null);
+      when(() => mockSecureStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'))).thenAnswer((_) async {});
 
       final String masterKey = await vaultDataSource.getOrGenerateMasterKey();
 
@@ -51,12 +57,13 @@ void main() {
       expect(masterKey.length, greaterThanOrEqualTo(43));
 
       // Verify key decodes to exactly 32 bytes (256 bits)
-      final Uint8List rawKeyBytes = base64Url.decode(base64Url.normalize(masterKey));
+      final Uint8List rawKeyBytes =
+          base64Url.decode(base64Url.normalize(masterKey));
       expect(rawKeyBytes.length, equals(32));
 
       // Verify persistent write to hardware keystore
-      verify(() => mockSecureStorage.write(key: 'zerosync_vault_master_key_v1', value: masterKey))
-          .called(1);
+      verify(() => mockSecureStorage.write(
+          key: 'zerosync_vault_master_key_v1', value: masterKey)).called(1);
 
       // Subsequent retrieval returns persisted key
       when(() => mockSecureStorage.read(key: 'zerosync_vault_master_key_v1'))
@@ -73,17 +80,34 @@ void main() {
             {'value': 'AES-256-CBC'}
           ]);
 
-      final bool isIntegrityVerified = await vaultDataSource.verifyCipherIntegrity();
+      final bool isIntegrityVerified =
+          await vaultDataSource.verifyCipherIntegrity();
       expect(isIntegrityVerified, isTrue);
 
-      verify(() => mockDb.rawQuery("SELECT value FROM vault_metadata WHERE key = 'cipher_standard'"))
+      verify(() => mockDb.rawQuery(
+              "SELECT value FROM vault_metadata WHERE key = 'cipher_standard'"))
           .called(1);
     });
 
-    test('Securely scrubs sensitive master keys and decrypted buffers in RAM', () {
+    test('Securely scrubs sensitive master keys and decrypted buffers in RAM',
+        () {
       final keyBuffer = Uint8List.fromList(<int>[
-        0x5F, 0x1A, 0x9B, 0xC3, 0x4D, 0x8E, 0x22, 0xF0,
-        0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF, 0x01, 0x23,
+        0x5F,
+        0x1A,
+        0x9B,
+        0xC3,
+        0x4D,
+        0x8E,
+        0x22,
+        0xF0,
+        0xAA,
+        0xBB,
+        0xCC,
+        0xDD,
+        0xEE,
+        0xFF,
+        0x01,
+        0x23,
       ]);
 
       expect(keyBuffer.every((b) => b == 0), isFalse);
@@ -112,12 +136,15 @@ void main() {
       trackerStripper = TrackerStripperService();
     });
 
-    test('Fuzzing 1: Malformed & Invalid UTF-8 Byte Sequences in QR Matrix Engine', () {
+    test(
+        'Fuzzing 1: Malformed & Invalid UTF-8 Byte Sequences in QR Matrix Engine',
+        () {
       final invalidUtf8Bytes = <Uint8List>[
         Uint8List.fromList([0xC3, 0x28]), // Invalid 2-byte continuation
         Uint8List.fromList([0xE0, 0x80, 0xAF]), // Overlong encoding
         Uint8List.fromList([0xF4, 0xBF, 0xBF, 0xFF]), // Out of Unicode range
-        Uint8List.fromList(List<int>.generate(128, (i) => 0x80 + i)), // Pure non-ASCII high bits
+        Uint8List.fromList(List<int>.generate(
+            128, (i) => 0x80 + i)), // Pure non-ASCII high bits
       ];
 
       for (final badBytes in invalidUtf8Bytes) {
@@ -130,7 +157,9 @@ void main() {
       }
     });
 
-    test('Fuzzing 2: Oversized Payloads Exceeding Maximum QR Specification Limits', () {
+    test(
+        'Fuzzing 2: Oversized Payloads Exceeding Maximum QR Specification Limits',
+        () {
       // 5,000 bytes exceeds Version 40 Low ECC max capacity (2,953 bytes)
       final oversizedBytes = Uint8List(5000);
 
@@ -180,7 +209,8 @@ void main() {
         throwsA(anyOf(isA<ArgumentError>(), isA<FormatException>())),
       );
       expect(
-        () => infraSerializer.deserializeGeo('geo:45.0,-195.0'), // Longitude < -180
+        () => infraSerializer
+            .deserializeGeo('geo:45.0,-195.0'), // Longitude < -180
         throwsA(anyOf(isA<ArgumentError>(), isA<FormatException>())),
       );
       expect(
@@ -190,12 +220,16 @@ void main() {
 
       // Malformed iCalendar
       expect(
-        () => infraSerializer.deserializeCalendar('BEGIN:VCALENDAR\nEND:VCALENDAR'),
-        throwsA(anyOf(isA<ArgumentError>(), isA<FormatException>())), // Missing VEVENT
+        () => infraSerializer
+            .deserializeCalendar('BEGIN:VCALENDAR\nEND:VCALENDAR'),
+        throwsA(anyOf(
+            isA<ArgumentError>(), isA<FormatException>())), // Missing VEVENT
       );
     });
 
-    test('Fuzzing 6: SQL Injection, XSS & Directory Traversal in Domain Inspector', () {
+    test(
+        'Fuzzing 6: SQL Injection, XSS & Directory Traversal in Domain Inspector',
+        () {
       const maliciousPayloads = <String>[
         "https://example.com/search?q='; DROP TABLE scans; --",
         'javascript:alert(document.cookie)',
@@ -207,7 +241,9 @@ void main() {
       for (final payload in maliciousPayloads) {
         final report = domainInspector.inspect(payload);
         // Non-http schemes (javascript, file, data) are caught as suspicious or high risk
-        if (payload.startsWith('javascript') || payload.startsWith('file') || payload.startsWith('data')) {
+        if (payload.startsWith('javascript') ||
+            payload.startsWith('file') ||
+            payload.startsWith('data')) {
           expect(report.isHighRisk || !report.isSafe, isTrue);
         }
 

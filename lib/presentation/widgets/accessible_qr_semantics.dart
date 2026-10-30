@@ -10,17 +10,7 @@ class WcagContrastRatio {
   /// Formula: L = 0.2126 * R + 0.7152 * G + 0.0722 * B,
   /// where each sRGB component is normalized to 0.0-1.0 and linearized.
   static double calculateLuminance(Color color) {
-    double linearize(double normalized) {
-      return normalized <= 0.04045
-          ? normalized / 12.92
-          : math.pow((normalized + 0.055) / 1.055, 2.4).toDouble();
-    }
-
-    final double r = linearize(color.r);
-    final double g = linearize(color.g);
-    final double b = linearize(color.b);
-
-    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    return color.computeLuminance();
   }
 
   /// Calculates the contrast ratio between two colors: (L1 + 0.05) / (L2 + 0.05),
@@ -83,7 +73,8 @@ class AccessibleQrCodeSemantics extends StatelessWidget {
       semanticLabel.write(', Error Correction: $eccLevel');
     }
 
-    final String? accessibleValue = isSensitive ? 'Obscured cryptographic credential' : value;
+    final String? accessibleValue =
+        isSensitive ? 'Obscured cryptographic credential' : value;
 
     return Semantics(
       image: true,
@@ -116,8 +107,10 @@ class AccessibleScannerViewportSemantics extends StatelessWidget {
     final String status = isScanningActive
         ? 'Camera scanner active. Align optical code inside reticle.'
         : 'Camera scanner suspended.';
-    final String guidance = aimingGuidance ?? 'Hold camera steady 6 to 12 inches from optical code.';
-    final String fullLabel = '$status $guidance (Items captured: $detectedCount)';
+    final String guidance = aimingGuidance ??
+        'Hold camera steady 6 to 12 inches from optical code.';
+    final String fullLabel =
+        '$status $guidance (Items captured: $detectedCount)';
 
     return Semantics(
       liveRegion: true,

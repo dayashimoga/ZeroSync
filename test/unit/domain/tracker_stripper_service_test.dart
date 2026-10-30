@@ -32,11 +32,13 @@ void main() {
     });
 
     test('Strips Meta / Facebook click IDs (fbclid)', () {
-      const url = 'https://shop.example.com/product/123?fbclid=IwAR2V8X9abc123DEF456';
+      const url =
+          'https://shop.example.com/product/123?fbclid=IwAR2V8X9abc123DEF456';
       final result = stripper.sanitize(url);
 
       expect(result.wasModified, isTrue);
-      expect(result.sanitizedUrl, equals('https://shop.example.com/product/123'));
+      expect(
+          result.sanitizedUrl, equals('https://shop.example.com/product/123'));
       expect(result.strippedParameters, contains('fbclid'));
     });
 
@@ -57,13 +59,16 @@ void main() {
       );
     });
 
-    test('Strips Microsoft (msclkid) and Mailchimp (mc_eid, mc_cid) identifiers', () {
+    test(
+        'Strips Microsoft (msclkid) and Mailchimp (mc_eid, mc_cid) identifiers',
+        () {
       const url =
           'https://newsletter.example.org/read?msclkid=a1b2c3d4&mc_eid=abc1234&mc_cid=998877';
       final result = stripper.sanitize(url);
 
       expect(result.wasModified, isTrue);
-      expect(result.sanitizedUrl, equals('https://newsletter.example.org/read'));
+      expect(
+          result.sanitizedUrl, equals('https://newsletter.example.org/read'));
       expect(result.preservedParameters, isEmpty);
       expect(
         result.strippedParameters,
@@ -167,4 +172,3 @@ void main() {
     });
   });
 }
-

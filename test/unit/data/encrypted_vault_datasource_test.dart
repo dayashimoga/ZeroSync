@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:sqflite_sqlcipher/sqflite.dart';
 
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
+
 class MockDatabase extends Mock implements Database {}
 
 void main() {
@@ -36,7 +37,8 @@ void main() {
       expect(scan.createdAt, equals(scan.updatedAt));
     });
 
-    test('Round-trip serialization toMap and fromMap preserves all attributes', () {
+    test('Round-trip serialization toMap and fromMap preserves all attributes',
+        () {
       final original = ScanRecord(
         id: '11111111-2222-3333-4444-555555555555',
         rawValue: 'https://zerosync.org/payload',
@@ -55,7 +57,8 @@ void main() {
       final map = original.toMap();
       expect(map['id'], equals('11111111-2222-3333-4444-555555555555'));
       expect(map['raw_value'], equals('https://zerosync.org/payload'));
-      expect(map['raw_bytes'], equals(Uint8List.fromList([0xDE, 0xAD, 0xBE, 0xEF])));
+      expect(map['raw_bytes'],
+          equals(Uint8List.fromList([0xDE, 0xAD, 0xBE, 0xEF])));
       expect(map['format'], equals('qrCode'));
       expect(map['content_type'], equals('url'));
       expect(map['is_favorite'], equals(1));
@@ -133,21 +136,27 @@ void main() {
       vault = EncryptedVaultDataSourceImpl(secureStorage: mockStorage);
     });
 
-    test('Generates new 256-bit AES master passphrase when non-existent', () async {
-      when(() => mockStorage.read(key: any(named: 'key'))).thenAnswer((_) async => null);
-      when(() => mockStorage.write(key: any(named: 'key'), value: any(named: 'value')))
-          .thenAnswer((_) async {});
+    test('Generates new 256-bit AES master passphrase when non-existent',
+        () async {
+      when(() => mockStorage.read(key: any(named: 'key')))
+          .thenAnswer((_) async => null);
+      when(() => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'))).thenAnswer((_) async {});
 
       final key = await vault.getOrGenerateMasterKey();
 
       expect(key, isNotEmpty);
       // 32 bytes base64URL encoded is 43-44 chars
       expect(key.length, greaterThanOrEqualTo(40));
-      verify(() => mockStorage.read(key: 'zerosync_vault_master_key_v1')).called(1);
-      verify(() => mockStorage.write(key: 'zerosync_vault_master_key_v1', value: key)).called(1);
+      verify(() => mockStorage.read(key: 'zerosync_vault_master_key_v1'))
+          .called(1);
+      verify(() => mockStorage.write(
+          key: 'zerosync_vault_master_key_v1', value: key)).called(1);
     });
 
-    test('Reuses existing master passphrase when already in secure storage', () async {
+    test('Reuses existing master passphrase when already in secure storage',
+        () async {
       const existingKey = 'k3y-alr3ady-ex1st1ng-in-k3ycha1n-st0r4g3';
       when(() => mockStorage.read(key: any(named: 'key')))
           .thenAnswer((_) async => existingKey);
@@ -155,8 +164,10 @@ void main() {
       final key = await vault.getOrGenerateMasterKey();
 
       expect(key, equals(existingKey));
-      verify(() => mockStorage.read(key: 'zerosync_vault_master_key_v1')).called(1);
-      verifyNever(() => mockStorage.write(key: any(named: 'key'), value: any(named: 'value')));
+      verify(() => mockStorage.read(key: 'zerosync_vault_master_key_v1'))
+          .called(1);
+      verifyNever(() => mockStorage.write(
+          key: any(named: 'key'), value: any(named: 'value')));
     });
   });
 
@@ -185,7 +196,9 @@ void main() {
       verify(() => mockDb.execute(any())).called(greaterThanOrEqualTo(5));
     });
 
-    test('verifyCipherIntegrity validates AES-256-CBC cipher standard in metadata', () async {
+    test(
+        'verifyCipherIntegrity validates AES-256-CBC cipher standard in metadata',
+        () async {
       when(() => mockDb.rawQuery(any())).thenAnswer((_) async => [
             {'value': 'AES-256-CBC'},
           ]);
@@ -222,12 +235,12 @@ void main() {
       final inserted = await vault.insertScan(scan);
       expect(inserted.id, equals(scan.id));
 
-      verify(() => mockDb.insert('scans', any(), conflictAlgorithm: ConflictAlgorithm.replace))
-          .called(1);
-      verify(() => mockDb.insert('tags', any(), conflictAlgorithm: ConflictAlgorithm.replace))
-          .called(1);
-      verify(() => mockDb.insert('scan_tags', any(), conflictAlgorithm: ConflictAlgorithm.ignore))
-          .called(1);
+      verify(() => mockDb.insert('scans', any(),
+          conflictAlgorithm: ConflictAlgorithm.replace)).called(1);
+      verify(() => mockDb.insert('tags', any(),
+          conflictAlgorithm: ConflictAlgorithm.replace)).called(1);
+      verify(() => mockDb.insert('scan_tags', any(),
+          conflictAlgorithm: ConflictAlgorithm.ignore)).called(1);
     });
 
     test('getScanById retrieves row and loads associated tags', () async {
@@ -278,7 +291,8 @@ void main() {
       expect(record, isNull);
     });
 
-    test('getAllScans filters favorites and orders by created_at DESC', () async {
+    test('getAllScans filters favorites and orders by created_at DESC',
+        () async {
       final now = DateTime.now();
       when(() => mockDb.query(
             'scans',
@@ -317,7 +331,8 @@ void main() {
           )).called(1);
     });
 
-    test('searchScans executes LIKE pattern across value, title, and notes', () async {
+    test('searchScans executes LIKE pattern across value, title, and notes',
+        () async {
       when(() => mockDb.query(
             'scans',
             where: any(named: 'where'),
@@ -363,8 +378,11 @@ void main() {
 
       await vault.deleteScan('scan-99');
 
-      verify(() => mockDb.delete('scans', where: 'id = ?', whereArgs: ['scan-99'])).called(1);
-      verify(() => mockDb.delete('scan_tags', where: 'scan_id = ?', whereArgs: ['scan-99'])).called(1);
+      verify(() =>
+              mockDb.delete('scans', where: 'id = ?', whereArgs: ['scan-99']))
+          .called(1);
+      verify(() => mockDb.delete('scan_tags',
+          where: 'scan_id = ?', whereArgs: ['scan-99'])).called(1);
     });
 
     test('clearAllScans truncates scans and scan_tags', () async {
@@ -393,10 +411,12 @@ void main() {
             }
           ]);
 
-      when(() => mockDb.insert(any(), any(), conflictAlgorithm: any(named: 'conflictAlgorithm')))
+      when(() => mockDb.insert(any(), any(),
+              conflictAlgorithm: any(named: 'conflictAlgorithm')))
           .thenAnswer((_) async => 1);
-      when(() => mockDb.delete(any(), where: any(named: 'where'), whereArgs: any(named: 'whereArgs')))
-          .thenAnswer((_) async => 1);
+      when(() => mockDb.delete(any(),
+          where: any(named: 'where'),
+          whereArgs: any(named: 'whereArgs'))).thenAnswer((_) async => 1);
 
       final tags = await vault.getAllTags();
       expect(tags.length, equals(1));
@@ -417,10 +437,12 @@ void main() {
           )).called(1);
 
       await vault.deleteTag('tag-1');
-      verify(() => mockDb.delete('tags', where: 'id = ?', whereArgs: ['tag-1'])).called(1);
+      verify(() => mockDb.delete('tags', where: 'id = ?', whereArgs: ['tag-1']))
+          .called(1);
     });
 
-    test('Throws StateError if database operations called when closed', () async {
+    test('Throws StateError if database operations called when closed',
+        () async {
       when(() => mockDb.isOpen).thenReturn(false);
 
       expect(() => vault.getAllScans(), throwsStateError);

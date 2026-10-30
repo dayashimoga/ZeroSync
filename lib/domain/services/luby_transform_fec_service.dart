@@ -256,9 +256,8 @@ class LubyTransformDecoder {
   bool get isDecoded => _solvedBlocks.length >= totalSourceBlocks;
 
   /// Decoding progress ratio [0.0, 1.0].
-  double get progress => totalSourceBlocks == 0
-      ? 1.0
-      : _solvedBlocks.length / totalSourceBlocks;
+  double get progress =>
+      totalSourceBlocks == 0 ? 1.0 : _solvedBlocks.length / totalSourceBlocks;
 
   /// Number of recovered source blocks.
   int get solvedBlocksCount => _solvedBlocks.length;
@@ -339,7 +338,8 @@ class LubyTransformDecoder {
     }
 
     // If peeling stalls but we have enough equations, run GF(2) fallback
-    if (!isDecoded && _equations.length >= (totalSourceBlocks - _solvedBlocks.length)) {
+    if (!isDecoded &&
+        _equations.length >= (totalSourceBlocks - _solvedBlocks.length)) {
       _runGaussianElimination();
     }
 

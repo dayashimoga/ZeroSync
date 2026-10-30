@@ -75,8 +75,9 @@ class OpticalScannerConfig {
     this.supportedFormats = const <BarcodeFormat>[BarcodeFormat.qrCode],
     this.invertDetection = false,
     this.retainRawBytes = true,
-  }) : assert(frameBufferSize > 0, 'frameBufferSize must be strictly positive'),
-       assert(targetFps > 0, 'targetFps must be strictly positive');
+  })  : assert(
+            frameBufferSize > 0, 'frameBufferSize must be strictly positive'),
+        assert(targetFps > 0, 'targetFps must be strictly positive');
 
   /// Creates a copy of this configuration with specified fields replaced.
   OpticalScannerConfig copyWith({
@@ -596,14 +597,14 @@ class OpticalScannerDataSourceImpl implements OpticalScannerDataSource {
 
     if (_timestampCount > 1) {
       // Look back to earliest recorded timestamp within capacity
-      final int oldestIdx = (_timestampHead - _timestampCount + _fpsWindowCapacity) %
-          _fpsWindowCapacity;
+      final int oldestIdx =
+          (_timestampHead - _timestampCount + _fpsWindowCapacity) %
+              _fpsWindowCapacity;
       final int oldestUs = _recentTimestampsUs[oldestIdx];
       final int durationUs = timestampUs - oldestUs;
 
       if (durationUs > 0) {
-        _lastCalculatedFps =
-            ((_timestampCount - 1) * 1000000.0) / durationUs;
+        _lastCalculatedFps = ((_timestampCount - 1) * 1000000.0) / durationUs;
       }
     } else {
       _lastCalculatedFps = 1.0;
@@ -650,7 +651,8 @@ class OpticalScannerDataSourceImpl implements OpticalScannerDataSource {
 
   void _assertNotDisposed() {
     if (_isDisposed) {
-      throw const OpticalScannerException('OpticalScannerDataSource has already been disposed');
+      throw const OpticalScannerException(
+          'OpticalScannerDataSource has already been disposed');
     }
   }
 

@@ -21,7 +21,8 @@ class ChunkBitSet {
   /// Sets bit at [index]. Returns `true` if newly added, `false` if already set.
   bool add(int index) {
     if (index < 0 || index >= capacity) {
-      throw RangeError.index(index, this, 'index', 'Index out of bounds', capacity);
+      throw RangeError.index(
+          index, this, 'index', 'Index out of bounds', capacity);
     }
     final word = index >> 5;
     final bit = index & 31;
@@ -143,7 +144,8 @@ class ChunkAccumulatorEngine {
   MimeTypeFlag? get mimeFlag => _mimeFlag;
 
   /// Current progress ratio [0.0, 1.0].
-  double get progress => _totalChunks == 0 ? 0.0 : _receivedCount / _totalChunks;
+  double get progress =>
+      _totalChunks == 0 ? 0.0 : _receivedCount / _totalChunks;
 
   /// Whether all chunks for the session are received and verified.
   bool get isComplete => _state == AccumulatorState.completed;
@@ -213,7 +215,8 @@ class ChunkAccumulatorEngine {
   /// Ingests raw optical datagram bytes, deserializing the header and payload.
   bool ingestWireBytes(Uint8List wireBytes) {
     try {
-      final frame = PackedTransportFrame.fromWireBytes(wireBytes, verifyChecksum: true);
+      final frame =
+          PackedTransportFrame.fromWireBytes(wireBytes, verifyChecksum: true);
       return ingestFrame(frame);
     } catch (_) {
       _rejectedCount++;
@@ -303,4 +306,3 @@ class ChunkAccumulatorEngine {
     await _stateController.close();
   }
 }
-

@@ -23,12 +23,16 @@ void main() {
       expect(report.path, equals('/flutter/flutter'));
       expect(report.detectedThreats, isEmpty);
       expect(report.preflightData.requiresExplicitConfirmation, isFalse);
-      expect(report.preflightData.protocolDescriptor, contains('Secure TLS (HTTPS)'));
+      expect(report.preflightData.protocolDescriptor,
+          contains('Secure TLS (HTTPS)'));
       expect(report.preflightData.registrableRootDomain, equals('github.com'));
     });
 
-    test('Standard subdomain structure extracts rootDomain and subdomains correctly', () {
-      final report = inspector.inspect('https://docs.flutter.dev/get-started/install');
+    test(
+        'Standard subdomain structure extracts rootDomain and subdomains correctly',
+        () {
+      final report =
+          inspector.inspect('https://docs.flutter.dev/get-started/install');
 
       expect(report.isSafe, isTrue);
       expect(report.host, equals('docs.flutter.dev'));
@@ -37,11 +41,13 @@ void main() {
       expect(report.topLevelDomain, equals('dev'));
     });
 
-    test('Plaintext HTTP triggers low severity unencryptedTransport threat', () {
+    test('Plaintext HTTP triggers low severity unencryptedTransport threat',
+        () {
       final report = inspector.inspect('http://example.org/index.html');
 
       expect(report.isValidUrl, isTrue);
-      expect(report.isSafe, isTrue); // low severity is considered safe with warning
+      expect(report.isSafe,
+          isTrue); // low severity is considered safe with warning
       expect(report.overallSeverity, equals(ThreatSeverity.low));
       expect(
         report.detectedThreats.any(
@@ -49,7 +55,8 @@ void main() {
         ),
         isTrue,
       );
-      expect(report.preflightData.protocolDescriptor, contains('Insecure Plaintext'));
+      expect(report.preflightData.protocolDescriptor,
+          contains('Insecure Plaintext'));
       expect(report.preflightData.requiresExplicitConfirmation, isFalse);
     });
   });
@@ -100,19 +107,22 @@ void main() {
         ),
         isTrue,
       );
-      expect(report.preflightData.protocolDescriptor, contains('Executable Script'));
+      expect(report.preflightData.protocolDescriptor,
+          contains('Executable Script'));
       expect(report.preflightData.requiresExplicitConfirmation, isTrue);
     });
 
     test('Flags data: and file: schemes with critical severity', () {
-      final reportData = inspector.inspect('data:text/html;base64,PHNjcmlwdD4=');
+      final reportData =
+          inspector.inspect('data:text/html;base64,PHNjcmlwdD4=');
       expect(reportData.overallSeverity, equals(ThreatSeverity.critical));
 
       final reportFile = inspector.inspect('file:///etc/shadow');
       expect(reportFile.overallSeverity, equals(ThreatSeverity.critical));
     });
 
-    test('Flags telephony (tel:) and SMS (sms:) schemes with medium severity', () {
+    test('Flags telephony (tel:) and SMS (sms:) schemes with medium severity',
+        () {
       final reportTel = inspector.inspect('tel:+18005550199');
       expect(reportTel.overallSeverity, equals(ThreatSeverity.medium));
       expect(
@@ -144,7 +154,9 @@ void main() {
         ),
         isTrue,
       );
-      expect(report.preflightData.warningList.any((w) => w.contains('Punycode')), isTrue);
+      expect(
+          report.preflightData.warningList.any((w) => w.contains('Punycode')),
+          isTrue);
     });
 
     test('Flags confusable Cyrillic homoglyphs spoofing Latin domains', () {
@@ -167,7 +179,8 @@ void main() {
 
   group('Deceptive URL Structures & Exploits', () {
     test('Flags embedded user credentials in authority (user:pass@host)', () {
-      final report = inspector.inspect('https://google.com:auth@attacker-host.com/session');
+      final report = inspector
+          .inspect('https://google.com:auth@attacker-host.com/session');
 
       expect(report.isHighRisk, isTrue);
       expect(report.host, equals('attacker-host.com'));
@@ -182,7 +195,8 @@ void main() {
     });
 
     test('Flags excessive subdomain hierarchy (>= 4 levels)', () {
-      final report = inspector.inspect('https://login.secure.verify.auth.bank.attacker.com/portal');
+      final report = inspector
+          .inspect('https://login.secure.verify.auth.bank.attacker.com/portal');
 
       expect(report.subdomains.length, equals(5));
       expect(report.rootDomain, equals('attacker.com'));
@@ -215,7 +229,8 @@ void main() {
       );
     });
 
-    test('Flags open-redirect parameter patterns pointing to external URLs', () {
+    test('Flags open-redirect parameter patterns pointing to external URLs',
+        () {
       final report = inspector.inspect(
         'https://trusted-portal.com/login?redirect=https://evil-harvest.com/callback',
       );
@@ -259,7 +274,8 @@ void main() {
   });
 
   group('Preflight Interstitial Data Formatting', () {
-    test('Constructs rich formatted pre-flight breakdown for user verification', () {
+    test('Constructs rich formatted pre-flight breakdown for user verification',
+        () {
       final report = inspector.inspect(
         'https://sub.portal.example.com:8443/checkout?item=42&coupon=DISCOUNT#summary',
       );
@@ -268,9 +284,9 @@ void main() {
       expect(preflight.protocolDescriptor, equals('Secure TLS (HTTPS)'));
       expect(preflight.registrableRootDomain, equals('example.com'));
       expect(preflight.fullHost, equals('sub.portal.example.com'));
-      expect(preflight.pathAndQuery, equals('/checkout?item=42&coupon=DISCOUNT'));
+      expect(
+          preflight.pathAndQuery, equals('/checkout?item=42&coupon=DISCOUNT'));
       expect(preflight.requiresExplicitConfirmation, isFalse);
     });
   });
 }
-

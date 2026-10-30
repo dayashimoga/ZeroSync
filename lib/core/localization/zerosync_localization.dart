@@ -34,7 +34,8 @@ class ZeroSyncStrings {
   final String scannerSuspendedMessage;
   final String scanSuccessTitle;
   final String Function(int count) batchScanCounter;
-  final String Function(int percent, int current, int total) streamTransferProgress;
+  final String Function(int percent, int current, int total)
+      streamTransferProgress;
   final String streamVerificationSuccess;
   final String securityThreatDetected;
   final String offlineAirGapGuaranteed;
@@ -62,13 +63,16 @@ class ZeroSyncStrings {
     transferTabTitle: 'ZeroSync Transfer',
     settingsTabTitle: 'Settings',
     scannerAimingGuidance: 'Align QR or Barcode inside the optical reticle',
-    scannerSuspendedMessage: 'Camera suspended due to inactivity. Tap screen to resume.',
+    scannerSuspendedMessage:
+        'Camera suspended due to inactivity. Tap screen to resume.',
     scanSuccessTitle: 'Code Decoded',
     batchScanCounter: _enBatchCounter,
     streamTransferProgress: _enStreamProgress,
-    streamVerificationSuccess: 'Cryptographic file verification successful. SHA-256 integrity matched.',
+    streamVerificationSuccess:
+        'Cryptographic file verification successful. SHA-256 integrity matched.',
     securityThreatDetected: 'Malicious URL or security threat blocked!',
-    offlineAirGapGuaranteed: 'Zero network permissions active. 100% offline air-gapped security.',
+    offlineAirGapGuaranteed:
+        'Zero network permissions active. 100% offline air-gapped security.',
   );
 
   static const ZeroSyncStrings ar = ZeroSyncStrings(
@@ -78,13 +82,16 @@ class ZeroSyncStrings {
     transferTabTitle: 'نقل زيرو سينك',
     settingsTabTitle: 'الإعدادات',
     scannerAimingGuidance: 'قم بمحاذاة الرمز داخل إطار الشبكة البصرية',
-    scannerSuspendedMessage: 'تم إيقاف الكاميرا مؤقتًا بسبب الخمول. انقر على الشاشة للاستئناف.',
+    scannerSuspendedMessage:
+        'تم إيقاف الكاميرا مؤقتًا بسبب الخمول. انقر على الشاشة للاستئناف.',
     scanSuccessTitle: 'تم فك تشفير الرمز',
     batchScanCounter: _arBatchCounter,
     streamTransferProgress: _arStreamProgress,
-    streamVerificationSuccess: 'نجح التحقق الأمني من الملف. تطابقت سلامة SHA-256.',
+    streamVerificationSuccess:
+        'نجح التحقق الأمني من الملف. تطابقت سلامة SHA-256.',
     securityThreatDetected: 'تم حظر رابط ضار أو تهديد أمني!',
-    offlineAirGapGuaranteed: 'أذونات الشبكة معطلة بالكامل. أمان معزول دون اتصال بنسبة 100٪.',
+    offlineAirGapGuaranteed:
+        'أذونات الشبكة معطلة بالكامل. أمان معزول دون اتصال بنسبة 100٪.',
   );
 
   static const ZeroSyncStrings es = ZeroSyncStrings(
@@ -94,13 +101,16 @@ class ZeroSyncStrings {
     transferTabTitle: 'Transferencia ZeroSync',
     settingsTabTitle: 'Ajustes',
     scannerAimingGuidance: 'Alinee el código dentro de la retícula óptica',
-    scannerSuspendedMessage: 'Cámara suspendida por inactividad. Toque la pantalla para reanudar.',
+    scannerSuspendedMessage:
+        'Cámara suspendida por inactividad. Toque la pantalla para reanudar.',
     scanSuccessTitle: 'Código Decodificado',
     batchScanCounter: _esBatchCounter,
     streamTransferProgress: _esStreamProgress,
-    streamVerificationSuccess: 'Verificación criptográfica exitosa. Coincidencia de integridad SHA-256.',
+    streamVerificationSuccess:
+        'Verificación criptográfica exitosa. Coincidencia de integridad SHA-256.',
     securityThreatDetected: '¡URL maliciosa o amenaza de seguridad bloqueada!',
-    offlineAirGapGuaranteed: 'Cero permisos de red activos. Seguridad 100% aislada fuera de línea.',
+    offlineAirGapGuaranteed:
+        'Cero permisos de red activos. Seguridad 100% aislada fuera de línea.',
   );
 
   static String _enBatchCounter(int count) => 'Captured Items: $count';
@@ -126,4 +136,3 @@ class ZeroSyncStrings {
     }
   }
 }
-

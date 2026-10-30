@@ -63,10 +63,12 @@ class AdaptiveSplitPaneScaffold extends StatefulWidget {
     this.secondaryTabLabel = 'Vault',
     this.primaryTabIcon = Icons.qr_code_scanner,
     this.secondaryTabIcon = Icons.history,
-  }) : assert(primaryRatio >= 0.3 && primaryRatio <= 0.7, 'primaryRatio must be between 0.3 and 0.7');
+  }) : assert(primaryRatio >= 0.3 && primaryRatio <= 0.7,
+            'primaryRatio must be between 0.3 and 0.7');
 
   @override
-  State<AdaptiveSplitPaneScaffold> createState() => _AdaptiveSplitPaneScaffoldState();
+  State<AdaptiveSplitPaneScaffold> createState() =>
+      _AdaptiveSplitPaneScaffoldState();
 }
 
 class _AdaptiveSplitPaneScaffoldState extends State<AdaptiveSplitPaneScaffold> {
@@ -155,4 +157,3 @@ class _AdaptiveSplitPaneScaffoldState extends State<AdaptiveSplitPaneScaffold> {
     );
   }
 }
-

@@ -33,9 +33,12 @@ void main() {
     });
 
     test('Pre-configured EdgeInsets match corresponding scalar tokens', () {
-      expect(ZeroSyncSpacing.paddingSm, const EdgeInsets.all(ZeroSyncSpacing.sm));
-      expect(ZeroSyncSpacing.paddingMd, const EdgeInsets.all(ZeroSyncSpacing.md));
-      expect(ZeroSyncSpacing.paddingLg, const EdgeInsets.all(ZeroSyncSpacing.lg));
+      expect(
+          ZeroSyncSpacing.paddingSm, const EdgeInsets.all(ZeroSyncSpacing.sm));
+      expect(
+          ZeroSyncSpacing.paddingMd, const EdgeInsets.all(ZeroSyncSpacing.md));
+      expect(
+          ZeroSyncSpacing.paddingLg, const EdgeInsets.all(ZeroSyncSpacing.lg));
     });
 
     test('BorderRadius tokens maintain curvature hierarchy', () {
@@ -48,7 +51,8 @@ void main() {
 
   group('ZeroSyncTypography & Optical HUD Specs', () {
     test('Telemetry typography scales enforce monospace font family', () {
-      expect(ZeroSyncTypography.telemetryHeader.fontFamily, equals('monospace'));
+      expect(
+          ZeroSyncTypography.telemetryHeader.fontFamily, equals('monospace'));
       expect(ZeroSyncTypography.telemetryBody.fontFamily, equals('monospace'));
       expect(ZeroSyncTypography.telemetryCode.fontFamily, equals('monospace'));
     });
@@ -99,7 +103,8 @@ void main() {
     });
 
     test('Builds High-Contrast Amber theme with amber text on pure black', () {
-      final theme = ZeroSyncTheme.buildTheme(ZeroSyncThemeMode.highContrastAmber);
+      final theme =
+          ZeroSyncTheme.buildTheme(ZeroSyncThemeMode.highContrastAmber);
 
       expect(theme.brightness, Brightness.dark);
       expect(theme.colorScheme.primary, ZeroSyncColors.amber);
@@ -115,9 +120,10 @@ void main() {
     test('Direct getters expose same theme instances', () {
       expect(ZeroSyncTheme.lightTheme.brightness, Brightness.light);
       expect(ZeroSyncTheme.darkTheme.brightness, Brightness.dark);
-      expect(ZeroSyncTheme.oledBlackTheme.scaffoldBackgroundColor, ZeroSyncColors.trueBlack);
-      expect(ZeroSyncTheme.highContrastAmberTheme.colorScheme.primary, ZeroSyncColors.amber);
+      expect(ZeroSyncTheme.oledBlackTheme.scaffoldBackgroundColor,
+          ZeroSyncColors.trueBlack);
+      expect(ZeroSyncTheme.highContrastAmberTheme.colorScheme.primary,
+          ZeroSyncColors.amber);
     });
   });
 }
-

@@ -21,7 +21,8 @@ class MemorySandboxedStorageAdapter implements SandboxedStorageAdapter {
   final Map<String, Uint8List> _storage = <String, Uint8List>{};
   final String sandboxRoot;
 
-  MemorySandboxedStorageAdapter({this.sandboxRoot = '/sandboxed/zerosync_vault/'});
+  MemorySandboxedStorageAdapter(
+      {this.sandboxRoot = '/sandboxed/zerosync_vault/'});
 
   @override
   Future<String> writeBinaryFile({
@@ -87,8 +88,10 @@ class AirgapFileWriterService {
 
   const AirgapFileWriterService({
     required SandboxedStorageAdapter storageAdapter,
-    IntegrityChecksumService integrityService = const IntegrityChecksumService(),
-    PayloadCompressionService compressionService = const PayloadCompressionService(),
+    IntegrityChecksumService integrityService =
+        const IntegrityChecksumService(),
+    PayloadCompressionService compressionService =
+        const PayloadCompressionService(),
   })  : _storageAdapter = storageAdapter,
         _integrityService = integrityService,
         _compressionService = compressionService;

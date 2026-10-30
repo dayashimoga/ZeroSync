@@ -91,7 +91,8 @@ class NativeIntentDispatcher {
   /// Dispatches a native Wi-Fi connection prompt for [wifi].
   ///
   /// Passes SSID, security standard, password, and hidden network configuration to the OS.
-  Future<IntentDispatchResult> promptWifiConnection(WifiConfigPayload wifi) async {
+  Future<IntentDispatchResult> promptWifiConnection(
+      WifiConfigPayload wifi) async {
     final Map<String, dynamic> payload = <String, dynamic>{
       'ssid': wifi.ssid,
       'securityType': wifi.securityType.name,
@@ -113,11 +114,13 @@ class NativeIntentDispatcher {
       final bool success = result is bool ? result : true;
 
       return success
-          ? IntentDispatchResult.success(action: 'connectWifi', payload: payload)
+          ? IntentDispatchResult.success(
+              action: 'connectWifi', payload: payload)
           : IntentDispatchResult.failure(
               action: 'connectWifi',
               payload: payload,
-              message: 'Native Wi-Fi configuration was rejected or cancelled by user',
+              message:
+                  'Native Wi-Fi configuration was rejected or cancelled by user',
             );
     } catch (e) {
       return IntentDispatchResult.failure(
@@ -136,14 +139,18 @@ class NativeIntentDispatcher {
       'givenName': contact.givenName ?? '',
       'organization': contact.organization ?? '',
       'title': contact.jobTitle ?? '',
-      'phones': contact.phones.map((p) => <String, dynamic>{
-        'number': p.number,
-        'types': p.types,
-      }).toList(),
-      'emails': contact.emails.map((e) => <String, dynamic>{
-        'address': e.address,
-        'types': e.types,
-      }).toList(),
+      'phones': contact.phones
+          .map((p) => <String, dynamic>{
+                'number': p.number,
+                'types': p.types,
+              })
+          .toList(),
+      'emails': contact.emails
+          .map((e) => <String, dynamic>{
+                'address': e.address,
+                'types': e.types,
+              })
+          .toList(),
       'note': contact.note ?? '',
       'urls': contact.urls,
     };
@@ -162,7 +169,8 @@ class NativeIntentDispatcher {
       final bool success = result is bool ? result : true;
 
       return success
-          ? IntentDispatchResult.success(action: 'insertContact', payload: payload)
+          ? IntentDispatchResult.success(
+              action: 'insertContact', payload: payload)
           : IntentDispatchResult.failure(
               action: 'insertContact',
               payload: payload,
@@ -178,7 +186,8 @@ class NativeIntentDispatcher {
   }
 
   /// Dispatches a native calendar event creation intent for [calendar].
-  Future<IntentDispatchResult> injectCalendarEvent(CalendarEventPayload calendar) async {
+  Future<IntentDispatchResult> injectCalendarEvent(
+      CalendarEventPayload calendar) async {
     final Map<String, dynamic> payload = <String, dynamic>{
       'title': calendar.summary,
       'description': calendar.description ?? '',

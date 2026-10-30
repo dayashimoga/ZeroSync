@@ -5,17 +5,25 @@ import 'package:airdrop_qr/presentation/widgets/adaptive_split_pane_scaffold.dar
 void main() {
   group('AdaptiveWindowSizeClass Specs', () {
     test('Resolves correct size class across responsive breakpoints', () {
-      expect(AdaptiveWindowSizeClass.fromWidth(360.0), AdaptiveWindowSizeClass.compact);
-      expect(AdaptiveWindowSizeClass.fromWidth(599.0), AdaptiveWindowSizeClass.compact);
-      expect(AdaptiveWindowSizeClass.fromWidth(600.0), AdaptiveWindowSizeClass.medium);
-      expect(AdaptiveWindowSizeClass.fromWidth(839.0), AdaptiveWindowSizeClass.medium);
-      expect(AdaptiveWindowSizeClass.fromWidth(840.0), AdaptiveWindowSizeClass.expanded);
-      expect(AdaptiveWindowSizeClass.fromWidth(1200.0), AdaptiveWindowSizeClass.expanded);
+      expect(AdaptiveWindowSizeClass.fromWidth(360.0),
+          AdaptiveWindowSizeClass.compact);
+      expect(AdaptiveWindowSizeClass.fromWidth(599.0),
+          AdaptiveWindowSizeClass.compact);
+      expect(AdaptiveWindowSizeClass.fromWidth(600.0),
+          AdaptiveWindowSizeClass.medium);
+      expect(AdaptiveWindowSizeClass.fromWidth(839.0),
+          AdaptiveWindowSizeClass.medium);
+      expect(AdaptiveWindowSizeClass.fromWidth(840.0),
+          AdaptiveWindowSizeClass.expanded);
+      expect(AdaptiveWindowSizeClass.fromWidth(1200.0),
+          AdaptiveWindowSizeClass.expanded);
     });
   });
 
   group('AdaptiveSplitPaneScaffold Mobile & Tablet Specs', () {
-    testWidgets('Renders single-column tabbed layout on mobile (< 720px) preserving camera state', (tester) async {
+    testWidgets(
+        'Renders single-column tabbed layout on mobile (< 720px) preserving camera state',
+        (tester) async {
       // Set compact screen size (Phone)
       tester.view.physicalSize = const Size(400, 800);
       tester.view.devicePixelRatio = 1.0;
@@ -43,18 +51,22 @@ void main() {
 
       // IndexedStack preserves both panes in widget tree (offstage pane retained)
       expect(find.byKey(const ValueKey('CameraPane')), findsOneWidget);
-      expect(find.byKey(const ValueKey('VaultPane'), skipOffstage: false), findsOneWidget);
+      expect(find.byKey(const ValueKey('VaultPane'), skipOffstage: false),
+          findsOneWidget);
 
       // Switch to secondary tab
       await tester.tap(find.text('Vault'));
       await tester.pump();
 
       // CameraPane is STILL retained in memory by IndexedStack (now offstage)!
-      expect(find.byKey(const ValueKey('CameraPane'), skipOffstage: false), findsOneWidget);
+      expect(find.byKey(const ValueKey('CameraPane'), skipOffstage: false),
+          findsOneWidget);
       expect(find.text('Vault History Data'), findsOneWidget);
     });
 
-    testWidgets('Renders dual-pane split view on tablet (>= 720px) showing both panes simultaneously', (tester) async {
+    testWidgets(
+        'Renders dual-pane split view on tablet (>= 720px) showing both panes simultaneously',
+        (tester) async {
       // Set tablet screen size (Tablet / Foldable unfolded)
       tester.view.physicalSize = const Size(1000, 700);
       tester.view.devicePixelRatio = 1.0;
@@ -91,7 +103,8 @@ void main() {
       expect(find.text('Tablet History Feed'), findsOneWidget);
 
       // Verify sizing ratio
-      final cameraSize = tester.getSize(find.byKey(const ValueKey('TabletCamera')));
+      final cameraSize =
+          tester.getSize(find.byKey(const ValueKey('TabletCamera')));
       expect(cameraSize.width, equals(600.0)); // 60% of 1000px
     });
   });

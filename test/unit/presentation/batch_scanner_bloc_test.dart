@@ -6,8 +6,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockEncryptedVaultDataSource extends Mock implements EncryptedVaultDataSource {}
-class MockBatchScannerFeedbackService extends Mock implements BatchScannerFeedbackService {}
+class MockEncryptedVaultDataSource extends Mock
+    implements EncryptedVaultDataSource {}
+
+class MockBatchScannerFeedbackService extends Mock
+    implements BatchScannerFeedbackService {}
 
 void main() {
   setUpAll(() {
@@ -22,15 +25,52 @@ void main() {
 
   group('BatchScanItem Entity & Content Inference', () {
     test('Correctly infers content type based on payload prefix', () {
-      expect(BatchScanItem.create(rawValue: 'https://flutter.dev', format: 'qrCode').contentType, equals('url'));
-      expect(BatchScanItem.create(rawValue: 'http://example.com', format: 'qrCode').contentType, equals('url'));
-      expect(BatchScanItem.create(rawValue: 'WIFI:S:HomeNet;;', format: 'qrCode').contentType, equals('wifi'));
-      expect(BatchScanItem.create(rawValue: 'BEGIN:VCARD\nFN:John\nEND:VCARD', format: 'qrCode').contentType, equals('vcard'));
-      expect(BatchScanItem.create(rawValue: 'BEGIN:VEVENT\nSUMMARY:Meet\nEND:VEVENT', format: 'qrCode').contentType, equals('calendar'));
-      expect(BatchScanItem.create(rawValue: 'geo:37.7749,-122.4194', format: 'qrCode').contentType, equals('geo'));
-      expect(BatchScanItem.create(rawValue: 'otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP', format: 'qrCode').contentType, equals('totp'));
-      expect(BatchScanItem.create(rawValue: 'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', format: 'qrCode').contentType, equals('crypto'));
-      expect(BatchScanItem.create(rawValue: 'arbitrary plain text', format: 'qrCode').contentType, equals('text'));
+      expect(
+          BatchScanItem.create(
+                  rawValue: 'https://flutter.dev', format: 'qrCode')
+              .contentType,
+          equals('url'));
+      expect(
+          BatchScanItem.create(rawValue: 'http://example.com', format: 'qrCode')
+              .contentType,
+          equals('url'));
+      expect(
+          BatchScanItem.create(rawValue: 'WIFI:S:HomeNet;;', format: 'qrCode')
+              .contentType,
+          equals('wifi'));
+      expect(
+          BatchScanItem.create(
+                  rawValue: 'BEGIN:VCARD\nFN:John\nEND:VCARD', format: 'qrCode')
+              .contentType,
+          equals('vcard'));
+      expect(
+          BatchScanItem.create(
+                  rawValue: 'BEGIN:VEVENT\nSUMMARY:Meet\nEND:VEVENT',
+                  format: 'qrCode')
+              .contentType,
+          equals('calendar'));
+      expect(
+          BatchScanItem.create(
+                  rawValue: 'geo:37.7749,-122.4194', format: 'qrCode')
+              .contentType,
+          equals('geo'));
+      expect(
+          BatchScanItem.create(
+                  rawValue: 'otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP',
+                  format: 'qrCode')
+              .contentType,
+          equals('totp'));
+      expect(
+          BatchScanItem.create(
+                  rawValue: 'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+                  format: 'qrCode')
+              .contentType,
+          equals('crypto'));
+      expect(
+          BatchScanItem.create(
+                  rawValue: 'arbitrary plain text', format: 'qrCode')
+              .contentType,
+          equals('text'));
     });
 
     test('copyWithIncrement increments scan count', () {
@@ -54,11 +94,14 @@ void main() {
 
       when(() => mockFeedback.triggerSuccessHaptic()).thenAnswer((_) async {});
       when(() => mockFeedback.triggerSuccessChime()).thenAnswer((_) async {});
-      when(() => mockFeedback.triggerDuplicateWarning()).thenAnswer((_) async {});
-      when(() => mockVault.insertScan(any())).thenAnswer((inv) async => inv.positionalArguments.first as ScanRecord);
+      when(() => mockFeedback.triggerDuplicateWarning())
+          .thenAnswer((_) async {});
+      when(() => mockVault.insertScan(any())).thenAnswer(
+          (inv) async => inv.positionalArguments.first as ScanRecord);
     });
 
-    OpticalScanResult createScan(String value, {BarcodeFormat format = BarcodeFormat.qrCode}) {
+    OpticalScanResult createScan(String value,
+        {BarcodeFormat format = BarcodeFormat.qrCode}) {
       return OpticalScanResult(
         rawValue: value,
         format: format,
@@ -111,7 +154,8 @@ void main() {
         bloc.add(BatchScannerCodeScanned(createScan('ITEM-B')));
       },
       expect: () => [
-        isA<BatchScannerActive>().having((s) => s.itemCount, 'count', equals(0)),
+        isA<BatchScannerActive>()
+            .having((s) => s.itemCount, 'count', equals(0)),
         isA<BatchScannerActive>()
             .having((s) => s.itemCount, 'count', equals(1))
             .having((s) => s.items.first.rawValue, 'latest', equals('ITEM-A')),
@@ -133,18 +177,22 @@ void main() {
         feedbackService: mockFeedback,
       ),
       act: (bloc) {
-        bloc.add(const BatchScannerStarted(debounceWindow: Duration(milliseconds: 1500)));
+        bloc.add(const BatchScannerStarted(
+            debounceWindow: Duration(milliseconds: 1500)));
         bloc.add(BatchScannerCodeScanned(createScan('DUP-1')));
         // Immediate duplicate
         bloc.add(BatchScannerCodeScanned(createScan('DUP-1')));
       },
       expect: () => [
-        isA<BatchScannerActive>().having((s) => s.itemCount, 'count', equals(0)),
-        isA<BatchScannerActive>().having((s) => s.itemCount, 'count', equals(1)),
+        isA<BatchScannerActive>()
+            .having((s) => s.itemCount, 'count', equals(0)),
+        isA<BatchScannerActive>()
+            .having((s) => s.itemCount, 'count', equals(1)),
         isA<BatchScannerActive>()
             .having((s) => s.itemCount, 'count', equals(1))
             .having((s) => s.duplicateCount, 'duplicates', equals(1))
-            .having((s) => s.feedbackMessage, 'msg', contains('Duplicate suppressed')),
+            .having((s) => s.feedbackMessage, 'msg',
+                contains('Duplicate suppressed')),
       ],
       verify: (_) {
         verify(() => mockFeedback.triggerSuccessHaptic()).called(1);
@@ -160,13 +208,15 @@ void main() {
         feedbackService: mockFeedback,
       ),
       act: (bloc) async {
-        bloc.add(const BatchScannerStarted(debounceWindow: Duration(milliseconds: 50)));
+        bloc.add(const BatchScannerStarted(
+            debounceWindow: Duration(milliseconds: 50)));
         bloc.add(BatchScannerCodeScanned(createScan('RE-SCAN')));
         await Future<void>.delayed(const Duration(milliseconds: 60));
         bloc.add(BatchScannerCodeScanned(createScan('RE-SCAN')));
       },
       expect: () => [
-        isA<BatchScannerActive>().having((s) => s.itemCount, 'count', equals(0)),
+        isA<BatchScannerActive>()
+            .having((s) => s.itemCount, 'count', equals(0)),
         isA<BatchScannerActive>()
             .having((s) => s.itemCount, 'count', equals(1))
             .having((s) => s.items.first.scanCount, 'scans', equals(1)),
@@ -193,12 +243,14 @@ void main() {
         bloc.add(BatchScannerCodeScanned(createScan('ACCEPTED_AFTER_RESUME')));
       },
       expect: () => [
-        isA<BatchScannerActive>().having((s) => s.itemCount, 'count', equals(0)),
+        isA<BatchScannerActive>()
+            .having((s) => s.itemCount, 'count', equals(0)),
         isA<BatchScannerActive>().having((s) => s.isPaused, 'paused', isTrue),
         isA<BatchScannerActive>().having((s) => s.isPaused, 'resumed', isFalse),
         isA<BatchScannerActive>()
             .having((s) => s.itemCount, 'count', equals(1))
-            .having((s) => s.items.first.rawValue, 'item', equals('ACCEPTED_AFTER_RESUME')),
+            .having((s) => s.items.first.rawValue, 'item',
+                equals('ACCEPTED_AFTER_RESUME')),
       ],
     );
 
@@ -250,7 +302,8 @@ void main() {
         isA<BatchScannerActive>(),
         isA<BatchScannerActive>(),
         isA<BatchScannerActive>(),
-        isA<BatchScannerSaving>().having((s) => s.totalCount, 'total', equals(2)),
+        isA<BatchScannerSaving>()
+            .having((s) => s.totalCount, 'total', equals(2)),
         isA<BatchScannerSaveSuccess>()
             .having((s) => s.savedCount, 'saved', equals(2))
             .having((s) => s.appliedTag, 'tag', equals('Manual Export')),

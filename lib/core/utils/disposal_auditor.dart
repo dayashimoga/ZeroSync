@@ -6,14 +6,17 @@ class MemoryLeakException implements Exception {
   final String message;
   final List<DisposalRecord> leakedRecords;
 
-  const MemoryLeakException(this.message, [this.leakedRecords = const <DisposalRecord>[]]);
+  const MemoryLeakException(this.message,
+      [this.leakedRecords = const <DisposalRecord>[]]);
 
   @override
   String toString() {
     if (leakedRecords.isEmpty) return 'MemoryLeakException: $message';
-    final StringBuffer sb = StringBuffer('MemoryLeakException: $message\nLeaked Resources:');
+    final StringBuffer sb =
+        StringBuffer('MemoryLeakException: $message\nLeaked Resources:');
     for (final DisposalRecord record in leakedRecords) {
-      sb.write('\n - [${record.category}] ${record.tag} (Allocated: ${record.allocatedAt})');
+      sb.write(
+          '\n - [${record.category}] ${record.tag} (Allocated: ${record.allocatedAt})');
     }
     return sb.toString();
   }
@@ -70,7 +73,8 @@ class DisposalAuditor {
   bool _isAuditingEnabled = true;
 
   bool get isAuditingEnabled => _isAuditingEnabled;
-  int get activeResourceCount => _activeRecords.values.where((r) => !r.isDisposed).length;
+  int get activeResourceCount =>
+      _activeRecords.values.where((r) => !r.isDisposed).length;
   List<DisposalRecord> get undisposedRecords =>
       _activeRecords.values.where((r) => !r.isDisposed).toList(growable: false);
 
@@ -160,7 +164,8 @@ class DisposalAuditor {
 /// Deterministic resource container that aggregates multiple disposable resources
 /// and releases them in strict LIFO order upon [dispose].
 class DeterministicDisposalBag {
-  DeterministicDisposalBag({String tag = 'DeterministicDisposalBag'}) : _tag = tag;
+  DeterministicDisposalBag({String tag = 'DeterministicDisposalBag'})
+      : _tag = tag;
 
   final String _tag;
   final List<void Function()> _cleanupActions = <void Function()>[];
@@ -176,7 +181,8 @@ class DeterministicDisposalBag {
   }
 
   /// Registers a [StreamSubscription] for cancellation on disposal.
-  void addSubscription(StreamSubscription<dynamic> subscription, {String tag = 'StreamSubscription'}) {
+  void addSubscription(StreamSubscription<dynamic> subscription,
+      {String tag = 'StreamSubscription'}) {
     _ensureNotDisposed();
     final int recordId = DisposalAuditor.instance.trackAllocation(
       target: subscription,
@@ -272,8 +278,8 @@ class DeterministicDisposalBag {
 
   void _ensureNotDisposed() {
     if (_isDisposed) {
-      throw StateError('Cannot register resources to an already disposed DeterministicDisposalBag ($_tag)');
+      throw StateError(
+          'Cannot register resources to an already disposed DeterministicDisposalBag ($_tag)');
     }
   }
 }
-

@@ -4,7 +4,8 @@ import 'package:airdrop_qr/presentation/widgets/missing_block_matrix_heatmap.dar
 
 void main() {
   group('TransferProgressMetrics Calculation Specs', () {
-    test('Computes progress percentage, transfer speed, and ETA accurately', () {
+    test('Computes progress percentage, transfer speed, and ETA accurately',
+        () {
       final metrics = TransferProgressMetrics.compute(
         totalChunks: 20,
         receivedChunks: 15,
@@ -55,7 +56,8 @@ void main() {
   });
 
   group('MissingBlockMatrixHeatmap Widget Specs', () {
-    testWidgets('Renders telemetry header, progress bar, and 2D matrix tiles', (tester) async {
+    testWidgets('Renders telemetry header, progress bar, and 2D matrix tiles',
+        (tester) async {
       const metrics = TransferProgressMetrics(
         totalChunks: 6,
         receivedChunks: 4,
@@ -102,7 +104,8 @@ void main() {
       expect(tappedChunk, equals(2));
     });
 
-    testWidgets('Displays completed guidance message when transfer is finished', (tester) async {
+    testWidgets('Displays completed guidance message when transfer is finished',
+        (tester) async {
       const metrics = TransferProgressMetrics(
         totalChunks: 10,
         receivedChunks: 10,
@@ -126,7 +129,9 @@ void main() {
       expect(find.text('Transfer complete! Payload verified.'), findsOneWidget);
     });
 
-    testWidgets('Displays slow optical lock hint when speed < 0.5 KB/s with missing chunks', (tester) async {
+    testWidgets(
+        'Displays slow optical lock hint when speed < 0.5 KB/s with missing chunks',
+        (tester) async {
       const metrics = TransferProgressMetrics(
         totalChunks: 10,
         receivedChunks: 2,
@@ -152,7 +157,8 @@ void main() {
       );
     });
 
-    testWidgets('Handles initial waiting state when totalChunks is zero', (tester) async {
+    testWidgets('Handles initial waiting state when totalChunks is zero',
+        (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(

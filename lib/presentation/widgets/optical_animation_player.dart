@@ -62,7 +62,8 @@ class OpticalAnimationPlayer extends StatefulWidget {
     this.brightnessManager,
     this.onFrameChanged,
     this.qrSize = 280.0,
-  }) : assert(initialFps >= 5.0 && initialFps <= 15.0, 'FPS must be between 5 and 15');
+  }) : assert(initialFps >= 5.0 && initialFps <= 15.0,
+            'FPS must be between 5 and 15');
 
   /// Convenience constructor taking binary frame bytes and converting to Latin-1 / Base64.
   factory OpticalAnimationPlayer.fromBytes({
@@ -75,9 +76,8 @@ class OpticalAnimationPlayer extends StatefulWidget {
     ValueChanged<int>? onFrameChanged,
     double qrSize = 280.0,
   }) {
-    final stringFrames = byteFrames
-        .map((bytes) => String.fromCharCodes(bytes))
-        .toList();
+    final stringFrames =
+        byteFrames.map((bytes) => String.fromCharCodes(bytes)).toList();
 
     return OpticalAnimationPlayer(
       key: key,
@@ -204,7 +204,8 @@ class _OpticalAnimationPlayerState extends State<OpticalAnimationPlayer> {
   @override
   Widget build(BuildContext context) {
     final hasPayloads = widget.framePayloads.isNotEmpty;
-    final currentPayload = hasPayloads ? widget.framePayloads[_currentIndex] : '';
+    final currentPayload =
+        hasPayloads ? widget.framePayloads[_currentIndex] : '';
 
     final Color foregroundColor = _isInverted ? Colors.white : Colors.black;
     final Color backgroundColor = _isInverted ? Colors.black : Colors.white;
@@ -220,7 +221,9 @@ class _OpticalAnimationPlayerState extends State<OpticalAnimationPlayer> {
             color: backgroundColor,
             borderRadius: BorderRadius.circular(12.0),
             border: Border.all(
-              color: widget.highContrastMode ? foregroundColor : Colors.grey.shade400,
+              color: widget.highContrastMode
+                  ? foregroundColor
+                  : Colors.grey.shade400,
               width: 3.0,
             ),
             boxShadow: const [
@@ -276,7 +279,8 @@ class _OpticalAnimationPlayerState extends State<OpticalAnimationPlayer> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
                 decoration: BoxDecoration(
                   color: Colors.blueGrey.shade100,
                   borderRadius: BorderRadius.circular(6.0),
@@ -346,4 +350,3 @@ class _OpticalAnimationPlayerState extends State<OpticalAnimationPlayer> {
     );
   }
 }
-

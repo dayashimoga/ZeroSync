@@ -153,11 +153,14 @@ void main() {
       const exWithoutCause = OpticalScannerException('Camera stream stalled');
       expect(exWithoutCause.message, equals('Camera stream stalled'));
       expect(exWithoutCause.cause, isNull);
-      expect(exWithoutCause.toString(), equals('OpticalScannerException: Camera stream stalled'));
+      expect(exWithoutCause.toString(),
+          equals('OpticalScannerException: Camera stream stalled'));
 
-      final exWithCause = OpticalScannerException('Sensor fault', StateError('Device detached'));
+      final exWithCause = OpticalScannerException(
+          'Sensor fault', StateError('Device detached'));
       expect(exWithCause.cause, isA<StateError>());
-      expect(exWithCause.toString(), contains('(Cause: Bad state: Device detached)'));
+      expect(exWithCause.toString(),
+          contains('(Cause: Bad state: Device detached)'));
     });
   });
 
@@ -180,7 +183,8 @@ void main() {
       expect(dataSource.currentMetrics.totalFramesProcessed, equals(0));
     });
 
-    test('Starts, pauses, resumes and stops scanning lifecycle correctly', () async {
+    test('Starts, pauses, resumes and stops scanning lifecycle correctly',
+        () async {
       await dataSource.initialize();
       expect(dataSource.isScanning, isFalse);
 
@@ -201,13 +205,19 @@ void main() {
       expect(dataSource.isPaused, isFalse);
     });
 
-    test('Throws OpticalScannerException if operations called after disposal', () async {
+    test('Throws OpticalScannerException if operations called after disposal',
+        () async {
       await dataSource.dispose();
-      expect(() => dataSource.initialize(), throwsA(isA<OpticalScannerException>()));
-      expect(() => dataSource.startScanning(), throwsA(isA<OpticalScannerException>()));
-      expect(() => dataSource.pauseScanning(), throwsA(isA<OpticalScannerException>()));
-      expect(() => dataSource.resumeScanning(), throwsA(isA<OpticalScannerException>()));
-      expect(() => dataSource.stopScanning(), throwsA(isA<OpticalScannerException>()));
+      expect(() => dataSource.initialize(),
+          throwsA(isA<OpticalScannerException>()));
+      expect(() => dataSource.startScanning(),
+          throwsA(isA<OpticalScannerException>()));
+      expect(() => dataSource.pauseScanning(),
+          throwsA(isA<OpticalScannerException>()));
+      expect(() => dataSource.resumeScanning(),
+          throwsA(isA<OpticalScannerException>()));
+      expect(() => dataSource.stopScanning(),
+          throwsA(isA<OpticalScannerException>()));
     });
 
     test('Ignores ingestion when not scanning or paused', () async {
@@ -243,7 +253,8 @@ void main() {
   });
 
   group('Optical Ingestion & Scanning Modes', () {
-    test('continuousAirGap mode emits all frames without duplicate suppression', () async {
+    test('continuousAirGap mode emits all frames without duplicate suppression',
+        () async {
       final dataSource = OpticalScannerDataSourceImpl(
         config: const OpticalScannerConfig(
           scanningMode: OpticalScanningMode.continuousAirGap,
@@ -277,7 +288,8 @@ void main() {
       await dataSource.dispose();
     });
 
-    test('singleCode mode debounces identical codes within cooldown window', () async {
+    test('singleCode mode debounces identical codes within cooldown window',
+        () async {
       final dataSource = OpticalScannerDataSourceImpl(
         config: const OpticalScannerConfig(
           scanningMode: OpticalScanningMode.singleCode,
@@ -336,15 +348,21 @@ void main() {
       final results = <OpticalScanResult>[];
       final subscription = dataSource.scanStream.listen(results.add);
 
-      dataSource.ingestRawBarcode(const Barcode(rawValue: 'ITEM-A', format: BarcodeFormat.qrCode));
-      dataSource.ingestRawBarcode(const Barcode(rawValue: 'ITEM-B', format: BarcodeFormat.qrCode));
-      dataSource.ingestRawBarcode(const Barcode(rawValue: 'ITEM-A', format: BarcodeFormat.qrCode));
-      dataSource.ingestRawBarcode(const Barcode(rawValue: 'ITEM-C', format: BarcodeFormat.qrCode));
-      dataSource.ingestRawBarcode(const Barcode(rawValue: 'ITEM-B', format: BarcodeFormat.qrCode));
+      dataSource.ingestRawBarcode(
+          const Barcode(rawValue: 'ITEM-A', format: BarcodeFormat.qrCode));
+      dataSource.ingestRawBarcode(
+          const Barcode(rawValue: 'ITEM-B', format: BarcodeFormat.qrCode));
+      dataSource.ingestRawBarcode(
+          const Barcode(rawValue: 'ITEM-A', format: BarcodeFormat.qrCode));
+      dataSource.ingestRawBarcode(
+          const Barcode(rawValue: 'ITEM-C', format: BarcodeFormat.qrCode));
+      dataSource.ingestRawBarcode(
+          const Barcode(rawValue: 'ITEM-B', format: BarcodeFormat.qrCode));
 
       await Future<void>.delayed(const Duration(milliseconds: 20));
       expect(results.length, equals(3));
-      expect(results.map((r) => r.rawValue).toList(), equals(['ITEM-A', 'ITEM-B', 'ITEM-C']));
+      expect(results.map((r) => r.rawValue).toList(),
+          equals(['ITEM-A', 'ITEM-B', 'ITEM-C']));
 
       await subscription.cancel();
       await dataSource.dispose();
@@ -362,14 +380,18 @@ void main() {
       final subscription = dataSource.scanStream.listen(results.add);
 
       // Null or empty
-      dataSource.ingestRawBarcode(const Barcode(rawValue: null, format: BarcodeFormat.qrCode));
-      dataSource.ingestRawBarcode(const Barcode(rawValue: '', format: BarcodeFormat.qrCode));
+      dataSource.ingestRawBarcode(
+          const Barcode(rawValue: null, format: BarcodeFormat.qrCode));
+      dataSource.ingestRawBarcode(
+          const Barcode(rawValue: '', format: BarcodeFormat.qrCode));
 
       // Unsupported format (e.g. Code 128)
-      dataSource.ingestRawBarcode(const Barcode(rawValue: 'BARCODE128', format: BarcodeFormat.code128));
+      dataSource.ingestRawBarcode(
+          const Barcode(rawValue: 'BARCODE128', format: BarcodeFormat.code128));
 
       // Supported QR Code
-      dataSource.ingestRawBarcode(const Barcode(rawValue: 'VALID_QR', format: BarcodeFormat.qrCode));
+      dataSource.ingestRawBarcode(
+          const Barcode(rawValue: 'VALID_QR', format: BarcodeFormat.qrCode));
 
       await Future<void>.delayed(const Duration(milliseconds: 20));
       expect(results.length, equals(1));
@@ -398,10 +420,16 @@ void main() {
 
       final dummyBytes = Uint8List.fromList([1, 2, 3, 4]);
       withBytes.ingestRawBarcode(
-        Barcode(rawValue: 'TEST', format: BarcodeFormat.qrCode, rawBytes: dummyBytes),
+        Barcode(
+            rawValue: 'TEST',
+            format: BarcodeFormat.qrCode,
+            rawBytes: dummyBytes),
       );
       withoutBytes.ingestRawBarcode(
-        Barcode(rawValue: 'TEST', format: BarcodeFormat.qrCode, rawBytes: dummyBytes),
+        Barcode(
+            rawValue: 'TEST',
+            format: BarcodeFormat.qrCode,
+            rawBytes: dummyBytes),
       );
 
       await Future<void>.delayed(const Duration(milliseconds: 20));
@@ -416,10 +444,12 @@ void main() {
   group('Optical Engine Resolution & BarcodeCapture Ingestion', () {
     test('Resolves explicit and auto detection engines properly', () async {
       final dsMlKit = OpticalScannerDataSourceImpl(
-        config: const OpticalScannerConfig(engine: OpticalDetectionEngine.googleMlKit),
+        config: const OpticalScannerConfig(
+            engine: OpticalDetectionEngine.googleMlKit),
       );
       final dsVision = OpticalScannerDataSourceImpl(
-        config: const OpticalScannerConfig(engine: OpticalDetectionEngine.appleVision),
+        config: const OpticalScannerConfig(
+            engine: OpticalDetectionEngine.appleVision),
       );
       final dsAuto = OpticalScannerDataSourceImpl(
         config: const OpticalScannerConfig(engine: OpticalDetectionEngine.auto),
@@ -437,9 +467,12 @@ void main() {
       dsVision.scanStream.listen(resVision.add);
       dsAuto.scanStream.listen(resAuto.add);
 
-      dsMlKit.ingestRawBarcode(const Barcode(rawValue: 'M', format: BarcodeFormat.qrCode));
-      dsVision.ingestRawBarcode(const Barcode(rawValue: 'V', format: BarcodeFormat.qrCode));
-      dsAuto.ingestRawBarcode(const Barcode(rawValue: 'A', format: BarcodeFormat.qrCode));
+      dsMlKit.ingestRawBarcode(
+          const Barcode(rawValue: 'M', format: BarcodeFormat.qrCode));
+      dsVision.ingestRawBarcode(
+          const Barcode(rawValue: 'V', format: BarcodeFormat.qrCode));
+      dsAuto.ingestRawBarcode(
+          const Barcode(rawValue: 'A', format: BarcodeFormat.qrCode));
 
       // Test engine override
       dsAuto.ingestRawBarcode(
@@ -449,8 +482,10 @@ void main() {
 
       await Future<void>.delayed(const Duration(milliseconds: 30));
 
-      expect(resMlKit.first.engineUsed, equals(OpticalDetectionEngine.googleMlKit));
-      expect(resVision.first.engineUsed, equals(OpticalDetectionEngine.appleVision));
+      expect(resMlKit.first.engineUsed,
+          equals(OpticalDetectionEngine.googleMlKit));
+      expect(resVision.first.engineUsed,
+          equals(OpticalDetectionEngine.appleVision));
       expect(resAuto.first.engineUsed, isA<OpticalDetectionEngine>());
       expect(resAuto[1].engineUsed, equals(OpticalDetectionEngine.appleVision));
 
@@ -492,7 +527,9 @@ void main() {
   });
 
   group('High-Throughput 60 FPS Emulation & Telemetry Gates', () {
-    test('Simulates rapid 60 FPS ingestion with ring-buffer saturation & metrics tracking', () async {
+    test(
+        'Simulates rapid 60 FPS ingestion with ring-buffer saturation & metrics tracking',
+        () async {
       // Configure small buffer of 16 to verify overflow and drop counting
       final dataSource = OpticalScannerDataSourceImpl(
         config: const OpticalScannerConfig(

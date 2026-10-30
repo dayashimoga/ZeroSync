@@ -135,16 +135,20 @@ void main() {
       expect(service.decompress(noneRes), uncompressed);
     });
 
-    test('Throws ArgumentError if payload exceeds maximum session size (50MB)', () {
+    test('Throws ArgumentError if payload exceeds maximum session size (50MB)',
+        () {
       // Create a dummy byte array referencing size over 50MB
-      final overLimit = Uint8List(PayloadCompressionService.maxPayloadBytes + 1);
+      final overLimit =
+          Uint8List(PayloadCompressionService.maxPayloadBytes + 1);
       expect(
         () => service.compress(overLimit),
         throwsA(isA<ArgumentError>()),
       );
     });
 
-    test('ZLib compression and decompression round-trip preserves byte fidelity', () {
+    test(
+        'ZLib compression and decompression round-trip preserves byte fidelity',
+        () {
       final rawString = 'ZeroSync: Air-Gapped Optical Data Transfer ' * 50;
       final rawBytes = Uint8List.fromList(rawString.codeUnits);
 
@@ -167,8 +171,11 @@ void main() {
       expect(restoredDirect, equals(rawBytes));
     });
 
-    test('GZip compression and decompression round-trip preserves byte fidelity', () {
-      final rawString = 'Air-Gapped QR Transfer System - GZip Test Vector ' * 40;
+    test(
+        'GZip compression and decompression round-trip preserves byte fidelity',
+        () {
+      final rawString =
+          'Air-Gapped QR Transfer System - GZip Test Vector ' * 40;
       final rawBytes = Uint8List.fromList(rawString.codeUnits);
 
       final compressed = service.compress(
@@ -185,7 +192,8 @@ void main() {
     });
 
     test('Decompresses wire envelope in a single step', () {
-      final rawBytes = Uint8List.fromList('Optical Wire Envelope Test'.codeUnits);
+      final rawBytes =
+          Uint8List.fromList('Optical Wire Envelope Test'.codeUnits);
       final compressed = service.compress(
         rawBytes,
         algorithm: CompressionAlgorithm.zlib,
@@ -196,10 +204,13 @@ void main() {
       expect(restored, equals(rawBytes));
     });
 
-    test('Throws UnsupportedError if Brotli is requested without a configured codec', () {
+    test(
+        'Throws UnsupportedError if Brotli is requested without a configured codec',
+        () {
       final rawBytes = Uint8List.fromList('Test Payload'.codeUnits);
       expect(
-        () => service.compress(rawBytes, algorithm: CompressionAlgorithm.brotli),
+        () =>
+            service.compress(rawBytes, algorithm: CompressionAlgorithm.brotli),
         throwsA(isA<UnsupportedError>()),
       );
 
@@ -256,7 +267,9 @@ void main() {
       expect(result.data, equals(randomBytes));
     });
 
-    test('Highly compressible text selects optimal algorithm with significant savings', () {
+    test(
+        'Highly compressible text selects optimal algorithm with significant savings',
+        () {
       final repeatedText = 'CONFIDENTIAL_KEY_STORE_AIR_GAP_TRANSMISSION_' * 30;
       final rawBytes = Uint8List.fromList(repeatedText.codeUnits);
 
@@ -283,8 +296,10 @@ void main() {
       expect(restored, equals(rawBytes));
     });
 
-    test('Throws ArgumentError if auto-compress payload exceeds 50MB ceiling', () {
-      final overLimit = Uint8List(PayloadCompressionService.maxPayloadBytes + 1);
+    test('Throws ArgumentError if auto-compress payload exceeds 50MB ceiling',
+        () {
+      final overLimit =
+          Uint8List(PayloadCompressionService.maxPayloadBytes + 1);
       expect(
         () => service.compressAuto(overLimit),
         throwsA(isA<ArgumentError>()),
@@ -356,14 +371,18 @@ void main() {
       expect(totalBytes, 1000);
     });
 
-    test('Validates frame boundary throws on > 450 bytes and succeeds on <= 450', () {
+    test(
+        'Validates frame boundary throws on > 450 bytes and succeeds on <= 450',
+        () {
       expect(
         () => service.validateFrameBoundary(Uint8List(451)),
         throwsA(isA<ArgumentError>()),
       );
 
-      expect(() => service.validateFrameBoundary(Uint8List(450)), returnsNormally);
-      expect(() => service.validateFrameBoundary(Uint8List(100)), returnsNormally);
+      expect(
+          () => service.validateFrameBoundary(Uint8List(450)), returnsNormally);
+      expect(
+          () => service.validateFrameBoundary(Uint8List(100)), returnsNormally);
     });
   });
 }

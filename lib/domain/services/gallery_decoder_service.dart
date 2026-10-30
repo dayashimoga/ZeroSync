@@ -54,13 +54,13 @@ class RawImageData {
     required this.height,
     required this.format,
     required this.pixels,
-  }) : assert(width > 0, 'Width must be strictly positive'),
-       assert(height > 0, 'Height must be strictly positive'),
-       assert(
-         pixels.length == width * height * _bytesPerPixel(format),
-         'Pixel buffer length (${pixels.length}) does not match expected dimension '
-         '($width x $height x ${_bytesPerPixel(format)} = ${width * height * _bytesPerPixel(format)})',
-       );
+  })  : assert(width > 0, 'Width must be strictly positive'),
+        assert(height > 0, 'Height must be strictly positive'),
+        assert(
+          pixels.length == width * height * _bytesPerPixel(format),
+          'Pixel buffer length (${pixels.length}) does not match expected dimension '
+          '($width x $height x ${_bytesPerPixel(format)} = ${width * height * _bytesPerPixel(format)})',
+        );
 
   /// Number of byte channels per pixel for a given [PixelFormat].
   static int _bytesPerPixel(PixelFormat format) {
@@ -101,7 +101,8 @@ class RawImageData {
     // DIB Header: BITMAPINFOHEADER (40 bytes)
     header.setUint32(14, 40, Endian.little);
     header.setInt32(18, width, Endian.little);
-    header.setInt32(22, -height, Endian.little); // Negative height = top-down row order
+    header.setInt32(
+        22, -height, Endian.little); // Negative height = top-down row order
     header.setUint16(26, 1, Endian.little); // 1 color plane
     header.setUint16(28, 24, Endian.little); // 24 bits per pixel (BGR)
     header.setUint32(30, 0, Endian.little); // BI_RGB (uncompressed)
@@ -234,7 +235,8 @@ class GalleryDecodeResult {
       successfulPass: null,
       totalPassesExecuted: totalPassesExecuted,
       processingDuration: duration,
-      errorMessage: message ?? 'No valid barcodes detected across all preprocessing passes',
+      errorMessage: message ??
+          'No valid barcodes detected across all preprocessing passes',
     );
   }
 
@@ -332,7 +334,8 @@ class GalleryDecoderService {
   ) async {
     // In production mobile_scanner, analyzer takes a file path on disk.
     // In unit tests, analyzer can inspect simulated paths or mock results.
-    return analyzer('synthetic_buffer://${image.width}x${image.height}/${image.format.name}');
+    return analyzer(
+        'synthetic_buffer://${image.width}x${image.height}/${image.format.name}');
   }
 
   /// Preprocesses [source] on a background isolate to keep the UI thread responsive.
@@ -542,4 +545,3 @@ class GalleryDecoderService {
     );
   }
 }
-

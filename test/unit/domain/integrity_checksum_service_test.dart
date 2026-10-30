@@ -20,11 +20,14 @@ void main() {
       expect(service.verifyChunkCrc32(mutated, crc), isFalse);
     });
 
-    test('assertChunkCrc32 completes normally on matching CRC and throws on mismatch', () {
+    test(
+        'assertChunkCrc32 completes normally on matching CRC and throws on mismatch',
+        () {
       final chunk = Uint8List.fromList([10, 20, 30, 40]);
       final crc = service.computeCrc32(chunk);
 
-      expect(() => service.assertChunkCrc32(chunk, crc, chunkIndex: 1), returnsNormally);
+      expect(() => service.assertChunkCrc32(chunk, crc, chunkIndex: 1),
+          returnsNormally);
 
       expect(
         () => service.assertChunkCrc32(chunk, crc ^ 0x12345678, chunkIndex: 5),
@@ -61,19 +64,27 @@ void main() {
       expect(digestBytes.length, equals(32));
     });
 
-    test('verifySha256 evaluates case-insensitively with whitespace tolerance', () {
+    test('verifySha256 evaluates case-insensitively with whitespace tolerance',
+        () {
       final data = Uint8List.fromList('hello world'.codeUnits);
-      const expected = 'B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9';
+      const expected =
+          'B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9';
 
       expect(service.verifySha256(data, expected), isTrue);
       expect(service.verifySha256(data, '   $expected   '), isTrue);
-      expect(service.verifySha256(data, '0000000000000000000000000000000000000000000000000000000000000000'), isFalse);
+      expect(
+          service.verifySha256(data,
+              '0000000000000000000000000000000000000000000000000000000000000000'),
+          isFalse);
     });
 
-    test('assertSha256 throws CryptographicIntegrityException on digest mismatch', () {
+    test(
+        'assertSha256 throws CryptographicIntegrityException on digest mismatch',
+        () {
       final data = Uint8List.fromList('Sensitive Vault File'.codeUnits);
       final actualHex = service.computeSha256Hex(data);
-      const invalidHex = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+      const invalidHex =
+          'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 
       expect(() => service.assertSha256(data, actualHex), returnsNormally);
 
@@ -106,7 +117,8 @@ void main() {
         3: service.computeCrc32(chunk3),
       };
 
-      final assembledExpected = Uint8List.fromList('ZERO_SYNC_PART_1_ZERO_SYNC_PART_2_ZERO_SYNC_PART_3'.codeUnits);
+      final assembledExpected = Uint8List.fromList(
+          'ZERO_SYNC_PART_1_ZERO_SYNC_PART_2_ZERO_SYNC_PART_3'.codeUnits);
       final expectedSha = service.computeSha256Hex(assembledExpected);
 
       final report = service.auditAndAssemble(
@@ -124,7 +136,9 @@ void main() {
       expect(report.sha256Match, isTrue);
     });
 
-    test('Flags corrupted chunk in CRC audit and halts whole-file hash calculation', () {
+    test(
+        'Flags corrupted chunk in CRC audit and halts whole-file hash calculation',
+        () {
       final chunk1 = Uint8List.fromList([1, 2, 3]);
       final chunk2 = Uint8List.fromList([4, 5, 6]);
 
@@ -174,12 +188,15 @@ void main() {
       expect(report.corruptedChunkIndices, equals([2]));
     });
 
-    test('Detects valid chunks whose combined SHA-256 does not match expected hash', () {
+    test(
+        'Detects valid chunks whose combined SHA-256 does not match expected hash',
+        () {
       final chunk1 = Uint8List.fromList([1, 2, 3]);
       final chunks = <int, Uint8List>{1: chunk1};
       final crcMap = <int, int>{1: service.computeCrc32(chunk1)};
 
-      const wrongHash = '0000000000000000000000000000000000000000000000000000000000000000';
+      const wrongHash =
+          '0000000000000000000000000000000000000000000000000000000000000000';
 
       final report = service.auditAndAssemble(
         chunksByIndex: chunks,
@@ -195,4 +212,3 @@ void main() {
     });
   });
 }
-

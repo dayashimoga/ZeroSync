@@ -45,7 +45,8 @@ class MockPlatformAudioDriver implements PlatformAudioDriver {
   }
 
   @override
-  Future<void> playSyntheticTone(ZeroSyncAudioChime chime, Uint8List wavBytes) async {
+  Future<void> playSyntheticTone(
+      ZeroSyncAudioChime chime, Uint8List wavBytes) async {
     playedSyntheticChimes.add(chime);
     playedBuffers.add(wavBytes);
   }
@@ -82,13 +83,19 @@ void main() {
 
       // fmt subchunk
       expect(String.fromCharCodes(wav.sublist(12, 16)), equals('fmt '));
-      expect(byteData.getUint32(16, Endian.little), equals(16)); // PCM chunk size
-      expect(byteData.getUint16(20, Endian.little), equals(1));  // AudioFormat = PCM
-      expect(byteData.getUint16(22, Endian.little), equals(1));  // Mono = 1 channel
-      expect(byteData.getUint32(24, Endian.little), equals(44100)); // SampleRate
-      expect(byteData.getUint32(28, Endian.little), equals(88200)); // ByteRate (44100 * 1 * 2)
-      expect(byteData.getUint16(32, Endian.little), equals(2));     // BlockAlign
-      expect(byteData.getUint16(34, Endian.little), equals(16));    // BitsPerSample
+      expect(
+          byteData.getUint32(16, Endian.little), equals(16)); // PCM chunk size
+      expect(byteData.getUint16(20, Endian.little),
+          equals(1)); // AudioFormat = PCM
+      expect(
+          byteData.getUint16(22, Endian.little), equals(1)); // Mono = 1 channel
+      expect(
+          byteData.getUint32(24, Endian.little), equals(44100)); // SampleRate
+      expect(byteData.getUint32(28, Endian.little),
+          equals(88200)); // ByteRate (44100 * 1 * 2)
+      expect(byteData.getUint16(32, Endian.little), equals(2)); // BlockAlign
+      expect(
+          byteData.getUint16(34, Endian.little), equals(16)); // BitsPerSample
 
       // data subchunk
       expect(String.fromCharCodes(wav.sublist(36, 40)), equals('data'));
@@ -97,10 +104,14 @@ void main() {
     });
 
     test('Generates specialized WAV buffers for all chime types', () {
-      final successWav = generator.generateChimeWav(ZeroSyncAudioChime.scanSuccess);
-      final chunkWav = generator.generateChimeWav(ZeroSyncAudioChime.chunkReceived);
-      final streamWav = generator.generateChimeWav(ZeroSyncAudioChime.streamComplete);
-      final alertWav = generator.generateChimeWav(ZeroSyncAudioChime.warningAlert);
+      final successWav =
+          generator.generateChimeWav(ZeroSyncAudioChime.scanSuccess);
+      final chunkWav =
+          generator.generateChimeWav(ZeroSyncAudioChime.chunkReceived);
+      final streamWav =
+          generator.generateChimeWav(ZeroSyncAudioChime.streamComplete);
+      final alertWav =
+          generator.generateChimeWav(ZeroSyncAudioChime.warningAlert);
       final noneWav = generator.generateChimeWav(ZeroSyncAudioChime.none);
 
       expect(successWav.length, greaterThan(44));
@@ -142,28 +153,34 @@ void main() {
       await service.triggerScanSuccess();
 
       expect(mockHaptics.mediumCount, equals(1));
-      expect(mockAudio.playedSyntheticChimes, equals(<ZeroSyncAudioChime>[ZeroSyncAudioChime.scanSuccess]));
+      expect(mockAudio.playedSyntheticChimes,
+          equals(<ZeroSyncAudioChime>[ZeroSyncAudioChime.scanSuccess]));
     });
 
     test('Dispatches chunk received micro-tactile and tick events', () async {
       await service.triggerChunkReceived();
 
       expect(mockHaptics.lightCount, equals(1));
-      expect(mockAudio.playedSyntheticChimes, equals(<ZeroSyncAudioChime>[ZeroSyncAudioChime.chunkReceived]));
+      expect(mockAudio.playedSyntheticChimes,
+          equals(<ZeroSyncAudioChime>[ZeroSyncAudioChime.chunkReceived]));
     });
 
-    test('Dispatches stream complete heavy impact and completion tone', () async {
+    test('Dispatches stream complete heavy impact and completion tone',
+        () async {
       await service.triggerStreamComplete();
 
       expect(mockHaptics.heavyCount, equals(1));
-      expect(mockAudio.playedSyntheticChimes, equals(<ZeroSyncAudioChime>[ZeroSyncAudioChime.streamComplete]));
+      expect(mockAudio.playedSyntheticChimes,
+          equals(<ZeroSyncAudioChime>[ZeroSyncAudioChime.streamComplete]));
     });
 
-    test('Dispatches security warning vibration and warning alert chime', () async {
+    test('Dispatches security warning vibration and warning alert chime',
+        () async {
       await service.triggerSecurityWarning();
 
       expect(mockHaptics.vibrateCount, equals(1));
-      expect(mockAudio.playedSyntheticChimes, equals(<ZeroSyncAudioChime>[ZeroSyncAudioChime.warningAlert]));
+      expect(mockAudio.playedSyntheticChimes,
+          equals(<ZeroSyncAudioChime>[ZeroSyncAudioChime.warningAlert]));
     });
 
     test('Dispatches selection click for UI interactions', () async {
@@ -173,7 +190,8 @@ void main() {
       expect(mockAudio.playedSyntheticChimes.isEmpty, isTrue);
     });
 
-    test('Throttles rapid successive haptics and audio within cooldown window', () async {
+    test('Throttles rapid successive haptics and audio within cooldown window',
+        () async {
       // Rapid fire 5 events without delay
       await service.triggerChunkReceived();
       await service.triggerChunkReceived();
@@ -261,4 +279,3 @@ void main() {
     });
   });
 }
-

@@ -143,7 +143,9 @@ void main() {
 
     test('GalleryDecodeResult formatting and properties', () {
       final resultSuccess = GalleryDecodeResult.success(
-        barcodes: const [Barcode(rawValue: 'RESULT_1', format: BarcodeFormat.qrCode)],
+        barcodes: const [
+          Barcode(rawValue: 'RESULT_1', format: BarcodeFormat.qrCode)
+        ],
         successfulPass: GalleryDecodePass.inverted,
         totalPassesExecuted: 4,
         duration: const Duration(milliseconds: 45),
@@ -196,7 +198,8 @@ void main() {
       expect(identical(same, gray), isTrue);
     });
 
-    test('maximizeContrast stretches pixel intensities to 0..255 dynamic range', () {
+    test('maximizeContrast stretches pixel intensities to 0..255 dynamic range',
+        () {
       final gray = RawImageData(
         width: 3,
         height: 1,
@@ -237,7 +240,8 @@ void main() {
       expect(inverted.pixels[3], equals(0));
     });
 
-    test('binarizeAdaptive thresholds pixels to binary 0 and 255 based on mean', () {
+    test('binarizeAdaptive thresholds pixels to binary 0 and 255 based on mean',
+        () {
       // Mean = (10 + 20 + 80 + 90) / 4 = 50
       final gray = RawImageData(
         width: 4,
@@ -253,7 +257,9 @@ void main() {
       expect(binary.pixels[3], equals(255));
     });
 
-    test('downscaleImage downscales oversized dimensions while preserving aspect ratio', () {
+    test(
+        'downscaleImage downscales oversized dimensions while preserving aspect ratio',
+        () {
       final largeImage = RawImageData(
         width: 2000,
         height: 1000,
@@ -289,7 +295,9 @@ void main() {
 
       final service = GalleryDecoderService(
         analyzer: (path) async {
-          return const [Barcode(rawValue: 'PASS_RAW', format: BarcodeFormat.qrCode)];
+          return const [
+            Barcode(rawValue: 'PASS_RAW', format: BarcodeFormat.qrCode)
+          ];
         },
       );
 
@@ -304,7 +312,9 @@ void main() {
       expect(result.totalPassesExecuted, equals(1));
     });
 
-    test('Iterates through passes and succeeds on inverted pass for dark-mode QR', () async {
+    test(
+        'Iterates through passes and succeeds on inverted pass for dark-mode QR',
+        () async {
       final sampleImage = RawImageData(
         width: 10,
         height: 10,
@@ -318,7 +328,9 @@ void main() {
           callIndex++;
           // Simulate failure on passes 1..3 and success on pass 4 (inverted)
           if (callIndex == 4) {
-            return const [Barcode(rawValue: 'DARK_MODE_QR', format: BarcodeFormat.qrCode)];
+            return const [
+              Barcode(rawValue: 'DARK_MODE_QR', format: BarcodeFormat.qrCode)
+            ];
           }
           return const <Barcode>[];
         },
@@ -374,11 +386,14 @@ void main() {
       );
 
       expect(result.isSuccess, isFalse);
-      expect(result.errorMessage, contains('No static image analyzer adapter configured'));
+      expect(result.errorMessage,
+          contains('No static image analyzer adapter configured'));
       expect(result.totalPassesExecuted, equals(0));
     });
 
-    test('Executes preprocessing passes in background isolate when runInIsolate is true', () async {
+    test(
+        'Executes preprocessing passes in background isolate when runInIsolate is true',
+        () async {
       final sampleImage = RawImageData(
         width: 20,
         height: 20,
@@ -388,7 +403,9 @@ void main() {
 
       final service = GalleryDecoderService(
         analyzer: (path) async {
-          return const [Barcode(rawValue: 'ISOLATE_DECODED', format: BarcodeFormat.qrCode)];
+          return const [
+            Barcode(rawValue: 'ISOLATE_DECODED', format: BarcodeFormat.qrCode)
+          ];
         },
       );
 
@@ -406,4 +423,3 @@ void main() {
     });
   });
 }
-

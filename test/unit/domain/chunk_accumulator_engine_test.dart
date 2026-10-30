@@ -150,7 +150,9 @@ void main() {
       expect(engine.rejectedCount, 1);
     });
 
-    test('Accepts out-of-order frames, tracks missing indices, and reassembles intact payload', () {
+    test(
+        'Accepts out-of-order frames, tracks missing indices, and reassembles intact payload',
+        () {
       final originalData = Uint8List(500);
       for (var i = 0; i < originalData.length; i++) {
         originalData[i] = (i * 7 + 11) % 256;
@@ -240,4 +242,3 @@ void main() {
     });
   });
 }
-

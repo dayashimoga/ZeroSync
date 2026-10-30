@@ -57,9 +57,12 @@ class VaultSearchFilter {
     if (searchQuery != null && searchQuery!.trim().isNotEmpty) {
       final String query = searchQuery!.trim().toLowerCase();
       final bool valueMatch = record.rawValue.toLowerCase().contains(query);
-      final bool titleMatch = record.title?.toLowerCase().contains(query) ?? false;
-      final bool notesMatch = record.notes?.toLowerCase().contains(query) ?? false;
-      final bool tagMatch = record.tags.any((t) => t.toLowerCase().contains(query));
+      final bool titleMatch =
+          record.title?.toLowerCase().contains(query) ?? false;
+      final bool notesMatch =
+          record.notes?.toLowerCase().contains(query) ?? false;
+      final bool tagMatch =
+          record.tags.any((t) => t.toLowerCase().contains(query));
 
       if (!valueMatch && !titleMatch && !notesMatch && !tagMatch) {
         return false;
@@ -89,7 +92,8 @@ class VaultSearchFilter {
     // 5. Threat Severity Filter
     if (threatSeverity != null &&
         threatSeverity!.trim().isNotEmpty &&
-        record.threatSeverity?.toLowerCase() != threatSeverity!.trim().toLowerCase()) {
+        record.threatSeverity?.toLowerCase() !=
+            threatSeverity!.trim().toLowerCase()) {
       return false;
     }
 
@@ -229,11 +233,21 @@ class VaultExportService {
       buffer.writeln('Content: ${r.rawValue}');
       buffer.writeln('Format : ${r.format} (${r.contentType})');
       buffer.writeln('Date   : ${r.createdAt.toIso8601String()}');
-      if (r.isFavorite) buffer.writeln('Favorite: Yes');
-      if (r.title != null && r.title!.isNotEmpty) buffer.writeln('Title  : ${r.title}');
-      if (r.threatSeverity != null) buffer.writeln('Threat : ${r.threatSeverity}');
-      if (r.tags.isNotEmpty) buffer.writeln('Tags   : ${r.tags.join(", ")}');
-      if (r.notes != null && r.notes!.isNotEmpty) buffer.writeln('Notes  : ${r.notes}');
+      if (r.isFavorite) {
+        buffer.writeln('Favorite: Yes');
+      }
+      if (r.title != null && r.title!.isNotEmpty) {
+        buffer.writeln('Title  : ${r.title}');
+      }
+      if (r.threatSeverity != null) {
+        buffer.writeln('Threat : ${r.threatSeverity}');
+      }
+      if (r.tags.isNotEmpty) {
+        buffer.writeln('Tags   : ${r.tags.join(", ")}');
+      }
+      if (r.notes != null && r.notes!.isNotEmpty) {
+        buffer.writeln('Notes  : ${r.notes}');
+      }
       buffer.writeln('-' * 60);
     }
 
@@ -293,4 +307,3 @@ class VaultExportService {
 
   static String _pad(int n) => n.toString().padLeft(2, '0');
 }
-

@@ -85,7 +85,8 @@ class SystemAudioDriver implements PlatformAudioDriver {
       SystemSound.play(soundType);
 
   @override
-  Future<void> playSyntheticTone(ZeroSyncAudioChime chime, Uint8List wavBytes) async {
+  Future<void> playSyntheticTone(
+      ZeroSyncAudioChime chime, Uint8List wavBytes) async {
     // Falls back to system sound click/alert if external codec pipeline is unavailable
     switch (chime) {
       case ZeroSyncAudioChime.scanSuccess:
@@ -126,8 +127,8 @@ class SyntheticChimeGenerator {
     byteData.setUint8(2, 0x46); // 'F'
     byteData.setUint8(3, 0x46); // 'F'
     byteData.setUint32(4, chunkSize, Endian.little);
-    byteData.setUint8(8, 0x57);  // 'W'
-    byteData.setUint8(9, 0x41);  // 'A'
+    byteData.setUint8(8, 0x57); // 'W'
+    byteData.setUint8(9, 0x41); // 'A'
     byteData.setUint8(10, 0x56); // 'V'
     byteData.setUint8(11, 0x45); // 'E'
 
@@ -137,13 +138,14 @@ class SyntheticChimeGenerator {
     byteData.setUint8(14, 0x74); // 't'
     byteData.setUint8(15, 0x20); // ' '
     byteData.setUint32(16, 16, Endian.little); // Subchunk1Size (16 for PCM)
-    byteData.setUint16(20, 1, Endian.little);  // AudioFormat (1 = PCM)
-    byteData.setUint16(22, 1, Endian.little);  // NumChannels (1 = Mono)
+    byteData.setUint16(20, 1, Endian.little); // AudioFormat (1 = PCM)
+    byteData.setUint16(22, 1, Endian.little); // NumChannels (1 = Mono)
     byteData.setUint32(24, sampleRate.round(), Endian.little); // SampleRate
     final int byteRate = sampleRate.round() * 1 * 2;
     byteData.setUint32(28, byteRate, Endian.little); // ByteRate
-    byteData.setUint16(32, 2, Endian.little);        // BlockAlign (NumChannels * BitsPerSample/8)
-    byteData.setUint16(34, 16, Endian.little);       // BitsPerSample (16 bits)
+    byteData.setUint16(
+        32, 2, Endian.little); // BlockAlign (NumChannels * BitsPerSample/8)
+    byteData.setUint16(34, 16, Endian.little); // BitsPerSample (16 bits)
 
     // "data" Subchunk
     byteData.setUint8(36, 0x64); // 'd'
@@ -158,8 +160,10 @@ class SyntheticChimeGenerator {
 
     for (int i = 0; i < numSamples; i++) {
       // Hann envelope: 0.5 * (1 - cos(2 * pi * i / N))
-      final double envelope = 0.5 * (1.0 - math.cos(2.0 * math.pi * i / numSamples));
-      final double sampleVal = math.sin(angularFreq * i) * maxAmplitude * envelope;
+      final double envelope =
+          0.5 * (1.0 - math.cos(2.0 * math.pi * i / numSamples));
+      final double sampleVal =
+          math.sin(angularFreq * i) * maxAmplitude * envelope;
       final int intSample = sampleVal.round().clamp(-32768, 32767);
       byteData.setInt16(44 + (i * 2), intSample, Endian.little);
     }
@@ -240,7 +244,8 @@ class FeedbackHapticsService with ChangeNotifier {
   DateTime _lastAudioTime = DateTime.fromMillisecondsSinceEpoch(0);
 
   // Cache generated WAV buffers to prevent redundant synthesis allocations
-  final Map<ZeroSyncAudioChime, Uint8List> _cachedChimes = <ZeroSyncAudioChime, Uint8List>{};
+  final Map<ZeroSyncAudioChime, Uint8List> _cachedChimes =
+      <ZeroSyncAudioChime, Uint8List>{};
 
   // Getters
   bool get hapticsEnabled => _hapticsEnabled;
@@ -391,4 +396,3 @@ class FeedbackHapticsService with ChangeNotifier {
     await _audioDriver.playSyntheticTone(chime, wavBytes);
   }
 }
-

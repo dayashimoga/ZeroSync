@@ -98,7 +98,8 @@ class ThermalThrottleManager with ChangeNotifier {
   double? get lastReportedTemperatureCelsius => _lastReportedTemperatureCelsius;
   bool get isSuspendedDueToInactivity => _isSuspendedDueToInactivity;
   bool get isManuallyPaused => _isManuallyPaused;
-  bool get isCameraStreamingActive => !_isSuspendedDueToInactivity && !_isManuallyPaused;
+  bool get isCameraStreamingActive =>
+      !_isSuspendedDueToInactivity && !_isManuallyPaused;
   DateTime get lastActivityTime => _lastActivityTime;
   Duration get inactivityTimeout => _inactivityTimeout;
 
@@ -241,4 +242,3 @@ class ThermalThrottleManager with ChangeNotifier {
     super.dispose();
   }
 }
-

@@ -57,7 +57,8 @@ void main() {
     });
 
     test('Zeroes memory buffer with scrubBuffer to prevent heap retention', () {
-      final buffer = Uint8List.fromList(<int>[0xDE, 0xAD, 0xBE, 0xEF, 0x42, 0xFF]);
+      final buffer =
+          Uint8List.fromList(<int>[0xDE, 0xAD, 0xBE, 0xEF, 0x42, 0xFF]);
       expect(buffer.every((b) => b == 0), isFalse);
 
       DisposalAuditor.scrubBuffer(buffer);
@@ -190,7 +191,8 @@ void main() {
 
       expect(
         () => bag.dispose(),
-        throwsA(isA<Exception>().having((e) => e.toString(), 'error', contains('Corrupt resource'))),
+        throwsA(isA<Exception>().having(
+            (e) => e.toString(), 'error', contains('Corrupt resource'))),
       );
 
       expect(secondRan, isTrue);

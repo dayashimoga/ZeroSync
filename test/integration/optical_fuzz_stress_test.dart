@@ -45,8 +45,11 @@ void main() {
     for (final dropRate in <double>[0.10, 0.20, 0.30, 0.40]) {
       final int dropPercent = (dropRate * 100).round();
 
-      test('Fountain Engine Recovers Complete Payload Under $dropPercent% Random Packet Loss', () async {
-        final bag = DeterministicDisposalBag(tag: 'DropStress_${dropPercent}Pct');
+      test(
+          'Fountain Engine Recovers Complete Payload Under $dropPercent% Random Packet Loss',
+          () async {
+        final bag =
+            DeterministicDisposalBag(tag: 'DropStress_${dropPercent}Pct');
 
         // 1. Generate 3.0 KB randomized realistic file payload
         final rng = math.Random(0x1000 + dropPercent);
@@ -123,7 +126,8 @@ void main() {
         expect(
           decoder.isDecoded,
           isTrue,
-          reason: 'Decoder failed at $dropPercent% loss: delivered=$deliveredFramesCount, dropped=$droppedFramesCount',
+          reason:
+              'Decoder failed at $dropPercent% loss: delivered=$deliveredFramesCount, dropped=$droppedFramesCount',
         );
 
         // 6. Verify whole-payload byte-for-byte fidelity
@@ -140,9 +144,11 @@ void main() {
           preferredFileName: 'stress_test_${dropPercent}pct.bin',
         );
 
-        final writtenBytes = await storageAdapter.readBinaryFile(fileResult.filePath);
+        final writtenBytes =
+            await storageAdapter.readBinaryFile(fileResult.filePath);
         expect(writtenBytes, equals(rawBytes));
-        expect(fileResult.sha256Checksum, equals(integrityService.computeSha256Hex(rawBytes)));
+        expect(fileResult.sha256Checksum,
+            equals(integrityService.computeSha256Hex(rawBytes)));
 
         bag.dispose();
       });
@@ -152,12 +158,15 @@ void main() {
     // 2. SYNTHETIC CHANNEL NOISE & BIT CORRUPTION FUZZING
     // =========================================================================
 
-    test('CRC32 Checksum Engine Discards 100% of Bit-Corrupted Optical Datagrams', () {
+    test(
+        'CRC32 Checksum Engine Discards 100% of Bit-Corrupted Optical Datagrams',
+        () {
       final bag = DeterministicDisposalBag(tag: 'CorruptionFuzz');
       final rng = math.Random(0xDEAD);
 
       // Create a valid frame
-      final validPayload = Uint8List.fromList(List<int>.generate(200, (i) => i % 256));
+      final validPayload =
+          Uint8List.fromList(List<int>.generate(200, (i) => i % 256));
       final validCrc = Crc32.compute(validPayload);
       final validHeader = PackedTransportHeader(
         sessionId: 0x12345678,
@@ -210,15 +219,19 @@ void main() {
     // 3. BURST OCCLUSION & OUT-OF-ORDER SHUFFLING RESILIENCE
     // =========================================================================
 
-    test('Recovers Full Payload Under 6-Consecutive Frame Burst Drop & Packet Shuffling', () async {
+    test(
+        'Recovers Full Payload Under 6-Consecutive Frame Burst Drop & Packet Shuffling',
+        () async {
       final bag = DeterministicDisposalBag(tag: 'BurstDropTest');
 
       final rawBytes = Uint8List.fromList(
-        utf8.encode('ZeroSync Air-Gapped Optical Protocol - Burst Fault Tolerance Test 2026'),
+        utf8.encode(
+            'ZeroSync Air-Gapped Optical Protocol - Burst Fault Tolerance Test 2026'),
       );
       bag.addBuffer(rawBytes, scrubOnDispose: false);
 
-      final compressed = compressionService.compress(rawBytes, algorithm: CompressionAlgorithm.zlib);
+      final compressed = compressionService.compress(rawBytes,
+          algorithm: CompressionAlgorithm.zlib);
       final envelope = compressed.toWireEnvelope();
       bag.addBuffer(envelope, scrubOnDispose: false);
 
@@ -243,7 +256,8 @@ void main() {
       // Shuffle transmitted droplets (out-of-order optical ingestion)
       transmittedDroplets.shuffle(math.Random(0xCAFE));
 
-      final decoder = LubyTransformDecoder.fromDroplet(transmittedDroplets.first);
+      final decoder =
+          LubyTransformDecoder.fromDroplet(transmittedDroplets.first);
       for (final droplet in transmittedDroplets) {
         decoder.addDroplet(droplet);
         if (decoder.isDecoded) break;
@@ -253,7 +267,8 @@ void main() {
       final decodedEnvelope = decoder.getDecodedPayload();
       expect(decodedEnvelope, equals(envelope));
 
-      final decompressed = compressionService.decompressEnvelope(decodedEnvelope!);
+      final decompressed =
+          compressionService.decompressEnvelope(decodedEnvelope!);
       expect(decompressed, equals(rawBytes));
 
       bag.dispose();
@@ -263,13 +278,27 @@ void main() {
     // 4. SYNTHETIC MOTION BLUR & CONTRAST MAXIMIZATION (RawImageData)
     // =========================================================================
 
-    test('RawImageData Preprocessing Pipeline Inverts and Stretches Degraded Contrast', () {
+    test(
+        'RawImageData Preprocessing Pipeline Inverts and Stretches Degraded Contrast',
+        () {
       // 4x4 Grayscale degraded optical image (low dynamic range: pixels clustered 100..150)
       final lowContrastPixels = Uint8List.fromList(<int>[
-        100, 110, 120, 130,
-        140, 150, 110, 120,
-        130, 140, 150, 100,
-        120, 130, 140, 150,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        110,
+        120,
+        130,
+        140,
+        150,
+        100,
+        120,
+        130,
+        140,
+        150,
       ]);
 
       final rawImage = RawImageData(
@@ -298,7 +327,7 @@ void main() {
       );
 
       expect(invertedImage.pixels.first, equals(255 - 100)); // 155
-      expect(invertedImage.pixels.last, equals(255 - 150));  // 105
+      expect(invertedImage.pixels.last, equals(255 - 150)); // 105
     });
   });
 }

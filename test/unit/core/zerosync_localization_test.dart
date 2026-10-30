@@ -4,7 +4,8 @@ import 'package:airdrop_qr/core/localization/zerosync_localization.dart';
 
 void main() {
   group('ZeroSyncLocalizations & ARB Structure Specs', () {
-    test('Resolves supported locales and detects text direction (LTR vs RTL)', () {
+    test('Resolves supported locales and detects text direction (LTR vs RTL)',
+        () {
       expect(ZeroSyncLocale.en.direction, equals(TextDirection.ltr));
       expect(ZeroSyncLocale.en.isRtl, isFalse);
 
@@ -17,10 +18,12 @@ void main() {
       expect(ZeroSyncLocale.fromLanguageCode('en'), equals(ZeroSyncLocale.en));
       expect(ZeroSyncLocale.fromLanguageCode('ar'), equals(ZeroSyncLocale.ar));
       expect(ZeroSyncLocale.fromLanguageCode('es'), equals(ZeroSyncLocale.es));
-      expect(ZeroSyncLocale.fromLanguageCode('unknown'), equals(ZeroSyncLocale.en));
+      expect(ZeroSyncLocale.fromLanguageCode('unknown'),
+          equals(ZeroSyncLocale.en));
     });
 
-    test('Validates English (LTR) string localization and parameter formatting', () {
+    test('Validates English (LTR) string localization and parameter formatting',
+        () {
       final strings = ZeroSyncStrings.of(ZeroSyncLocale.en);
 
       expect(strings.appTitle, equals('ZeroSync AirDrop-QR'));
@@ -36,7 +39,8 @@ void main() {
       expect(strings.offlineAirGapGuaranteed.isNotEmpty, isTrue);
     });
 
-    test('Validates Arabic (RTL) string localization and parameter formatting', () {
+    test('Validates Arabic (RTL) string localization and parameter formatting',
+        () {
       final strings = ZeroSyncStrings.of(ZeroSyncLocale.ar);
 
       expect(strings.appTitle, contains('زيرو سينك'));
@@ -50,7 +54,8 @@ void main() {
       expect(strings.offlineAirGapGuaranteed, contains('100٪'));
     });
 
-    test('Validates Spanish (LTR) string localization and parameter formatting', () {
+    test('Validates Spanish (LTR) string localization and parameter formatting',
+        () {
       final strings = ZeroSyncStrings.of(ZeroSyncLocale.es);
 
       expect(strings.scannerTabTitle, equals('Escáner'));
@@ -64,4 +69,3 @@ void main() {
     });
   });
 }
-

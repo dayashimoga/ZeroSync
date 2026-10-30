@@ -20,7 +20,8 @@ abstract class BatchScannerFeedbackService {
 }
 
 /// System-default implementation of [BatchScannerFeedbackService] using Flutter's native services.
-class DefaultBatchScannerFeedbackService implements BatchScannerFeedbackService {
+class DefaultBatchScannerFeedbackService
+    implements BatchScannerFeedbackService {
   const DefaultBatchScannerFeedbackService();
 
   @override
@@ -98,20 +99,36 @@ class BatchScanItem extends Equatable {
 
   static String _inferContentType(String value) {
     final String trimmed = value.trim().toLowerCase();
-    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return 'url';
-    if (trimmed.startsWith('wifi:')) return 'wifi';
-    if (trimmed.startsWith('begin:vcard')) return 'vcard';
-    if (trimmed.startsWith('begin:vcalendar') || trimmed.startsWith('begin:vevent')) return 'calendar';
-    if (trimmed.startsWith('geo:')) return 'geo';
-    if (trimmed.startsWith('otpauth://')) return 'totp';
-    if (trimmed.startsWith('bitcoin:') || trimmed.startsWith('ethereum:') || trimmed.startsWith('solana:')) {
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+      return 'url';
+    }
+    if (trimmed.startsWith('wifi:')) {
+      return 'wifi';
+    }
+    if (trimmed.startsWith('begin:vcard')) {
+      return 'vcard';
+    }
+    if (trimmed.startsWith('begin:vcalendar') ||
+        trimmed.startsWith('begin:vevent')) {
+      return 'calendar';
+    }
+    if (trimmed.startsWith('geo:')) {
+      return 'geo';
+    }
+    if (trimmed.startsWith('otpauth://')) {
+      return 'totp';
+    }
+    if (trimmed.startsWith('bitcoin:') ||
+        trimmed.startsWith('ethereum:') ||
+        trimmed.startsWith('solana:')) {
       return 'crypto';
     }
     return 'text';
   }
 
   @override
-  List<Object?> get props => [id, rawValue, format, scannedAt, contentType, scanCount];
+  List<Object?> get props =>
+      [id, rawValue, format, scannedAt, contentType, scanCount];
 }
 
 // ============================================================================
@@ -331,7 +348,8 @@ class BatchScannerBloc extends Bloc<BatchScannerEvent, BatchScannerState> {
     EncryptedVaultDataSource? vaultDataSource,
     BatchScannerFeedbackService? feedbackService,
   })  : _vaultDataSource = vaultDataSource,
-        _feedbackService = feedbackService ?? const DefaultBatchScannerFeedbackService(),
+        _feedbackService =
+            feedbackService ?? const DefaultBatchScannerFeedbackService(),
         super(const BatchScannerInitial()) {
     on<BatchScannerStarted>(_onStarted);
     on<BatchScannerCodeScanned>(_onCodeScanned);
@@ -394,8 +412,10 @@ class BatchScannerBloc extends Bloc<BatchScannerEvent, BatchScannerState> {
     unawaited(_feedbackService.triggerSuccessChime());
 
     // 3. Update or Add Item to Session
-    final List<BatchScanItem> updatedItems = List<BatchScanItem>.from(currentState.items);
-    final int existingIndex = updatedItems.indexWhere((item) => item.rawValue == rawValue);
+    final List<BatchScanItem> updatedItems =
+        List<BatchScanItem>.from(currentState.items);
+    final int existingIndex =
+        updatedItems.indexWhere((item) => item.rawValue == rawValue);
 
     BatchScanItem currentItem;
     if (existingIndex >= 0) {
@@ -431,7 +451,8 @@ class BatchScannerBloc extends Bloc<BatchScannerEvent, BatchScannerState> {
     emit(currentState.copyWith(
       items: List<BatchScanItem>.unmodifiable(updatedItems),
       latestItem: currentItem,
-      feedbackMessage: 'Scanned: ${currentItem.contentType} (${updatedItems.length} items)',
+      feedbackMessage:
+          'Scanned: ${currentItem.contentType} (${updatedItems.length} items)',
     ));
   }
 

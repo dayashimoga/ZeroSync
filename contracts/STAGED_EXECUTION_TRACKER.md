@@ -11,10 +11,10 @@
 |:---|:---:|:---:|:---|
 | **Stage 1: Android Build Recovery & Air-Gap Gate** | 3 | 3 | 🟢 COMPLETED |
 | **Stage 2: Core Protocol Engine v2 & Isolates** | 3 | 3 | 🟢 COMPLETED |
-| **Stage 3: Zero-Trust Security, FFI & Crypto** | 4 | 0 | ⚪ PENDING |
+| **Stage 3: Zero-Trust Security, FFI & Crypto** | 4 | 1 | 🟡 IN_PROGRESS |
 | **Stage 4: Windows, iOS & Android Hardware Parity** | 2 | 0 | ⚪ PENDING |
 | **Stage 5: UX, DevSecOps Tools & Release Matrix** | 3 | 0 | ⚪ PENDING |
-| **Total** | **15** | **6** | **40% Completed** |
+| **Total** | **15** | **7** | **47% Completed** |
 
 ---
 
@@ -40,7 +40,7 @@
 
 ### STAGE 3: Zero-Trust Security, Native FFI Scrubbing & Encrypted Optical Channel
 - [ ] **Phase 3.1: Native FFI Secure Buffer & DisposalAuditor v2**
-  - [ ] **Subphase 3.1.1:** `SecureMemoryArena` via `dart:ffi` (`calloc<Uint8>`, byte wiping barrier, zero-state tests). `[PENDING]`
+  - [x] **Subphase 3.1.1:** `SecureMemoryArena` via `dart:ffi` (`calloc<Uint8>`, byte wiping barrier, zero-state tests). `[COMPLETED]`
 - [ ] **Phase 3.2: Encrypted Optical Transport & ECDH / Passcode Handshake**
   - [ ] **Subphase 3.2.1:** XChaCha20-Poly1305 Payload Encryption Service with Argon2id & ephemeral X25519. `[PENDING]`
 - [ ] **Phase 3.3: Air-Gapped Ed25519 Licensing & Duress Vault Protection**

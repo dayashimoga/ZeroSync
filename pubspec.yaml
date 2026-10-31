@@ -28,6 +28,7 @@ dependencies:
   # Cryptographic Storage & Air-Gap Vault
   sqflite_sqlcipher: 3.2.0
   flutter_secure_storage: ^9.2.2
+  ffi: ^2.1.2
 
 dev_dependencies:
   flutter_test:

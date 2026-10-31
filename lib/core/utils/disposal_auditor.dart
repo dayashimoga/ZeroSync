@@ -102,7 +102,11 @@ class DisposalAuditor {
     );
 
     _activeRecords[id] = record;
-    _objectIndex[target] = id;
+    try {
+      _objectIndex[target] = id;
+    } catch (_) {
+      // Safely ignore targets unsupported by Expando (e.g. FFI Pointer, records)
+    }
     return id;
   }
 

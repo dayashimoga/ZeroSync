@@ -212,6 +212,7 @@ class TransportHeader extends Equatable {
     required Uint8List payload,
     required int k,
     required int seed,
+    int? originalPayloadLength,
     bool isEncrypted = false,
     RgbColorMode rgbMode = RgbColorMode.mono,
     bool isCompressed = false,
@@ -225,12 +226,14 @@ class TransportHeader extends Equatable {
     flags |= (rgbMode.value & 0x03) << 1;
     if (isCompressed) flags |= 0x08;
 
+    final recordedLength = originalPayloadLength ?? payload.length;
+
     view.setUint16(0, magicConstant, Endian.big);
     view.setUint8(2, version);
     view.setUint8(3, flags);
     view.setUint32(4, k, Endian.big);
     view.setUint32(8, seed, Endian.big);
-    view.setUint32(12, payload.length, Endian.big);
+    view.setUint32(12, recordedLength, Endian.big);
 
     final crc = Crc32c.computeCombined(prefix, payload);
 
@@ -242,7 +245,7 @@ class TransportHeader extends Equatable {
       isCompressed: isCompressed,
       k: k,
       seed: seed,
-      payloadLength: payload.length,
+      payloadLength: recordedLength,
       crc32c: crc,
     );
   }
@@ -343,7 +346,10 @@ class TransportFrame extends Equatable {
       wireBytes.length,
     );
 
-    if (payload.length != header.payloadLength) {
+    if (payload.isEmpty) {
+      throw const FormatException('Empty transport payload');
+    }
+    if (header.k == 1 && payload.length != header.payloadLength) {
       throw FormatException(
         'Payload size mismatch: expected ${header.payloadLength} bytes, found ${payload.length}',
       );

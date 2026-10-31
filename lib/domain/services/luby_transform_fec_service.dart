@@ -270,6 +270,12 @@ class LubyTransformDecoder {
       throw ArgumentError('Mismatched droplet transmission parameters');
     }
 
+    // Poisoning protection: reject corrupted source block indices outside [0, totalSourceBlocks - 1]
+    if (droplet.sourceIndices
+        .any((idx) => idx < 0 || idx >= totalSourceBlocks)) {
+      return false;
+    }
+
     var indices = Set<int>.from(droplet.sourceIndices);
     var data = Uint8List.fromList(droplet.data);
 

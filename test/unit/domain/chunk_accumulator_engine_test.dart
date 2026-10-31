@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:airdrop_qr/domain/services/chunk_accumulator_engine.dart';
+import 'package:airdrop_qr/domain/services/luby_transform_fec_service.dart';
 import 'package:airdrop_qr/domain/value_objects/packed_transport_header.dart';
+import 'package:airdrop_qr/domain/value_objects/transport_header.dart';
 
 void main() {
   group('ChunkBitSet Zero-Allocation Bitmask Specs', () {
@@ -239,6 +241,148 @@ void main() {
       expect(snapshots[0].receivedCount, 1);
       expect(snapshots[1].receivedCount, 2);
       expect(snapshots[1].isComplete, isTrue);
+    });
+
+    test(
+        'Poisoning Protection: Rejects bit-corrupted TransportFrame before graph insertion',
+        () {
+      final payload = Uint8List.fromList([10, 20, 30, 40]);
+      final validHeader = TransportHeader.createForPayload(
+        payload: payload,
+        k: 4,
+        seed: 123,
+      );
+      final validFrame = TransportFrame(header: validHeader, payload: payload);
+
+      // Ingest valid frame
+      expect(engine.ingestTransportFrame(validFrame), isTrue);
+      expect(engine.rejectedCount, 0);
+
+      // Mutate payload bit -> CRC-32C mismatch
+      final corruptedPayload = Uint8List.fromList([10, 20, 30, 41]);
+      final corruptedFrame =
+          TransportFrame(header: validHeader, payload: corruptedPayload);
+
+      expect(engine.ingestTransportFrame(corruptedFrame), isFalse);
+      expect(engine.rejectedCount, 1);
+    });
+
+    test('Deduplicates identical fountain seeds in O(1)', () {
+      final payload = Uint8List.fromList([1, 2, 3, 4]);
+      final header = TransportHeader.createForPayload(
+        payload: payload,
+        k: 2,
+        seed: 555,
+      );
+      final frame = TransportFrame(header: header, payload: payload);
+
+      expect(engine.ingestTransportFrame(frame), isTrue);
+      expect(engine.duplicateCount, 0);
+
+      // Duplicate seed
+      expect(engine.ingestTransportFrame(frame), isFalse);
+      expect(engine.duplicateCount, 1);
+    });
+
+    test('Degree distribution telemetry records received degrees', () {
+      for (var seed = 1; seed <= 5; seed++) {
+        final payload = Uint8List.fromList([seed, seed * 2]);
+        final header = TransportHeader.createForPayload(
+          payload: payload,
+          k: 10,
+          seed: seed,
+        );
+        final frame = TransportFrame(header: header, payload: payload);
+        engine.ingestTransportFrame(frame);
+      }
+
+      expect(engine.degreeDistribution, isNotEmpty);
+      var totalTracked = 0;
+      for (final count in engine.degreeDistribution.values) {
+        totalTracked += count;
+      }
+      expect(totalTracked, equals(5));
+    });
+
+    test(
+        'Early Termination: Terminates immediately once all K blocks are resolved and recovers payload',
+        () {
+      const fecService = LubyTransformFecService();
+      final originalData = Uint8List.fromList(
+        List.generate(120, (i) => (i * 3 + 7) & 0xFF),
+      );
+      const symbolSize = 40; // K = 3 blocks
+      final sourceBlocks = fecService.partitionSourceBlocks(originalData,
+          symbolSize: symbolSize);
+      final k = sourceBlocks.length;
+      expect(k, equals(3));
+
+      var seed = 100;
+      var acceptedCount = 0;
+
+      while (!engine.isComplete && seed < 300) {
+        final droplet = fecService.generateDroplet(
+          sourceBlocks: sourceBlocks,
+          seed: seed,
+          originalPayloadLength: originalData.length,
+        );
+
+        final frame = TransportFrame(
+          header: TransportHeader.createForPayload(
+            payload: droplet.data,
+            k: k,
+            seed: seed,
+            originalPayloadLength: originalData.length,
+          ),
+          payload: droplet.data,
+        );
+
+        if (engine.ingestTransportFrame(frame)) {
+          acceptedCount++;
+        }
+        seed++;
+      }
+
+      expect(engine.isComplete, isTrue);
+      expect(engine.isEarlyTerminated, isTrue);
+      expect(acceptedCount, greaterThanOrEqualTo(k));
+
+      // Extra frames ingested after early termination must be rejected immediately
+      final extraDroplet = fecService.generateDroplet(
+        sourceBlocks: sourceBlocks,
+        seed: 9999,
+        originalPayloadLength: originalData.length,
+      );
+      final extraFrame = TransportFrame(
+        header: TransportHeader.createForPayload(
+          payload: extraDroplet.data,
+          k: k,
+          seed: 9999,
+          originalPayloadLength: originalData.length,
+        ),
+        payload: extraDroplet.data,
+      );
+      expect(engine.ingestTransportFrame(extraFrame), isFalse);
+
+      // Verify intact payload reassembly
+      final assembled = engine.assembleContiguousPayload();
+      expect(assembled, equals(originalData));
+    });
+
+    test(
+        'Dual-mode ingestWireBytes automatically identifies 0x5A53 v2 wire datagrams',
+        () {
+      final payload = Uint8List.fromList([42, 43, 44, 45]);
+      final header = TransportHeader.createForPayload(
+        payload: payload,
+        k: 1,
+        seed: 77,
+      );
+      final frame = TransportFrame(header: header, payload: payload);
+      final wireBytes = frame.toWireBytes();
+
+      expect(engine.ingestWireBytes(wireBytes), isTrue);
+      expect(engine.isComplete, isTrue);
     });
   });
 }

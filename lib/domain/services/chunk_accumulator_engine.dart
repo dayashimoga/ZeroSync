@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 import '../value_objects/packed_transport_header.dart';
+import '../value_objects/transport_header.dart';
+import 'luby_transform_fec_service.dart';
 
 /// Memory-efficient, zero-allocation bitset for $O(1)$ duplicate checking during continuous scanning.
 class ChunkBitSet {
@@ -48,7 +51,7 @@ enum AccumulatorState {
   aborted,
 }
 
-/// Immutable snapshot representing receiver progress and telemetry.
+/// Immutable snapshot representing receiver progress, fountain degree telemetry, and early termination.
 class AccumulatorSnapshot extends Equatable {
   final AccumulatorState state;
   final int? sessionId;
@@ -57,6 +60,8 @@ class AccumulatorSnapshot extends Equatable {
   final int duplicateCount;
   final int rejectedCount;
   final MimeTypeFlag? mimeFlag;
+  final Map<int, int> degreeDistribution;
+  final bool isEarlyTerminated;
 
   const AccumulatorSnapshot({
     required this.state,
@@ -66,6 +71,8 @@ class AccumulatorSnapshot extends Equatable {
     required this.duplicateCount,
     required this.rejectedCount,
     this.mimeFlag,
+    this.degreeDistribution = const {},
+    this.isEarlyTerminated = false,
   });
 
   /// Factory for initial empty state.
@@ -78,6 +85,8 @@ class AccumulatorSnapshot extends Equatable {
       duplicateCount: 0,
       rejectedCount: 0,
       mimeFlag: null,
+      degreeDistribution: {},
+      isEarlyTerminated: false,
     );
   }
 
@@ -96,15 +105,19 @@ class AccumulatorSnapshot extends Equatable {
         duplicateCount,
         rejectedCount,
         mimeFlag,
+        degreeDistribution,
+        isEarlyTerminated,
       ];
 }
 
-/// Asynchronous optical frame accumulator with zero-allocation deduplication and sparse array caching.
+/// Asynchronous optical frame accumulator with zero-allocation deduplication,
+/// bipartite graph peeling poisoning protection, and early termination.
 ///
-/// Designed for 60 FPS continuous camera scanning:
-/// - Fast $O(1)$ duplicate suppression via [ChunkBitSet] bitmask.
-/// - Ingests out-of-order optical frames into fixed-size sparse array.
-/// - Validates per-chunk CRC32 checksums and locks to active Session ID.
+/// Designed for 60 FPS continuous optical camera scanning:
+/// - Fast $O(1)$ duplicate suppression via [ChunkBitSet] bitmask and seed sets.
+/// - Ingests out-of-order systematic frames into fixed-size sparse array.
+/// - Ingests rateless LT fountain frames with Castagnoli CRC-32C validation.
+/// - Early termination upon full equation recovery without waiting for excess droplets.
 class ChunkAccumulatorEngine {
   AccumulatorState _state = AccumulatorState.idle;
   int? _activeSessionId;
@@ -113,9 +126,14 @@ class ChunkAccumulatorEngine {
   int _duplicateCount = 0;
   int _rejectedCount = 0;
   MimeTypeFlag? _mimeFlag;
+  bool _isEarlyTerminated = false;
 
   List<Uint8List?> _sparseArray = const [];
   ChunkBitSet? _bitSet;
+
+  final Set<int> _receivedSeeds = HashSet<int>();
+  final Map<int, int> _degreeDistribution = <int, int>{};
+  LubyTransformDecoder? _fountainDecoder;
 
   final StreamController<AccumulatorSnapshot> _stateController =
       StreamController<AccumulatorSnapshot>.broadcast();
@@ -131,17 +149,23 @@ class ChunkAccumulatorEngine {
   /// Total expected chunks for the current session.
   int get totalChunks => _totalChunks;
 
-  /// Number of unique valid chunks received so far.
+  /// Number of unique valid chunks or solved source blocks received so far.
   int get receivedCount => _receivedCount;
 
   /// Number of redundant frames discarded by duplicate suppression.
   int get duplicateCount => _duplicateCount;
 
-  /// Number of rejected frames (checksum failure or mismatched session).
+  /// Number of rejected frames (checksum failure, corruption, or mismatched session).
   int get rejectedCount => _rejectedCount;
 
-  /// MIME type flag of the current transmission.
+  /// MIME type flag of the current transmission (systematic mode).
   MimeTypeFlag? get mimeFlag => _mimeFlag;
+
+  /// Whether decoding terminated early as soon as all $K$ source blocks were recovered.
+  bool get isEarlyTerminated => _isEarlyTerminated;
+
+  /// Distribution of received fountain droplet degrees for optical rate telemetry.
+  Map<int, int> get degreeDistribution => Map.unmodifiable(_degreeDistribution);
 
   /// Current progress ratio [0.0, 1.0].
   double get progress =>
@@ -162,9 +186,11 @@ class ChunkAccumulatorEngine {
         duplicateCount: _duplicateCount,
         rejectedCount: _rejectedCount,
         mimeFlag: _mimeFlag,
+        degreeDistribution: Map.unmodifiable(_degreeDistribution),
+        isEarlyTerminated: _isEarlyTerminated,
       );
 
-  /// Ingests a deserialized [PackedTransportFrame].
+  /// Ingests a deserialized [PackedTransportFrame] (v1 systematic mode).
   /// Returns `true` if frame provided new unique data, `false` if duplicate or rejected.
   bool ingestFrame(PackedTransportFrame frame) {
     if (!frame.isValidChecksum) {
@@ -183,6 +209,10 @@ class ChunkAccumulatorEngine {
       _rejectedCount++;
       _emitSnapshot();
       return false;
+    }
+
+    if (_state == AccumulatorState.completed) {
+      return false; // Early termination guard for current session
     }
 
     final chunkIndex = frame.header.chunkIndex;
@@ -206,18 +236,124 @@ class ChunkAccumulatorEngine {
 
     if (_receivedCount >= _totalChunks) {
       _state = AccumulatorState.completed;
+      _isEarlyTerminated = true;
     }
 
     _emitSnapshot();
     return true;
   }
 
-  /// Ingests raw optical datagram bytes, deserializing the header and payload.
+  /// Ingests a [TransportFrame] (v2 20-byte wire header rateless fountain mode).
+  ///
+  /// Enforces graph peeling poisoning protection:
+  /// 1. Verifies Castagnoli CRC-32C BEFORE inserting into bipartite peeling equations.
+  /// 2. $O(1)$ duplicate seed suppression via [HashSet].
+  /// 3. Validates reconstructed source block indices range before graph attachment.
+  /// 4. Early termination upon full payload recovery.
+  bool ingestTransportFrame(TransportFrame frame) {
+    // Poisoning protection: reject corrupted frames before touching peeling graph
+    if (!frame.isValidChecksum) {
+      _rejectedCount++;
+      _emitSnapshot();
+      return false;
+    }
+
+    final header = frame.header;
+    if (header.k < 1 || frame.payload.isEmpty) {
+      _rejectedCount++;
+      _emitSnapshot();
+      return false;
+    }
+
+    // Initialize fountain session if idle
+    if (_state == AccumulatorState.idle) {
+      _activeSessionId = header.seed;
+      _totalChunks = header.k;
+      _receivedCount = 0;
+      _duplicateCount = 0;
+      _rejectedCount = 0;
+      _receivedSeeds.clear();
+      _degreeDistribution.clear();
+      _fountainDecoder = LubyTransformDecoder(
+        totalSourceBlocks: header.k,
+        symbolSize: frame.payload.length,
+        originalPayloadLength: header.payloadLength,
+      );
+      _state = AccumulatorState.accumulating;
+    }
+
+    // Validate K matches active session
+    if (header.k != _totalChunks) {
+      _rejectedCount++;
+      _emitSnapshot();
+      return false;
+    }
+
+    if (_state == AccumulatorState.completed) {
+      return false; // Early termination guard for current session
+    }
+
+    // O(1) duplicate suppression for seed
+    if (_receivedSeeds.contains(header.seed)) {
+      _duplicateCount++;
+      _emitSnapshot();
+      return false;
+    }
+    _receivedSeeds.add(header.seed);
+
+    // Deterministic droplet reconstruction & degree distribution telemetry
+    final prng = DeterministicPrng(header.seed);
+    final soliton = RobustSolitonDistribution(header.k);
+    final degree = soliton.sampleDegree(prng);
+    final indices = soliton.sampleIndices(degree, prng);
+
+    _degreeDistribution[degree] = (_degreeDistribution[degree] ?? 0) + 1;
+
+    // Boundary check for poisoning prevention
+    if (indices.any((idx) => idx < 0 || idx >= header.k)) {
+      _rejectedCount++;
+      _emitSnapshot();
+      return false;
+    }
+
+    final droplet = FountainDroplet(
+      seed: header.seed,
+      totalSourceBlocks: header.k,
+      symbolSize: frame.payload.length,
+      originalPayloadLength: header.payloadLength,
+      sourceIndices: indices,
+      data: frame.payload,
+    );
+
+    // Ingest into belief propagation peeling decoder
+    final providedNewInfo = _fountainDecoder!.addDroplet(droplet);
+    _receivedCount = _fountainDecoder!.solvedBlocksCount;
+
+    // Early termination upon graph resolution
+    if (_fountainDecoder!.isDecoded) {
+      _state = AccumulatorState.completed;
+      _isEarlyTerminated = true;
+    }
+
+    _emitSnapshot();
+    return providedNewInfo;
+  }
+
+  /// Ingests raw optical datagram bytes, automatically detecting v2 wire header (0x5A53)
+  /// or v1 packed header.
   bool ingestWireBytes(Uint8List wireBytes) {
     try {
-      final frame =
-          PackedTransportFrame.fromWireBytes(wireBytes, verifyChecksum: true);
-      return ingestFrame(frame);
+      if (wireBytes.length >= TransportHeader.headerSize &&
+          wireBytes[0] == 0x5A &&
+          wireBytes[1] == 0x53) {
+        final frame =
+            TransportFrame.fromWireBytes(wireBytes, verifyChecksum: true);
+        return ingestTransportFrame(frame);
+      } else {
+        final frame =
+            PackedTransportFrame.fromWireBytes(wireBytes, verifyChecksum: true);
+        return ingestFrame(frame);
+      }
     } catch (_) {
       _rejectedCount++;
       _emitSnapshot();
@@ -239,9 +375,23 @@ class ChunkAccumulatorEngine {
 
   /// Returns sorted list of 1-based chunk indices still missing from the transmission.
   List<int> getMissingIndices() {
-    if (_state == AccumulatorState.idle || _bitSet == null) {
+    if (_state == AccumulatorState.idle) {
       return const [];
     }
+
+    if (_fountainDecoder != null) {
+      // In fountain mode, returns 1-based indices of unsolved source blocks
+      final missing = <int>[];
+      for (var i = 0; i < _totalChunks; i++) {
+        if (!_fountainDecoder!.isDecoded &&
+            i >= _fountainDecoder!.solvedBlocksCount) {
+          missing.add(i + 1);
+        }
+      }
+      return missing;
+    }
+
+    if (_bitSet == null) return const [];
     final missing = <int>[];
     for (var i = 1; i <= _totalChunks; i++) {
       if (!_bitSet!.contains(i)) {
@@ -258,6 +408,12 @@ class ChunkAccumulatorEngine {
       throw StateError(
         'Cannot assemble incomplete payload ($_receivedCount / $_totalChunks received)',
       );
+    }
+
+    if (_fountainDecoder != null && _fountainDecoder!.isDecoded) {
+      final decoded = _fountainDecoder!.getDecodedPayload();
+      if (decoded != null) return decoded;
+      throw StateError('Fountain payload reassembly failed');
     }
 
     var totalBytes = 0;
@@ -280,7 +436,7 @@ class ChunkAccumulatorEngine {
     return assembled;
   }
 
-  /// Resets accumulator to idle state and clears sparse buffer.
+  /// Resets accumulator to idle state and clears sparse buffer and fountain structures.
   void reset() {
     _state = AccumulatorState.idle;
     _activeSessionId = null;
@@ -289,9 +445,13 @@ class ChunkAccumulatorEngine {
     _duplicateCount = 0;
     _rejectedCount = 0;
     _mimeFlag = null;
+    _isEarlyTerminated = false;
     _sparseArray = const [];
     _bitSet?.clear();
     _bitSet = null;
+    _receivedSeeds.clear();
+    _degreeDistribution.clear();
+    _fountainDecoder = null;
     _emitSnapshot();
   }
 

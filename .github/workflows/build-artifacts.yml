@@ -17,13 +17,13 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
   packages: write
   actions: read
 
 jobs:
   # ---------------------------------------------------------------------------
-  # JOB 1: STATIC ANALYSIS, LINTING, SECURITY AUDIT & COVERAGE GATES
+  # JOB 1: STATIC ANALYSIS, LINTING, AIR-GAP AUDIT & COVERAGE GATES
   # ---------------------------------------------------------------------------
   lint-and-test:
     name: Code Quality, Air-Gap Audit & Tests
@@ -45,10 +45,11 @@ jobs:
       - name: Set up Flutter SDK
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.x'
           channel: 'stable'
           cache: true
-          cache-key: "flutter-:os:-:channel:-:version:-:arch:-${{ hashFiles('**/pubspec.lock') }}"
+
+      - name: Opt-out of Flutter Analytics
+        run: flutter config --no-analytics
 
       - name: Cache Pub Dependencies
         uses: actions/cache@v4
@@ -62,8 +63,14 @@ jobs:
       - name: Resolve Project Dependencies
         run: flutter pub get
 
+      - name: Enforce Code Formatting
+        run: dart format --output=none --set-exit-if-changed lib/ test/ tool/
+
       - name: Enforce Zero-Warning Static Analysis
         run: dart analyze --fatal-infos --fatal-warnings
+
+      - name: Air-Gap AST & Clean Architecture Boundary Linter
+        run: dart run tool/verify_airgap.dart
 
       - name: Zero-Trust Air-Gap Manifest Audit
         run: |
@@ -104,7 +111,6 @@ jobs:
             if [ "$TOTAL_LINES" -gt 0 ]; then
               COVERAGE_PCT=$(awk -v hit="$HIT_LINES" -v tot="$TOTAL_LINES" 'BEGIN { printf "%.2f", (hit/tot)*100 }')
               echo "Measured Domain Line Coverage: $COVERAGE_PCT%"
-              # Gate comparison (requires bc or awk)
               IS_PASS=$(awk -v cov="$COVERAGE_PCT" 'BEGIN { print (cov >= 85.0) ? "PASS" : "FAIL" }')
               if [ "$IS_PASS" != "PASS" ]; then
                 echo "::error::Domain coverage ($COVERAGE_PCT%) below required 85.0% threshold."
@@ -141,9 +147,11 @@ jobs:
       - name: Set up Flutter SDK
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.x'
           channel: 'stable'
           cache: true
+
+      - name: Opt-out of Flutter Analytics
+        run: flutter config --no-analytics
 
       - name: Cache Gradle Caches & Wrapper
         uses: actions/cache@v4
@@ -154,6 +162,11 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+
+      - name: Inject flutter.sdk Path
+        run: |
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+          cat android/local.properties
 
       - name: Resolve Project Dependencies
         run: flutter pub get
@@ -212,9 +225,11 @@ jobs:
       - name: Set up Flutter SDK
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.x'
           channel: 'stable'
           cache: true
+
+      - name: Opt-out of Flutter Analytics
+        run: flutter config --no-analytics
 
       - name: Cache CocoaPods
         uses: actions/cache@v4
@@ -252,3 +267,103 @@ jobs:
           retention-days: 14
           if-no-files-found: error
 
+  # ---------------------------------------------------------------------------
+  # JOB 4: WINDOWS HERMETIC BUILD & RELEASE ZIP PACKAGING
+  # ---------------------------------------------------------------------------
+  build-windows:
+    name: Build Windows (Release x64 ZIP)
+    needs: lint-and-test
+    runs-on: windows-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Opt-out of Flutter Analytics
+        run: flutter config --no-analytics
+
+      - name: Enable Windows Desktop Support
+        run: flutter config --enable-windows-desktop
+
+      - name: Resolve Project Dependencies
+        run: flutter pub get
+
+      - name: Build Windows Application
+        run: flutter build windows --release
+
+      - name: Package Windows ZIP Archive & Compute SHA-256
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path output-windows
+          Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath output-windows/ZeroSync-Windows-x64.zip -CompressionLevel Optimal
+          $hash = (Get-FileHash -Path output-windows/ZeroSync-Windows-x64.zip -Algorithm SHA256).Hash.ToLower()
+          "$hash  ZeroSync-Windows-x64.zip" | Out-File -FilePath output-windows/CHECKSUMS_WINDOWS.sha256 -Encoding ascii
+          Get-Content output-windows/CHECKSUMS_WINDOWS.sha256
+
+      - name: Upload Windows x64 ZIP Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: airdrop-qr-windows-x64-zip
+          path: output-windows/
+          retention-days: 14
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------------------
+  # JOB 5: UNIFIED MULTIPLATFORM GITHUB RELEASE PUBLISHING
+  # ---------------------------------------------------------------------------
+  publish-release:
+    name: Publish Multi-Platform Release Matrix
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build-android, build-ios, build-windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download Android Split APKs
+        uses: actions/download-artifact@v4
+        with:
+          name: airdrop-qr-android-split-apks
+          path: release-assets/android-apk/
+
+      - name: Download Android App Bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: airdrop-qr-android-aab
+          path: release-assets/android-aab/
+
+      - name: Download iOS Unsigned IPA
+        uses: actions/download-artifact@v4
+        with:
+          name: airdrop-qr-ios-unsigned-ipa
+          path: release-assets/ios/
+
+      - name: Download Windows ZIP
+        uses: actions/download-artifact@v4
+        with:
+          name: airdrop-qr-windows-x64-zip
+          path: release-assets/windows/
+
+      - name: Consolidate Binaries & Generate Master Checksums
+        run: |
+          mkdir -p release-dist
+          find release-assets -type f \( -name "*.apk" -o -name "*.aab" -o -name "*.ipa" -o -name "*.zip" \) -exec cp {} release-dist/ \;
+          cd release-dist
+          sha256sum * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release-dist/*
+          draft: false
+          prerelease: false
+          generate_release_notes: true

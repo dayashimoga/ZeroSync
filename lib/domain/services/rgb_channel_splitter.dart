@@ -255,4 +255,3 @@ class OpticalRgbMultiplexer {
     return buffer;
   }
 }
-

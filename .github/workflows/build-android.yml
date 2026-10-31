@@ -33,8 +33,22 @@ jobs:
         with:
           channel: 'stable'
 
+      - name: Disable Flutter Analytics & Telemetry
+        run: flutter config --no-analytics
+
       - name: Print Flutter & Dart Environment
         run: flutter --version
+
+      - name: Ensure Android local.properties
+        run: |
+          mkdir -p android
+          if [ ! -f "android/local.properties" ]; then
+            echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+          elif ! grep -q "flutter.sdk" android/local.properties; then
+            echo "flutter.sdk=$FLUTTER_ROOT" >> android/local.properties
+          fi
+          echo "android/local.properties contents:"
+          cat android/local.properties
 
       - name: Cache Gradle Packages & Wrapper
         uses: actions/cache@v4

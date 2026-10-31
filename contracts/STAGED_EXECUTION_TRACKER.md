@@ -23,9 +23,9 @@
 ### STAGE 1: Android Build Recovery, Toolchain Hardening & CI Air-Gap Gate
 - [ ] **Phase 1.1: Gradle Kotlin DSL & Flutter Plugin Resolution Fix**
   - [x] **Subphase 1.1.1:** Fix `android/settings.gradle.kts` & `android/build.gradle.kts` (Resilient `flutterSdkPath` resolver, fallback to `FLUTTER_ROOT`, `compileSdk = 34`, `flutter { source = "../.." }`). `[COMPLETED]`
-  - [ ] **Subphase 1.1.2:** Harden `.github/workflows/build-android.yml` (Analytics opt-out, explicit `flutter.sdk=$FLUTTER_ROOT` injection, deterministic SHA-256 sums). `[IN_PROGRESS]`
+  - [x] **Subphase 1.1.2:** Harden `.github/workflows/build-android.yml` (Analytics opt-out, explicit `flutter.sdk=$FLUTTER_ROOT` injection, deterministic SHA-256 sums). `[COMPLETED]`
 - [ ] **Phase 1.2: Multi-Platform Air-Gap AST & Manifest Gate**
-  - [ ] **Subphase 1.2.1:** Build `tool/verify_airgap.dart` Static Analyzer and wire into `.github/workflows/quality-gate.yml`. `[PENDING]`
+  - [ ] **Subphase 1.2.1:** Build `tool/verify_airgap.dart` Static Analyzer and wire into `.github/workflows/quality-gate.yml`. `[IN_PROGRESS]`
 
 ---
 

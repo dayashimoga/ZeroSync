@@ -11,10 +11,10 @@
 |:---|:---:|:---:|:---|
 | **Stage 1: Android Build Recovery & Air-Gap Gate** | 3 | 3 | 🟢 COMPLETED |
 | **Stage 2: Core Protocol Engine v2 & Isolates** | 3 | 3 | 🟢 COMPLETED |
-| **Stage 3: Zero-Trust Security, FFI & Crypto** | 4 | 3 | 🟡 IN_PROGRESS |
+| **Stage 3: Zero-Trust Security, FFI & Crypto** | 4 | 4 | 🟢 COMPLETED |
 | **Stage 4: Windows, iOS & Android Hardware Parity** | 2 | 0 | ⚪ PENDING |
 | **Stage 5: UX, DevSecOps Tools & Release Matrix** | 3 | 0 | ⚪ PENDING |
-| **Total** | **15** | **9** | **60% Completed** |
+| **Total** | **15** | **10** | **67% Completed** |
 
 ---
 
@@ -39,13 +39,13 @@
 ---
 
 ### STAGE 3: Zero-Trust Security, Native FFI Scrubbing & Encrypted Optical Channel
-- [ ] **Phase 3.1: Native FFI Secure Buffer & DisposalAuditor v2**
+- [x] **Phase 3.1: Native FFI Secure Buffer & DisposalAuditor v2**
   - [x] **Subphase 3.1.1:** `SecureMemoryArena` via `dart:ffi` (`calloc<Uint8>`, byte wiping barrier, zero-state tests). `[COMPLETED]`
 - [x] **Phase 3.2: Encrypted Optical Transport & ECDH / Passcode Handshake**
   - [x] **Subphase 3.2.1:** XChaCha20-Poly1305 Payload Encryption Service with Argon2id & ephemeral X25519. `[COMPLETED]`
-- [ ] **Phase 3.3: Air-Gapped Ed25519 Licensing & Duress Vault Protection**
+- [x] **Phase 3.3: Air-Gapped Ed25519 Licensing & Duress Vault Protection**
   - [x] **Subphase 3.3.1:** Offline `.zslic` License Verifier & Feature Gate (Ed25519 public key pinning). `[COMPLETED]`
-  - [ ] **Subphase 3.3.2:** Duress Panic PIN & Decoy SQLCipher Database mount. `[PENDING]`
+  - [x] **Subphase 3.3.2:** Duress Panic PIN & Decoy SQLCipher Database mount. `[COMPLETED]`
 
 ---
 

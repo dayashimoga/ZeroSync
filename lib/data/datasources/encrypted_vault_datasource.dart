@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sqflite_sqlcipher/sqflite.dart';
 import 'package:airdrop_qr/domain/entities/scan_record.dart';
+import 'package:airdrop_qr/domain/services/duress_manager_service.dart';
 
 export 'package:airdrop_qr/domain/entities/scan_record.dart';
 
@@ -19,6 +20,12 @@ abstract class EncryptedVaultDataSource {
 
   /// Whether the database is actively open and ready for queries.
   bool get isOpen;
+
+  /// Whether the database is actively operating in duress decoy mode.
+  bool get isDecoyActive;
+
+  /// Initializes the duress decoy SQLCipher database with plausible benign data.
+  Future<void> initializeDecoy({String? customPassword, Database? injectedDb});
 
   /// Retrieves or provisions the 256-bit AES master encryption passphrase from secure hardware storage.
   Future<String> getOrGenerateMasterKey();
@@ -51,10 +58,12 @@ abstract class EncryptedVaultDataSource {
 class EncryptedVaultDataSourceImpl implements EncryptedVaultDataSource {
   static const String _keyVaultPassphrase = 'zerosync_vault_master_key_v1';
   static const String _databaseFileName = 'zerosync_vault_encrypted.db';
+  static const String _decoyDatabaseFileName = 'zerosync_vault_decoy.db';
 
   final FlutterSecureStorage _secureStorage;
   Database? _db;
   bool _isInitialized = false;
+  bool _isDecoyActive = false;
 
   EncryptedVaultDataSourceImpl({
     FlutterSecureStorage? secureStorage,
@@ -69,9 +78,13 @@ class EncryptedVaultDataSourceImpl implements EncryptedVaultDataSource {
   bool get isOpen => _db != null && _db!.isOpen;
 
   @override
+  bool get isDecoyActive => _isDecoyActive;
+
+  @override
   Future<void> initialize(
       {String? customPassword, Database? injectedDb}) async {
     if (_isInitialized && isOpen) return;
+    _isDecoyActive = false;
 
     if (injectedDb != null) {
       _db = injectedDb;
@@ -94,6 +107,50 @@ class EncryptedVaultDataSourceImpl implements EncryptedVaultDataSource {
     );
 
     _isInitialized = true;
+  }
+
+  @override
+  Future<void> initializeDecoy(
+      {String? customPassword, Database? injectedDb}) async {
+    if (_isInitialized && isOpen) return;
+    _isDecoyActive = true;
+
+    if (injectedDb != null) {
+      _db = injectedDb;
+      await _createSchema(_db!);
+      await _seedDecoyDataIfEmpty(_db!);
+      _isInitialized = true;
+      return;
+    }
+
+    final String password = customPassword ?? 'zerosync_decoy_salt_passphrase';
+    final String databasesPath = await getDatabasesPath();
+    final String path = '$databasesPath/$_decoyDatabaseFileName';
+
+    _db = await openDatabase(
+      path,
+      password: password,
+      version: 1,
+      onCreate: (Database db, int version) async {
+        await _createSchema(db);
+        await _seedDecoyDataIfEmpty(db);
+      },
+    );
+
+    _isInitialized = true;
+  }
+
+  Future<void> _seedDecoyDataIfEmpty(DatabaseExecutor db) async {
+    final countResult =
+        await db.rawQuery('SELECT COUNT(*) as count FROM scans');
+    final count = Sqflite.firstIntValue(countResult) ?? 0;
+    if (count == 0) {
+      final decoySeeds = DuressManagerService.generateDecoySeedRecords();
+      for (final record in decoySeeds) {
+        await db.insert('scans', record,
+            conflictAlgorithm: ConflictAlgorithm.replace);
+      }
+    }
   }
 
   /// Creates relational tables, indexes, and metadata entries in the encrypted database.

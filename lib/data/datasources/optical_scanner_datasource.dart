@@ -4,6 +4,9 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:airdrop_qr/core/platform/windows_zxing_decoder.dart';
+
+export 'package:airdrop_qr/core/platform/windows_zxing_decoder.dart';
 
 /// Supported hardware-accelerated optical detection engines for QR and barcode scanning.
 enum OpticalDetectionEngine {
@@ -13,7 +16,11 @@ enum OpticalDetectionEngine {
   /// Apple Vision Framework (`VNDetectBarcodesRequest`) pipeline (Optimized for Apple Neural Engine).
   appleVision,
 
-  /// Automatic platform detection: selects [appleVision] on iOS/macOS and [googleMlKit] on Android/others.
+  /// Windows ZXing-C++ high-performance optical engine.
+  windowsZxing,
+
+  /// Automatic platform detection: selects [windowsZxing] on Windows, [appleVision] on iOS/macOS,
+  /// and [googleMlKit] on Android/others.
   auto,
 }
 
@@ -341,6 +348,9 @@ abstract class OpticalScannerDataSource {
   /// Ingests a raw [BarcodeCapture] emitted from a camera controller or simulated test harness.
   void ingestCapture(BarcodeCapture capture, {DateTime? captureTime});
 
+  /// Ingests a raw [OpticalImageFrame] from a native camera sensor or desktop video device.
+  Future<void> ingestImageFrame(OpticalImageFrame frame);
+
   /// Ingests an individual [Barcode] symbol directly.
   void ingestRawBarcode(
     Barcode barcode, {
@@ -389,9 +399,16 @@ class OpticalScannerDataSourceImpl implements OpticalScannerDataSource {
   DateTime? _lastEmittedTimestamp;
   final Set<String> _batchScannedCodes = <String>{};
 
+  final TargetPlatform _targetPlatform;
+  final ZxingDecoderEngine _zxingDecoder;
+
   OpticalScannerDataSourceImpl({
     OpticalScannerConfig config = const OpticalScannerConfig(),
+    TargetPlatform? targetPlatform,
+    ZxingDecoderEngine? zxingDecoder,
   })  : _config = config,
+        _targetPlatform = targetPlatform ?? defaultTargetPlatform,
+        _zxingDecoder = zxingDecoder ?? WindowsZxingDecoderImpl(),
         _ringBuffer = OpticalFrameRingBuffer<Barcode>(config.frameBufferSize);
 
   @override
@@ -487,6 +504,48 @@ class OpticalScannerDataSourceImpl implements OpticalScannerDataSource {
         barcode,
         captureTime: ingestionTime,
       );
+    }
+  }
+
+  @override
+  Future<void> ingestImageFrame(OpticalImageFrame frame) async {
+    if (!_isScanning || _isPaused || _isDisposed) return;
+
+    _totalFramesReceived++;
+    final result = await _zxingDecoder.decodeFrame(frame);
+    if (result == null) return;
+
+    if (!_shouldEmitBarcode(result.rawValue, result.timestamp)) {
+      return;
+    }
+
+    final DateTime now = DateTime.now();
+    final Duration latency = now.isAfter(result.timestamp)
+        ? now.difference(result.timestamp)
+        : Duration.zero;
+    _cumulativeLatency += latency;
+
+    _recordFrameTimestamp(now.microsecondsSinceEpoch);
+    _totalFramesProcessed++;
+    _frameSequenceCounter++;
+
+    final scanResult = OpticalScanResult(
+      rawValue: result.rawValue,
+      rawBytes: _config.retainRawBytes ? result.rawBytes : null,
+      format: result.format,
+      timestamp: result.timestamp,
+      engineUsed: result.engineUsed,
+      cornerPoints: result.cornerPoints,
+      instantaneousFps: _lastCalculatedFps,
+      frameSequence: _frameSequenceCounter,
+      processingLatency: latency,
+    );
+
+    if (!_scanStreamController.isClosed) {
+      _scanStreamController.add(scanResult);
+    }
+    if (!_metricsStreamController.isClosed) {
+      _metricsStreamController.add(_buildCurrentMetrics());
     }
   }
 
@@ -618,16 +677,18 @@ class OpticalScannerDataSourceImpl implements OpticalScannerDataSource {
     }
 
     // Platform-aware engine selection:
+    // Windows utilizes Windows ZXing-C++ engine;
     // Apple platforms utilize Apple Vision framework (VNDetectBarcodesRequest);
     // Android and others utilize Google ML Kit.
-    switch (defaultTargetPlatform) {
+    switch (_targetPlatform) {
+      case TargetPlatform.windows:
+        return OpticalDetectionEngine.windowsZxing;
       case TargetPlatform.iOS:
       case TargetPlatform.macOS:
         return OpticalDetectionEngine.appleVision;
       case TargetPlatform.android:
       case TargetPlatform.fuchsia:
       case TargetPlatform.linux:
-      case TargetPlatform.windows:
         return OpticalDetectionEngine.googleMlKit;
     }
   }

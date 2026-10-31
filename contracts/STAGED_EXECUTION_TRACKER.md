@@ -12,9 +12,9 @@
 | **Stage 1: Android Build Recovery & Air-Gap Gate** | 3 | 3 | 🟢 COMPLETED |
 | **Stage 2: Core Protocol Engine v2 & Isolates** | 3 | 3 | 🟢 COMPLETED |
 | **Stage 3: Zero-Trust Security, FFI & Crypto** | 4 | 4 | 🟢 COMPLETED |
-| **Stage 4: Windows, iOS & Android Hardware Parity** | 2 | 1 | 🟡 IN_PROGRESS |
+| **Stage 4: Windows, iOS & Android Hardware Parity** | 2 | 2 | 🟢 COMPLETED |
 | **Stage 5: UX, DevSecOps Tools & Release Matrix** | 3 | 0 | ⚪ PENDING |
-| **Total** | **15** | **11** | **73% Completed** |
+| **Total** | **15** | **12** | **80% Completed** |
 
 ---
 
@@ -52,8 +52,8 @@
 ### STAGE 4: Windows, iOS & Android Native Platform Parity
 - [x] **Phase 4.1: Unified Cross-Platform Hardware Keystore & Screen Guard**
   - [x] **Subphase 4.1.1:** Native `SecurityWindowGuard` (`FLAG_SECURE`, `WDA_EXCLUDEFROMCAPTURE`, Secure Enclave). `[COMPLETED]`
-- [ ] **Phase 4.2: Windows, iOS & Android High-Speed Camera Ingestion Pipeline**
-  - [ ] **Subphase 4.2.1:** Abstracted Multi-Platform `OpticalCameraDatasource` (MobileScanner + Windows FFI ZXing). `[PENDING]`
+- [x] **Phase 4.2: Windows, iOS & Android High-Speed Camera Ingestion Pipeline**
+  - [x] **Subphase 4.2.1:** Abstracted Multi-Platform `OpticalCameraDatasource` (MobileScanner + Windows FFI ZXing). `[COMPLETED]`
 
 ---
 

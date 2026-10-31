@@ -578,4 +578,100 @@ void main() {
       await dataSource.dispose();
     });
   });
+
+  group('Windows ZXing & Raw OpticalImageFrame Ingestion Specs', () {
+    test('Windows platform resolves auto engine to windowsZxing', () async {
+      final dsWindows = OpticalScannerDataSourceImpl(
+        config: const OpticalScannerConfig(engine: OpticalDetectionEngine.auto),
+        targetPlatform: TargetPlatform.windows,
+      );
+      await dsWindows.startScanning();
+
+      final results = <OpticalScanResult>[];
+      dsWindows.scanStream.listen(results.add);
+
+      dsWindows.ingestRawBarcode(
+        const Barcode(rawValue: 'WIN-AUTO-TEST', format: BarcodeFormat.qrCode),
+      );
+
+      await Future<void>.delayed(const Duration(milliseconds: 30));
+
+      expect(results.first.engineUsed,
+          equals(OpticalDetectionEngine.windowsZxing));
+      await dsWindows.dispose();
+    });
+
+    test('ingestImageFrame processes frames via ZxingDecoderEngine', () async {
+      final mockDecoder = WindowsZxingDecoderImpl(
+        customHandler: (frame) => OpticalScanResult(
+          rawValue: 'FRAME-INGEST-SUCCESS',
+          format: BarcodeFormat.qrCode,
+          timestamp: frame.timestamp,
+          engineUsed: OpticalDetectionEngine.windowsZxing,
+          cornerPoints: const [],
+          instantaneousFps: 60.0,
+          frameSequence: 1,
+          processingLatency: Duration.zero,
+        ),
+      );
+
+      final dataSource = OpticalScannerDataSourceImpl(
+        targetPlatform: TargetPlatform.windows,
+        zxingDecoder: mockDecoder,
+      );
+      await dataSource.startScanning();
+
+      final results = <OpticalScanResult>[];
+      dataSource.scanStream.listen(results.add);
+
+      final frame = OpticalImageFrame.now(
+        bytes: Uint8List.fromList([1, 2, 3]),
+        width: 10,
+        height: 10,
+        bytesPerRow: 40,
+      );
+
+      await dataSource.ingestImageFrame(frame);
+      await Future<void>.delayed(const Duration(milliseconds: 20));
+
+      expect(results.length, equals(1));
+      expect(results.first.rawValue, equals('FRAME-INGEST-SUCCESS'));
+      expect(results.first.engineUsed,
+          equals(OpticalDetectionEngine.windowsZxing));
+      expect(dataSource.currentMetrics.totalFramesProcessed, equals(1));
+
+      await dataSource.dispose();
+    });
+
+    test('ingestImageFrame handles null decoded result without error',
+        () async {
+      final mockDecoder = WindowsZxingDecoderImpl(
+        customHandler: (frame) => null,
+      );
+
+      final dataSource = OpticalScannerDataSourceImpl(
+        targetPlatform: TargetPlatform.windows,
+        zxingDecoder: mockDecoder,
+      );
+      await dataSource.startScanning();
+
+      final results = <OpticalScanResult>[];
+      dataSource.scanStream.listen(results.add);
+
+      final frame = OpticalImageFrame.now(
+        bytes: Uint8List(10),
+        width: 10,
+        height: 10,
+        bytesPerRow: 10,
+      );
+
+      await dataSource.ingestImageFrame(frame);
+
+      expect(results, isEmpty);
+      expect(dataSource.currentMetrics.totalFramesReceived, equals(1));
+      expect(dataSource.currentMetrics.totalFramesProcessed, equals(0));
+
+      await dataSource.dispose();
+    });
+  });
 }

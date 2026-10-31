@@ -10,11 +10,11 @@
 | Stage | Total Subphases | Completed | Status |
 |:---|:---:|:---:|:---|
 | **Stage 1: Android Build Recovery & Air-Gap Gate** | 3 | 3 | 🟢 COMPLETED |
-| **Stage 2: Core Protocol Engine v2 & Isolates** | 3 | 0 | ⚪ PENDING |
+| **Stage 2: Core Protocol Engine v2 & Isolates** | 3 | 1 | 🟡 IN_PROGRESS |
 | **Stage 3: Zero-Trust Security, FFI & Crypto** | 4 | 0 | ⚪ PENDING |
 | **Stage 4: Windows, iOS & Android Hardware Parity** | 2 | 0 | ⚪ PENDING |
 | **Stage 5: UX, DevSecOps Tools & Release Matrix** | 3 | 0 | ⚪ PENDING |
-| **Total** | **15** | **3** | **20% Completed** |
+| **Total** | **15** | **4** | **27% Completed** |
 
 ---
 
@@ -31,7 +31,7 @@
 
 ### STAGE 2: Core Protocol Engine v2 & Isolate Acceleration
 - [ ] **Phase 2.1: 20-Byte Wire Header & Per-Droplet CRC-32C Validation**
-  - [ ] **Subphase 2.1.1:** Upgrade `TransportHeader` Value Object to 20 bytes (CRC-32C, encryption flag, RGB color mode). `[PENDING]`
+  - [x] **Subphase 2.1.1:** Upgrade `TransportHeader` Value Object to 20 bytes (CRC-32C, encryption flag, RGB color mode). `[COMPLETED]`
   - [ ] **Subphase 2.1.2:** Graph Peeling Poisoning Protection & Early Termination in `ChunkAccumulatorEngine`. `[PENDING]`
 - [ ] **Phase 2.2: Zero-Copy Worker Isolate Pipeline**
   - [ ] **Subphase 2.2.1:** Background `FountainCodecIsolate` Service with `TransferableTypedData`. `[PENDING]`

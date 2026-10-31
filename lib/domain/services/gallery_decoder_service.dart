@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:isolate';
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
+
+import 'package:meta/meta.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 /// Preprocessing transformation passes applied to static gallery photos to maximize QR readability.

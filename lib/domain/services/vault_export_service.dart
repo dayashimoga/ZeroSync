@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:airdrop_qr/data/datasources/encrypted_vault_datasource.dart';
+import 'package:airdrop_qr/domain/entities/scan_record.dart';
 
 /// Supported structured file export formats for local encrypted vault records.
 enum VaultExportFormat {

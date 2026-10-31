@@ -16,6 +16,7 @@ dependencies:
   # Presentation & Reactive State Architecture
   flutter_bloc: ^8.1.6
   equatable: ^2.0.5
+  meta: ^1.12.0
 
   # Optical Engines & Serialization
   qr_flutter: ^4.1.0

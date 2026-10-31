@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:airdrop_qr/domain/entities/infrastructure_payload.dart';
 import 'package:airdrop_qr/domain/entities/vcard_payload.dart';
-import 'package:flutter/services.dart';
 
 /// Structured outcome of a native platform intent dispatch.
 class IntentDispatchResult {
@@ -80,13 +79,22 @@ class NativeIntentDispatcher {
   /// Channel identifier for native intent bridge.
   static const String channelName = 'com.zerosync.airdrop_qr/native_intents';
 
-  static const MethodChannel _defaultChannel = MethodChannel(channelName);
+  /// Default invoker hook configurable by presentation/data layers.
+  static PlatformChannelInvoker? defaultInvoker;
 
   final PlatformChannelInvoker _invoker;
 
-  /// Creates a dispatcher with the specified channel [invoker], defaulting to standard [MethodChannel].
+  /// Creates a dispatcher with the specified channel [invoker], defaulting to [defaultInvoker].
   NativeIntentDispatcher({PlatformChannelInvoker? invoker})
-      : _invoker = invoker ?? _defaultChannel.invokeMethod;
+      : _invoker = invoker ?? defaultInvoker ?? _unregisteredInvoker;
+
+  static Future<T?> _unregisteredInvoker<T>(String method,
+      [dynamic arguments]) async {
+    throw UnsupportedError(
+      'No PlatformChannelInvoker registered for NativeIntentDispatcher. '
+      'Provide an invoker or set NativeIntentDispatcher.defaultInvoker.',
+    );
+  }
 
   /// Dispatches a native Wi-Fi connection prompt for [wifi].
   ///

@@ -9,23 +9,23 @@
 
 | Stage | Total Subphases | Completed | Status |
 |:---|:---:|:---:|:---|
-| **Stage 1: Android Build Recovery & Air-Gap Gate** | 3 | 0 | 🟡 IN_PROGRESS |
+| **Stage 1: Android Build Recovery & Air-Gap Gate** | 3 | 3 | 🟢 COMPLETED |
 | **Stage 2: Core Protocol Engine v2 & Isolates** | 3 | 0 | ⚪ PENDING |
 | **Stage 3: Zero-Trust Security, FFI & Crypto** | 4 | 0 | ⚪ PENDING |
 | **Stage 4: Windows, iOS & Android Hardware Parity** | 2 | 0 | ⚪ PENDING |
 | **Stage 5: UX, DevSecOps Tools & Release Matrix** | 3 | 0 | ⚪ PENDING |
-| **Total** | **15** | **0** | **0% Completed** |
+| **Total** | **15** | **3** | **20% Completed** |
 
 ---
 
 ## Stage Breakdown & Subphase Status
 
 ### STAGE 1: Android Build Recovery, Toolchain Hardening & CI Air-Gap Gate
-- [ ] **Phase 1.1: Gradle Kotlin DSL & Flutter Plugin Resolution Fix**
+- [x] **Phase 1.1: Gradle Kotlin DSL & Flutter Plugin Resolution Fix**
   - [x] **Subphase 1.1.1:** Fix `android/settings.gradle.kts` & `android/build.gradle.kts` (Resilient `flutterSdkPath` resolver, fallback to `FLUTTER_ROOT`, `compileSdk = 34`, `flutter { source = "../.." }`). `[COMPLETED]`
   - [x] **Subphase 1.1.2:** Harden `.github/workflows/build-android.yml` (Analytics opt-out, explicit `flutter.sdk=$FLUTTER_ROOT` injection, deterministic SHA-256 sums). `[COMPLETED]`
-- [ ] **Phase 1.2: Multi-Platform Air-Gap AST & Manifest Gate**
-  - [ ] **Subphase 1.2.1:** Build `tool/verify_airgap.dart` Static Analyzer and wire into `.github/workflows/quality-gate.yml`. `[IN_PROGRESS]`
+- [x] **Phase 1.2: Multi-Platform Air-Gap AST & Manifest Gate**
+  - [x] **Subphase 1.2.1:** Build `tool/verify_airgap.dart` Static Analyzer and wire into `.github/workflows/quality-gate.yml`. `[COMPLETED]`
 
 ---
 

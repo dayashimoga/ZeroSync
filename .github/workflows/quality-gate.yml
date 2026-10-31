@@ -53,6 +53,9 @@ jobs:
       - name: Enforce Zero-Warning Static Analysis
         run: dart analyze --fatal-infos --fatal-warnings
 
+      - name: Air-Gap AST & Clean Architecture Boundary Linter
+        run: dart run tool/verify_airgap.dart
+
       - name: Zero-Trust Air-Gap Manifest Audit
         run: |
           echo ">>> Auditing Android & iOS manifests for zero network scopes..."

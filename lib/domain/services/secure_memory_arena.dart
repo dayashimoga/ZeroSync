@@ -170,6 +170,21 @@ class SecureMemoryArena {
     }
   }
 
+  /// Asynchronous execution context allocating a temporary [SecureBuffer],
+  /// guaranteeing zeroization and disposal in the `finally` block even if an exception occurs.
+  static Future<T> withBufferAsync<T>(
+    int length,
+    Future<T> Function(SecureBuffer buffer) action, {
+    String tag = 'ScopedBuffer',
+  }) async {
+    final buffer = SecureBuffer.allocate(length, tag: tag);
+    try {
+      return await action(buffer);
+    } finally {
+      buffer.dispose();
+    }
+  }
+
   /// Executes [action] with two temporary [SecureBuffer]s (e.g. key and plaintext),
   /// guaranteeing zeroization and disposal for both.
   static T withTwoBuffers<T>(

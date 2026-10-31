@@ -123,7 +123,7 @@ class LicenseVerifierService {
   }) async {
     try {
       final cert = LicenseCertificate.fromEncodedString(encoded);
-      return verifyCertificate(cert, evaluationTime: evaluationTime);
+      return await verifyCertificate(cert, evaluationTime: evaluationTime);
     } catch (e) {
       return LicenseVerificationResult.invalid(
           'Malformed license encoding: $e');
@@ -137,7 +137,7 @@ class LicenseVerifierService {
   }) async {
     try {
       final cert = LicenseCertificate.fromBinary(binaryBytes);
-      return verifyCertificate(cert, evaluationTime: evaluationTime);
+      return await verifyCertificate(cert, evaluationTime: evaluationTime);
     } catch (e) {
       return LicenseVerificationResult.invalid('Malformed binary license: $e');
     }

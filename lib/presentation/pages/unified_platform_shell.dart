@@ -1,4 +1,5 @@
 import 'package:airdrop_qr/presentation/pages/home_page.dart';
+import 'package:airdrop_qr/presentation/pages/scanner/batch_scanner_view.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/camera_scanner_view.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/image_scanner_view.dart';
 import 'package:airdrop_qr/presentation/theme/zerosync_design_tokens.dart';
@@ -337,46 +338,22 @@ class _UnifiedPlatformShellState extends State<UnifiedPlatformShell> {
             },
           ),
 
-          // Sub-Mode 2: Batch Continuous Scanner Card
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(ZeroSyncSpacing.xl),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.layers_outlined,
-                      size: 56, color: ZeroSyncColors.amber),
-                  const SizedBox(height: ZeroSyncSpacing.md),
-                  const Text(
-                    'Continuous Batch Scanner',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: ZeroSyncColors.trueWhite),
-                  ),
-                  const SizedBox(height: ZeroSyncSpacing.xs),
-                  const Text(
-                    'Continuous scanning with sliding-window deduplication, audit tagging, and bulk vault persistence.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: ZeroSyncColors.lightTextSecondary, fontSize: 13),
-                  ),
-                  const SizedBox(height: ZeroSyncSpacing.lg),
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.play_arrow_outlined),
-                    label: const Text('Start Active Batch Session'),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content:
-                              Text('Continuous batch session initialized.'),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
+          // Sub-Mode 2: High-Speed Continuous Batch Scanner Workspace
+          BatchScannerView(
+            onSaveToVault: (record) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Saved "${record.title}" to SQLCipher Vault'),
+                ),
+              );
+            },
+            onActionDispatched: (payload) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Dispatched sandboxed action for: $payload'),
+                ),
+              );
+            },
           ),
         ],
       ),

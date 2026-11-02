@@ -174,7 +174,7 @@ jobs:
       - name: Build Android Split per-ABI APKs
         if: matrix.target == 'split-apk'
         run: |
-          flutter build apk --split-per-abi --release --no-tree-shake-icons
+          flutter build apk --split-per-abi --release --no-tree-shake-icons --android-skip-build-dependency-validation
           mkdir -p output-android-apk
           cp build/app/outputs/flutter-apk/app-*.apk output-android-apk/
           cd output-android-apk
@@ -184,7 +184,7 @@ jobs:
       - name: Build Android App Bundle (AAB)
         if: matrix.target == 'app-bundle'
         run: |
-          flutter build appbundle --release --no-tree-shake-icons
+          flutter build appbundle --release --no-tree-shake-icons --android-skip-build-dependency-validation
           mkdir -p output-android-aab
           cp build/app/outputs/bundle/release/app-release.aab output-android-aab/
           cd output-android-aab

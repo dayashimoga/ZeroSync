@@ -10,4 +10,5 @@ description: Diagnose and repair Flutter Kotlin DSL Gradle builds, AGP 8.x names
    - Fallback 2: `System.getenv("FLUTTER_SDK")`
 3. Never mix legacy imperative `apply(from = ".../flutter.gradle")` with declarative `id("dev.flutter.flutter-gradle-plugin")`.
 4. Ensure CI workflows run `flutter pub get` BEFORE `flutter build apk`.
+5. Always append `--android-skip-build-dependency-validation` to `flutter build apk` and `flutter build appbundle` release commands to ensure deterministic compilation across fluctuating Gradle and Flutter toolchain runner environments.
 

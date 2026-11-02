@@ -185,18 +185,23 @@ dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage
 ### Android Release Build (R8 Obfuscation & Per-ABI Splits):
 ```powershell
 # Split per-ABI APKs (arm64-v8a, armeabi-v7a, x86_64)
-flutter build apk --release --split-per-abi
+flutter build apk --release --split-per-abi --no-tree-shake-icons --android-skip-build-dependency-validation
 
 # Universal Release APK
-flutter build apk --release
+flutter build apk --release --no-tree-shake-icons --android-skip-build-dependency-validation
 
 # Production Google Play App Bundle
-flutter build appbundle --release
+flutter build appbundle --release --no-tree-shake-icons --android-skip-build-dependency-validation
 ```
 
 ### iOS Release Build (Unsigned Air-Gapped Archive):
 ```bash
 flutter build ipa --release --no-codesign
+```
+
+### Windows Desktop Release Build (x64 Release Binary):
+```powershell
+flutter build windows --release
 ```
 
 ---

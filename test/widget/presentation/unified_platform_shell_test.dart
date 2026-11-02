@@ -89,7 +89,6 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
       expect(find.text('Encrypted SQLCipher Vault'), findsOneWidget);
-      expect(find.text('HARDWARE KEYSTORE: ACTIVE'), findsOneWidget);
 
       // 5. Switch to Enterprise (Workspace 4)
       await tester.tap(find.text('Enterprise (Ctrl+5)'));

@@ -77,11 +77,11 @@
 | Stage | Scope | Subphases | Completed | Status |
 |:---|:---|:---:|:---:|:---|
 | **Stage 6: Presentation Remediation & Unified Shell** | Fix Windows startup hardcoded telemetry, Anti-Placeholder AST gate, 5-Workspace Adaptive Navigation Shell | 2 | 2 | 🟢 COMPLETED |
-| **Stage 7: Multi-Modal QR Scanner Suite** | Camera Scanner, Image/Clipboard Scanner, Batch Scanner UI, Encrypted Vault History & Threat Inspector | 4 | 3 | 🟡 IN PROGRESS (Next: `7.2.2`) |
-| **Stage 8: Universal, Advanced & Enterprise QR Generator** | Standard QR Generator (8 types), Advanced Visual Styler + SVG/PDF Vector Export, Enterprise Payload Studio | 3 | 0 | 🔒 LOCKED |
+| **Stage 7: Multi-Modal QR Scanner Suite** | Camera Scanner, Image/Clipboard Scanner, Batch Scanner UI, Encrypted Vault History & Threat Inspector | 4 | 4 | 🟢 COMPLETED |
+| **Stage 8: Universal, Advanced & Enterprise QR Generator** | Standard QR Generator (8 types), Advanced Visual Styler + SVG/PDF Vector Export, Enterprise Payload Studio | 3 | 0 | 🟡 IN PROGRESS (Next: `8.1.1`) |
 | **Stage 9: Live Optical Data Transfer & Enterprise Licensing** | Real File/Payload Optical Transmitter & Receiver (Mono + 3x RGB), Free/Pro/Enterprise Licensing, Trial & Policy Controls | 2 | 0 | 🔒 LOCKED |
 | **Stage 10: 5-Platform Native Parity & Commercial Certification** | Linux & macOS Desktop Runners, WCAG AAA Semantics, Full Localization & Production Readiness Attestation | 2 | 0 | 🔒 LOCKED |
-| **v3.0 Subtotal** | **Unified Commercial Platform Expansion** | **13** | **5** | **Ready for Subphase 7.2.2** |
+| **v3.0 Subtotal** | **Unified Commercial Platform Expansion** | **13** | **6** | **Ready for Subphase 8.1.1** |
 
 ---
 
@@ -146,7 +146,7 @@
   - **Validation Commands:** All 4 mandatory gates + `flutter test test/widget/presentation/batch_scanner_view_test.dart`.
   - **Handoff Requirements:** Unlocks `Subphase 7.2.2`.
 
-- [ ] **Subphase 7.2.2: Encrypted Vault History, Search/Tag Filter & Forensic Export UI** `[PENDING — ACTIVE NEXT]`
+- [x] **Subphase 7.2.2: Encrypted Vault History, Search/Tag Filter & Forensic Export UI** `[COMPLETED]`
   - **Deliverables:**
     - `lib/presentation/pages/vault/encrypted_vault_page.dart` wired to `EncryptedVaultDataSource`, `VaultExportService` (JSON/CSV), and `ForensicAuditExporter` (PDF/JSON with SHA-256 chain of custody).
   - **Acceptance Criteria:**
@@ -159,7 +159,7 @@
 ### STAGE 8: Universal, Advanced Styled & Enterprise Payload QR Generator Suite
 
 #### Phase 8.1: Standard Structured Payload Generator
-- [ ] **Subphase 8.1.1: Universal QR Generator Workspace (Text, URL, Wi-Fi, Contact, Email, SMS, Geo, Calendar)** `[LOCKED — Depends on 7.2.2]`
+- [ ] **Subphase 8.1.1: Universal QR Generator Workspace (Text, URL, Wi-Fi, Contact, Email, SMS, Geo, Calendar)** `[PENDING — ACTIVE NEXT]`
   - **Deliverables:**
     - `lib/presentation/pages/generator/standard_generator_view.dart` & `lib/presentation/blocs/qr_generator/qr_generator_bloc.dart`.
     - Wired to `VcardSerializerService` (vCard 3.0/4.0), `InfrastructureSerializerService` (Wi-Fi WPA2/WPA3, Geo, iCalendar, Email, SMS), `TrackerStripperService`, and `QrMatrixGeneratorService`.

@@ -2,6 +2,7 @@ import 'package:airdrop_qr/presentation/pages/home_page.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/batch_scanner_view.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/camera_scanner_view.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/image_scanner_view.dart';
+import 'package:airdrop_qr/presentation/pages/vault/encrypted_vault_page.dart';
 import 'package:airdrop_qr/presentation/theme/zerosync_design_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -509,93 +510,14 @@ class _UnifiedPlatformShellState extends State<UnifiedPlatformShell> {
   // WORKSPACE 3: ENCRYPTED SQLCIPHER VAULT & AUDIT LOGS
   // ============================================================================
   Widget _buildVaultWorkspace() {
-    return Scaffold(
-      backgroundColor: ZeroSyncColors.trueBlack,
-      appBar: AppBar(
-        title: const Text('Encrypted SQLCipher Vault'),
-        actions: [
-          IconButton(
-            tooltip: 'Export Vault Forensic Audit',
-            icon: const Icon(Icons.file_download_outlined,
-                color: ZeroSyncColors.cyan),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text(
-                      'Generating forensic SHA-256 vault attestation report...'),
-                ),
-              );
-            },
+    return EncryptedVaultPage(
+      onActionDispatched: (payload) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Dispatched sandboxed action for: $payload'),
           ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(ZeroSyncSpacing.lg),
-        children: [
-          // Keystore Hardware Binding Badge
-          Container(
-            padding: const EdgeInsets.all(ZeroSyncSpacing.md),
-            decoration: BoxDecoration(
-              color: ZeroSyncColors.darkSlate,
-              borderRadius: BorderRadius.circular(ZeroSyncRadii.md),
-              border: Border.all(color: ZeroSyncColors.emerald.withAlpha(80)),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.security, color: ZeroSyncColors.emerald, size: 20),
-                SizedBox(width: ZeroSyncSpacing.sm),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'HARDWARE KEYSTORE: ACTIVE',
-                        style: TextStyle(
-                          color: ZeroSyncColors.emerald,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                        ),
-                      ),
-                      Text(
-                        'SQLCipher AES-256 master key protected by platform Secure Enclave / TPM / StrongBox.',
-                        style: TextStyle(fontSize: 11, color: Colors.white70),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: ZeroSyncSpacing.lg),
-
-          const Text(
-            'Recent Air-Gapped Scans & Transfers',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: ZeroSyncColors.trueWhite,
-            ),
-          ),
-          const SizedBox(height: ZeroSyncSpacing.sm),
-
-          // Sample encrypted records
-          ListTile(
-            tileColor: ZeroSyncColors.darkSlate,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-              side: const BorderSide(color: ZeroSyncColors.darkBorder),
-            ),
-            leading: const Icon(Icons.qr_code, color: ZeroSyncColors.cyan),
-            title: const Text('https://zerosync.security',
-                style:
-                    TextStyle(color: ZeroSyncColors.trueWhite, fontSize: 13)),
-            subtitle: const Text('Scanned • Verified clean by DomainInspector',
-                style: TextStyle(fontSize: 11, color: Colors.white60)),
-            trailing: const Text('Just now',
-                style: TextStyle(fontSize: 10, color: Colors.white38)),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

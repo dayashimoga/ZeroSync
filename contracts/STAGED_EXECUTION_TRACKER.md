@@ -77,11 +77,11 @@
 | Stage | Scope | Subphases | Completed | Status |
 |:---|:---|:---:|:---:|:---|
 | **Stage 6: Presentation Remediation & Unified Shell** | Fix Windows startup hardcoded telemetry, Anti-Placeholder AST gate, 5-Workspace Adaptive Navigation Shell | 2 | 2 | 🟢 COMPLETED |
-| **Stage 7: Multi-Modal QR Scanner Suite** | Camera Scanner, Image/Clipboard Scanner, Batch Scanner UI, Encrypted Vault History & Threat Inspector | 4 | 0 | 🟡 PENDING (Next: `7.1.1`) |
+| **Stage 7: Multi-Modal QR Scanner Suite** | Camera Scanner, Image/Clipboard Scanner, Batch Scanner UI, Encrypted Vault History & Threat Inspector | 4 | 1 | 🟡 IN PROGRESS (Next: `7.1.2`) |
 | **Stage 8: Universal, Advanced & Enterprise QR Generator** | Standard QR Generator (8 types), Advanced Visual Styler + SVG/PDF Vector Export, Enterprise Payload Studio | 3 | 0 | 🔒 LOCKED |
 | **Stage 9: Live Optical Data Transfer & Enterprise Licensing** | Real File/Payload Optical Transmitter & Receiver (Mono + 3x RGB), Free/Pro/Enterprise Licensing, Trial & Policy Controls | 2 | 0 | 🔒 LOCKED |
 | **Stage 10: 5-Platform Native Parity & Commercial Certification** | Linux & macOS Desktop Runners, WCAG AAA Semantics, Full Localization & Production Readiness Attestation | 2 | 0 | 🔒 LOCKED |
-| **v3.0 Subtotal** | **Unified Commercial Platform Expansion** | **13** | **2** | **Ready for Subphase 7.1.1** |
+| **v3.0 Subtotal** | **Unified Commercial Platform Expansion** | **13** | **3** | **Ready for Subphase 7.1.2** |
 
 ---
 
@@ -120,7 +120,7 @@
 ### STAGE 7: Unified Multi-Modal QR Scanner Suite (Camera, Image, Batch & Threat Inspector)
 
 #### Phase 7.1: Camera & Static Image Scanner Workspaces
-- [ ] **Subphase 7.1.1: Camera Scanner Workspace & Pre-Action Threat Inspector Sheet** `[PENDING — ACTIVE NEXT]`
+- [x] **Subphase 7.1.1: Camera Scanner Workspace & Pre-Action Threat Inspector Sheet** `[COMPLETED]`
   - **Deliverables:**
     - `lib/presentation/pages/scanner/camera_scanner_view.dart` & `lib/presentation/widgets/threat_inspector_sheet.dart`.
     - Live wiring to `DomainInspectorService` (homoglyph/punycode/IP/scheme alerts), `TrackerStripperService` (UTM/fbclid/gclid stripping), and `NativeIntentDispatcher`.
@@ -129,7 +129,7 @@
   - **Validation Commands:** All 4 mandatory gates + `flutter test test/widget/presentation/camera_scanner_view_test.dart`.
   - **Handoff Requirements:** Unlocks `Subphase 7.1.2`.
 
-- [ ] **Subphase 7.1.2: Local Image File & Clipboard QR Decoder Workspace** `[LOCKED — Depends on 7.1.1]`
+- [ ] **Subphase 7.1.2: Local Image File & Clipboard QR Decoder Workspace** `[PENDING — ACTIVE NEXT]`
   - **Deliverables:**
     - `lib/presentation/pages/scanner/image_scanner_view.dart` wired to `GalleryDecoderService` and `WindowsZxingDecoder`.
   - **Acceptance Criteria:**

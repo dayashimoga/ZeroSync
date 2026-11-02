@@ -1,6 +1,6 @@
 import 'package:airdrop_qr/presentation/pages/home_page.dart';
+import 'package:airdrop_qr/presentation/pages/scanner/camera_scanner_view.dart';
 import 'package:airdrop_qr/presentation/theme/zerosync_design_tokens.dart';
-import 'package:airdrop_qr/presentation/widgets/camera_viewport_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -300,23 +300,21 @@ class _UnifiedPlatformShellState extends State<UnifiedPlatformShell> {
       body: IndexedStack(
         index: _scannerSubMode,
         children: [
-          // Sub-Mode 0: Camera Viewport with Optical Reticle
-          CameraViewportWidget(
-            config: const CameraViewportConfig(
-              reticleColor: ZeroSyncColors.cyan,
-              laserColor: ZeroSyncColors.cyan,
-              showLaserScanline: true,
-            ),
-            onDetect: (capture) {
-              if (capture.barcodes.isNotEmpty && mounted) {
-                final raw = capture.barcodes.first.rawValue ?? '';
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Scanned: $raw'),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              }
+          // Sub-Mode 0: Camera Viewport with Threat Inspector
+          CameraScannerView(
+            onSaveToVault: (record) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Saved "${record.title}" to SQLCipher Vault'),
+                ),
+              );
+            },
+            onActionDispatched: (payload) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Dispatched sandboxed action for: $payload'),
+                ),
+              );
             },
           ),
 

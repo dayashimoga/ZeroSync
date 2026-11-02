@@ -20,6 +20,9 @@ void main() {
   // 3. Audit lib/domain/ for Clean Architecture boundary violations
   _auditDomainLayerIsolation(violations);
 
+  // 4. Audit lib/presentation/ for anti-placeholder and hardcoded telemetry invariants
+  _auditAntiPlaceholderAndTelemetry(violations);
+
   stdout.writeln('');
   if (violations.isEmpty) {
     stdout.writeln(
@@ -151,4 +154,60 @@ void _auditDomainLayerIsolation(List<String> violations) {
     }
   }
   stdout.writeln('  Scanned $scanned domain files for pure Dart compliance.');
+}
+
+void _auditAntiPlaceholderAndTelemetry(List<String> violations) {
+  stdout.writeln(
+      '\n[4/4] Auditing lib/presentation/ for anti-placeholder & hardcoded telemetry invariants...');
+  final presentationDir = Directory('lib/presentation');
+  if (!presentationDir.existsSync()) {
+    stdout.writeln(
+        '  Notice: lib/presentation directory not found. Skipping presentation audit.');
+    return;
+  }
+
+  // Detect empty callback stubs like onPressed: () {} or onTap: () {}
+  final emptyCallbackPattern = RegExp(
+    r'''(onPressed|onTap)\s*:\s*\(\)\s*\{\s*\}''',
+  );
+
+  // Detect hardcoded demo TransferProgressMetrics with non-zero totalChunks in presentation files
+  final hardcodedTelemetryPattern = RegExp(
+    r'''TransferProgressMetrics\s*\([^)]*totalChunks:\s*[1-9]''',
+    dotAll: true,
+  );
+
+  final presentationFiles = presentationDir
+      .listSync(recursive: true)
+      .whereType<File>()
+      .where((f) => f.path.endsWith('.dart'));
+
+  var scanned = 0;
+  for (final file in presentationFiles) {
+    scanned++;
+    final content = file.readAsStringSync();
+
+    // Presentation pages must NEVER instantiate hardcoded demo telemetry
+    if (file.path.contains('pages') &&
+        hardcodedTelemetryPattern.hasMatch(content)) {
+      violations.add(
+        'Hardcoded demo TransferProgressMetrics detected in page: ${file.path}. All UI telemetry must be initialized from reactive BLoC state or TransferProgressMetrics.initial().',
+      );
+    }
+
+    final lines = file.readAsLinesSync();
+    for (var i = 0; i < lines.length; i++) {
+      final line = lines[i];
+      final trimmed = line.trim();
+      if (trimmed.startsWith('//') || trimmed.startsWith('/*')) continue;
+
+      if (emptyCallbackPattern.hasMatch(line)) {
+        violations.add(
+          'Empty callback stub detected in presentation layer at ${file.path}:${i + 1}: $trimmed',
+        );
+      }
+    }
+  }
+  stdout.writeln(
+      '  Scanned $scanned presentation files for anti-placeholder compliance.');
 }

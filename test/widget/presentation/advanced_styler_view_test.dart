@@ -192,8 +192,7 @@ void main() {
       await tester.pump();
 
       await tester.enterText(
-        find.widgetWithText(
-            TextField, 'https://zerosync.security/airgap-styler'),
+        find.byType(TextField).first,
         'ZeroSync Red Team Secret Styler Text',
       );
       await tester.pump();

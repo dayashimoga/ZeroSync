@@ -102,6 +102,7 @@ class _EnterprisePolicyPageState extends State<EnterprisePolicyPage> {
         ],
       ),
       body: ListView(
+        primary: false,
         padding: const EdgeInsets.all(ZeroSyncSpacing.md),
         children: [
           // 1. License & Trial Status Card

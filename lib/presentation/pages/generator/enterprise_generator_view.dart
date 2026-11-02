@@ -355,6 +355,7 @@ class _EnterpriseGeneratorViewState extends State<EnterpriseGeneratorView> {
                 Expanded(
                   flex: 6,
                   child: ListView(
+                    primary: false,
                     padding: const EdgeInsets.all(ZeroSyncSpacing.md),
                     children: _buildControlsList(),
                   ),
@@ -366,6 +367,7 @@ class _EnterpriseGeneratorViewState extends State<EnterpriseGeneratorView> {
                 Expanded(
                   flex: 4,
                   child: ListView(
+                    primary: false,
                     padding: const EdgeInsets.all(ZeroSyncSpacing.md),
                     children: [
                       _buildPreviewCard(),
@@ -376,6 +378,7 @@ class _EnterpriseGeneratorViewState extends State<EnterpriseGeneratorView> {
             );
           } else {
             return ListView(
+              primary: false,
               padding: const EdgeInsets.all(ZeroSyncSpacing.md),
               children: [
                 ..._buildControlsList(),

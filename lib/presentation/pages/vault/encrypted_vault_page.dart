@@ -497,6 +497,7 @@ class _EncryptedVaultPageState extends State<EncryptedVaultPage> {
 
   Widget _buildRecordsList(List<ScanRecord> records) {
     return ListView.builder(
+      primary: false,
       padding: const EdgeInsets.all(ZeroSyncSpacing.sm),
       itemCount: records.length,
       itemBuilder: (context, index) {

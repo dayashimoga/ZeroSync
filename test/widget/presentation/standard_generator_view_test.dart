@@ -61,8 +61,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
       // Enter new text
       await tester.enterText(
-        find.widgetWithText(
-            TextField, 'ZeroSync: Air-Gapped Optical Data Transfer'),
+        find.byType(TextField).first,
         'CLASSIFIED_TOP_SECRET_AIRGAP_PAYLOAD',
       );
       await tester.pump();
@@ -88,7 +87,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
       // Enter URL with tracker parameters
       await tester.enterText(
-        find.widgetWithText(TextField, 'https://zerosync.security'),
+        find.byType(TextField).first,
         'https://example.com/login?utm_source=facebook&client_id=123',
       );
       await tester.pump();

@@ -197,6 +197,7 @@ class _StandardGeneratorViewState extends State<StandardGeneratorView> {
 
   Widget _buildFormPane(QrGeneratorState state) {
     return ListView(
+      primary: false,
       padding: const EdgeInsets.all(ZeroSyncSpacing.md),
       children: [
         _buildTypeSelector(state),
@@ -746,6 +747,7 @@ class _StandardGeneratorViewState extends State<StandardGeneratorView> {
 
   Widget _buildPreviewPane(QrGeneratorState state) {
     return ListView(
+      primary: false,
       padding: const EdgeInsets.all(ZeroSyncSpacing.md),
       children: [
         _buildPreviewCard(state),

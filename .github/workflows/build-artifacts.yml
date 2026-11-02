@@ -45,6 +45,7 @@ jobs:
       - name: Set up Flutter SDK
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.38.4'
           channel: 'stable'
           cache: true
 
@@ -147,6 +148,7 @@ jobs:
       - name: Set up Flutter SDK
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.38.4'
           channel: 'stable'
           cache: true
 
@@ -225,6 +227,7 @@ jobs:
       - name: Set up Flutter SDK
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.38.4'
           channel: 'stable'
           cache: true
 
@@ -283,6 +286,7 @@ jobs:
       - name: Set up Flutter SDK
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.38.4'
           channel: 'stable'
           cache: true
 
@@ -336,6 +340,7 @@ jobs:
       - name: Set up Flutter SDK
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.38.4'
           channel: 'stable'
           cache: true
 
@@ -383,6 +388,7 @@ jobs:
       - name: Set up Flutter SDK
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.38.4'
           channel: 'stable'
           cache: true
 

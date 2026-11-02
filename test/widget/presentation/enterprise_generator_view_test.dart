@@ -82,7 +82,7 @@ void main() {
 
       // Modify Account field
       await tester.enterText(
-        find.widgetWithText(TextField, 'sec-admin@zerosync.corp'),
+        find.byType(TextField).first,
         'ops-lead@airgap.internal',
       );
       await tester.pump();

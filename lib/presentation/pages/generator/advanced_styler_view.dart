@@ -231,6 +231,7 @@ class _AdvancedStylerViewState extends State<AdvancedStylerView> {
                 Expanded(
                   flex: 6,
                   child: ListView(
+                    primary: false,
                     padding: const EdgeInsets.all(ZeroSyncSpacing.md),
                     children: _buildControlsWidgets(),
                   ),
@@ -243,6 +244,7 @@ class _AdvancedStylerViewState extends State<AdvancedStylerView> {
                 Expanded(
                   flex: 4,
                   child: ListView(
+                    primary: false,
                     padding: const EdgeInsets.all(ZeroSyncSpacing.md),
                     children: [
                       _buildCanvasCard(config),
@@ -253,6 +255,7 @@ class _AdvancedStylerViewState extends State<AdvancedStylerView> {
             );
           } else {
             return ListView(
+              primary: false,
               padding: const EdgeInsets.all(ZeroSyncSpacing.md),
               children: [
                 ..._buildControlsWidgets(),

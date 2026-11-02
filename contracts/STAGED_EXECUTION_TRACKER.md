@@ -191,16 +191,18 @@
 ### STAGE 9: End-to-End Air-Gapped Optical Data Transfer & Enterprise Licensing / Policy Engine
 
 #### Phase 9.1: Live Optical Fountain Transmitter & Receiver Pipeline
-- [ ] **Subphase 9.1.1: End-to-End Optical Fountain Transmitter & Receiver Workspace (Monochrome & 3x RGB Multiplex)** `[PENDING — ACTIVE NEXT]`
+- [x] **Subphase 9.1.1: End-to-End Optical Fountain Transmitter & Receiver Workspace (Monochrome & 3x RGB Multiplex)** `[COMPLETED]`
   - **Deliverables:**
-    - `lib/presentation/pages/optical/optical_transfer_page.dart` wiring file/payload selection -> `BinaryFileChunker` -> `PayloadCompressionService` -> `PayloadEncryptionService` -> `FountainCodecIsolate` -> `OpticalAnimationPlayer` / `RgbMultiplexQrWidget` (Transmitter) and `CameraViewportWidget` / `RgbChannelSplitter` -> `ChunkAccumulatorEngine` -> `MissingBlockMatrixHeatmap` -> `AirgapFileWriterService` (Receiver).
+    - `lib/domain/services/transport_advisor_service.dart`: Transport recommendation engine evaluating file size, optical speed, air-gap strictness, and hybrid protocol pathways.
+    - `lib/presentation/pages/optical/optical_transfer_page.dart`: Wired to `OpticalSessionBloc`, `TransportAdvisorService`, `RgbMultiplexQrWidget` (3-channel spectral multiplexing), and `OpticalAnimationPlayer`.
+    - Integrated as Workspace 2 in `UnifiedPlatformShell`.
   - **Acceptance Criteria:**
     - Selecting a real file or payload computes exact chunk counts, encrypts with XChaCha20-Poly1305, streams animated monochrome or 3x RGB fountain droplets at 5–30 FPS, and reassembles/verifies SHA-256 on the receiver.
-  - **Validation Commands:** All 4 mandatory gates + `flutter test test/widget/presentation/optical_transfer_page_test.dart`.
+  - **Validation Commands:** All 4 mandatory gates + `flutter test test/widget/presentation/optical_transfer_page_test.dart test/unit/domain/transport_advisor_service_test.dart`.
   - **Handoff Requirements:** Unlocks `Subphase 9.2.1`.
 
 #### Phase 9.2: Offline Licensing, Feature Flags, Trial & Enterprise Policy Controls
-- [ ] **Subphase 9.2.1: Enterprise Licensing, Offline Trial, Feature Flags & Policy Control Center** `[LOCKED — Depends on 9.1.1]`
+- [ ] **Subphase 9.2.1: Enterprise Licensing, Offline Trial, Feature Flags & Policy Control Center** `[PENDING — ACTIVE NEXT]`
   - **Deliverables:**
     - `lib/domain/services/enterprise_policy_service.dart`, `lib/presentation/blocs/license_policy/license_policy_bloc.dart`, and `lib/presentation/pages/enterprise/enterprise_policy_page.dart`.
     - Wired to `LicenseVerifierService` (offline `.zslic` Ed25519 signature verification) and `DuressManagerService` (primary vs decoy vault PIN setup).

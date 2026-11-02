@@ -1,7 +1,7 @@
 import 'package:airdrop_qr/presentation/pages/generator/advanced_styler_view.dart';
 import 'package:airdrop_qr/presentation/pages/generator/enterprise_generator_view.dart';
 import 'package:airdrop_qr/presentation/pages/generator/standard_generator_view.dart';
-import 'package:airdrop_qr/presentation/pages/home_page.dart';
+import 'package:airdrop_qr/presentation/pages/optical/optical_transfer_page.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/batch_scanner_view.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/camera_scanner_view.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/image_scanner_view.dart';
@@ -254,10 +254,32 @@ class _UnifiedPlatformShellState extends State<UnifiedPlatformShell> {
       children: [
         _buildScannerWorkspace(),
         _buildGeneratorWorkspace(),
-        const ZeroSyncHomePage(), // Live Optical Transfer Engine (Transmitter + Receiver)
+        _buildOpticalWorkspace(),
         _buildVaultWorkspace(),
         _buildEnterpriseWorkspace(),
       ],
+    );
+  }
+
+  // ============================================================================
+  // WORKSPACE 2: OPTICAL AIR-GAP TRANSFER (TRANSMITTER & RECEIVER)
+  // ============================================================================
+  Widget _buildOpticalWorkspace() {
+    return OpticalTransferPage(
+      onSaveToVault: (record) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Saved "${record.title}" to SQLCipher Vault'),
+          ),
+        );
+      },
+      onActionDispatched: (payload) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Dispatched sandboxed action for: $payload'),
+          ),
+        );
+      },
     );
   }
 

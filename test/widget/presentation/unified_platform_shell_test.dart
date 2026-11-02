@@ -1,5 +1,5 @@
 import 'package:airdrop_qr/main.dart';
-import 'package:airdrop_qr/presentation/pages/home_page.dart';
+import 'package:airdrop_qr/presentation/pages/optical/optical_transfer_page.dart';
 import 'package:airdrop_qr/presentation/theme/zerosync_design_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -80,9 +80,10 @@ void main() {
       await tester.tap(find.text('Optical Transfer (Ctrl+3)'));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
-      expect(find.byType(ZeroSyncHomePage), findsOneWidget);
+      expect(find.byType(OpticalTransferPage), findsOneWidget);
       expect(find.text('HARDENED ZERO-TRUST AIR-GAP'), findsOneWidget);
-      expect(find.text('Waiting for incoming stream...'), findsOneWidget);
+      expect(find.text('Air-gap optical link ready. Point camera at source.'),
+          findsOneWidget);
 
       // 4. Switch to Vault (Workspace 3)
       await tester.tap(find.text('Vault (Ctrl+4)'));

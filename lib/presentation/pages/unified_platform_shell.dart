@@ -1,5 +1,6 @@
 import 'package:airdrop_qr/presentation/pages/home_page.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/camera_scanner_view.dart';
+import 'package:airdrop_qr/presentation/pages/scanner/image_scanner_view.dart';
 import 'package:airdrop_qr/presentation/theme/zerosync_design_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -318,46 +319,22 @@ class _UnifiedPlatformShellState extends State<UnifiedPlatformShell> {
             },
           ),
 
-          // Sub-Mode 1: Image / File Ingestion Card
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(ZeroSyncSpacing.xl),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.file_open_outlined,
-                      size: 56, color: ZeroSyncColors.cyan),
-                  const SizedBox(height: ZeroSyncSpacing.md),
-                  const Text(
-                    'Offline Image & File QR Scanner',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: ZeroSyncColors.trueWhite),
-                  ),
-                  const SizedBox(height: ZeroSyncSpacing.xs),
-                  const Text(
-                    'Decode QR codes from local PNG, JPEG, or clipboard without network transmission.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: ZeroSyncColors.lightTextSecondary, fontSize: 13),
-                  ),
-                  const SizedBox(height: ZeroSyncSpacing.lg),
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.photo_library_outlined),
-                    label: const Text('Open Local Image File'),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                              'Image file picker ready. Select an optical image to decode.'),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
+          // Sub-Mode 1: Image & Clipboard Offline Decoder Workspace
+          ImageScannerView(
+            onSaveToVault: (record) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Saved "${record.title}" to SQLCipher Vault'),
+                ),
+              );
+            },
+            onActionDispatched: (payload) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Dispatched sandboxed action for: $payload'),
+                ),
+              );
+            },
           ),
 
           // Sub-Mode 2: Batch Continuous Scanner Card

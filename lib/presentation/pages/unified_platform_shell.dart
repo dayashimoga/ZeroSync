@@ -1,4 +1,5 @@
 import 'package:airdrop_qr/presentation/pages/generator/advanced_styler_view.dart';
+import 'package:airdrop_qr/presentation/pages/generator/enterprise_generator_view.dart';
 import 'package:airdrop_qr/presentation/pages/generator/standard_generator_view.dart';
 import 'package:airdrop_qr/presentation/pages/home_page.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/batch_scanner_view.dart';
@@ -441,32 +442,21 @@ class _UnifiedPlatformShellState extends State<UnifiedPlatformShell> {
           ),
 
           // Sub-Mode 2: Enterprise Payload Studio (Phase 8.3)
-          const Center(
-            child: Padding(
-              padding: EdgeInsets.all(ZeroSyncSpacing.xl),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.admin_panel_settings_outlined,
-                      size: 56, color: ZeroSyncColors.emerald),
-                  SizedBox(height: ZeroSyncSpacing.md),
-                  Text(
-                    'Enterprise & Cryptographic Payload Studio',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: ZeroSyncColors.trueWhite),
-                  ),
-                  SizedBox(height: ZeroSyncSpacing.xs),
-                  Text(
-                    'RFC 6238 TOTP authenticators, Web3 crypto payment URIs, and SLIP-39 Shamir secret sharing.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: ZeroSyncColors.lightTextSecondary, fontSize: 13),
-                  ),
-                ],
-              ),
-            ),
+          EnterpriseGeneratorView(
+            onSaveToVault: (record) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Saved "${record.title}" to SQLCipher Vault'),
+                ),
+              );
+            },
+            onActionDispatched: (payload) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Dispatched sandboxed action for: $payload'),
+                ),
+              );
+            },
           ),
         ],
       ),

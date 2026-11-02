@@ -78,10 +78,10 @@
 |:---|:---|:---:|:---:|:---|
 | **Stage 6: Presentation Remediation & Unified Shell** | Fix Windows startup hardcoded telemetry, Anti-Placeholder AST gate, 5-Workspace Adaptive Navigation Shell | 2 | 2 | 🟢 COMPLETED |
 | **Stage 7: Multi-Modal QR Scanner Suite** | Camera Scanner, Image/Clipboard Scanner, Batch Scanner UI, Encrypted Vault History & Threat Inspector | 4 | 4 | 🟢 COMPLETED |
-| **Stage 8: Universal, Advanced & Enterprise QR Generator** | Standard QR Generator (8 types), Advanced Visual Styler + SVG/PDF Vector Export, Enterprise Payload Studio | 3 | 2 | 🟡 IN PROGRESS (Next: `8.3.1`) |
-| **Stage 9: Live Optical Data Transfer & Enterprise Licensing** | Real File/Payload Optical Transmitter & Receiver (Mono + 3x RGB), Free/Pro/Enterprise Licensing, Trial & Policy Controls | 2 | 0 | 🔒 LOCKED |
+| **Stage 8: Universal, Advanced & Enterprise QR Generator** | Standard QR Generator (8 types), Advanced Visual Styler + SVG/PDF Vector Export, Enterprise Payload Studio | 3 | 3 | 🟢 COMPLETED |
+| **Stage 9: Live Optical Data Transfer & Enterprise Licensing** | Real File/Payload Optical Transmitter & Receiver (Mono + 3x RGB), Free/Pro/Enterprise Licensing, Trial & Policy Controls | 2 | 0 | 🟡 IN PROGRESS (Next: `9.1.1`) |
 | **Stage 10: 5-Platform Native Parity & Commercial Certification** | Linux & macOS Desktop Runners, WCAG AAA Semantics, Full Localization & Production Readiness Attestation | 2 | 0 | 🔒 LOCKED |
-| **v3.0 Subtotal** | **Unified Commercial Platform Expansion** | **13** | **8** | **Ready for Subphase 8.3.1** |
+| **v3.0 Subtotal** | **Unified Commercial Platform Expansion** | **13** | **9** | **Ready for Subphase 9.1.1** |
 
 ---
 
@@ -178,7 +178,7 @@
   - **Handoff Requirements:** Unlocks `Subphase 8.3.1`.
 
 #### Phase 8.3: Enterprise & Cryptographic Payload Generator
-- [ ] **Subphase 8.3.1: Enterprise Payload Studio (TOTP, Web3 Crypto, SLIP-39 Shamir Shares & Encrypted Binary Payloads)** `[PENDING — ACTIVE NEXT]`
+- [x] **Subphase 8.3.1: Enterprise Payload Studio (TOTP, Web3 Crypto, SLIP-39 Shamir Shares & Encrypted Binary Payloads)** `[COMPLETED]`
   - **Deliverables:**
     - `lib/presentation/pages/generator/enterprise_generator_view.dart` wired to `CryptoAuthSerializerService`, `Slip39SecretSharer` ($M$-of-$N$ threshold QR share carousel), and `PayloadEncryptionService`.
   - **Acceptance Criteria:**
@@ -191,7 +191,7 @@
 ### STAGE 9: End-to-End Air-Gapped Optical Data Transfer & Enterprise Licensing / Policy Engine
 
 #### Phase 9.1: Live Optical Fountain Transmitter & Receiver Pipeline
-- [ ] **Subphase 9.1.1: End-to-End Optical Fountain Transmitter & Receiver Workspace (Monochrome & 3x RGB Multiplex)** `[LOCKED — Depends on 8.3.1]`
+- [ ] **Subphase 9.1.1: End-to-End Optical Fountain Transmitter & Receiver Workspace (Monochrome & 3x RGB Multiplex)** `[PENDING — ACTIVE NEXT]`
   - **Deliverables:**
     - `lib/presentation/pages/optical/optical_transfer_page.dart` wiring file/payload selection -> `BinaryFileChunker` -> `PayloadCompressionService` -> `PayloadEncryptionService` -> `FountainCodecIsolate` -> `OpticalAnimationPlayer` / `RgbMultiplexQrWidget` (Transmitter) and `CameraViewportWidget` / `RgbChannelSplitter` -> `ChunkAccumulatorEngine` -> `MissingBlockMatrixHeatmap` -> `AirgapFileWriterService` (Receiver).
   - **Acceptance Criteria:**

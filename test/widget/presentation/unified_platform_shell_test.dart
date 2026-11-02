@@ -88,7 +88,7 @@ void main() {
       await tester.tap(find.text('Vault (Ctrl+4)'));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
-      expect(find.text('Encrypted SQLCipher Vault'), findsOneWidget);
+      expect(find.text('Encrypted Vault & Forensic Audit'), findsOneWidget);
 
       // 5. Switch to Enterprise (Workspace 4)
       await tester.tap(find.text('Enterprise (Ctrl+5)'));
@@ -125,7 +125,7 @@ void main() {
       await tester.sendKeyUpEvent(LogicalKeyboardKey.control);
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
-      expect(find.text('Encrypted SQLCipher Vault'), findsOneWidget);
+      expect(find.text('Encrypted Vault & Forensic Audit'), findsOneWidget);
 
       // Press Ctrl+1 -> Scanner
       await tester.sendKeyDownEvent(LogicalKeyboardKey.control);

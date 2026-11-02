@@ -84,7 +84,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('Encrypted SQLCipher Vault'), findsOneWidget);
+      expect(find.text('Encrypted Vault & Forensic Audit'), findsOneWidget);
       expect(find.byTooltip('Generate Forensic Audit Seal'), findsOneWidget);
       expect(find.byTooltip('Export Vault Records'), findsOneWidget);
       expect(find.byTooltip('Purge Encrypted Vault'), findsOneWidget);

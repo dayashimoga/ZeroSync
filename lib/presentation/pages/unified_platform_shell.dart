@@ -1,3 +1,4 @@
+import 'package:airdrop_qr/presentation/pages/generator/advanced_styler_view.dart';
 import 'package:airdrop_qr/presentation/pages/generator/standard_generator_view.dart';
 import 'package:airdrop_qr/presentation/pages/home_page.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/batch_scanner_view.dart';
@@ -422,32 +423,21 @@ class _UnifiedPlatformShellState extends State<UnifiedPlatformShell> {
           ),
 
           // Sub-Mode 1: Advanced Visual Styler Studio (Phase 8.2)
-          const Center(
-            child: Padding(
-              padding: EdgeInsets.all(ZeroSyncSpacing.xl),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.palette_outlined,
-                      size: 56, color: ZeroSyncColors.cyan),
-                  SizedBox(height: ZeroSyncSpacing.md),
-                  Text(
-                    'Advanced QR Styler Studio',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: ZeroSyncColors.trueWhite),
-                  ),
-                  SizedBox(height: ZeroSyncSpacing.xs),
-                  Text(
-                    'Custom finder eyes, module geometries, brand logo embedding with ECC Level H, and SVG/PDF export.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: ZeroSyncColors.lightTextSecondary, fontSize: 13),
-                  ),
-                ],
-              ),
-            ),
+          AdvancedStylerView(
+            onSaveToVault: (record) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Saved "${record.title}" to SQLCipher Vault'),
+                ),
+              );
+            },
+            onActionDispatched: (payload) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Dispatched sandboxed action for: $payload'),
+                ),
+              );
+            },
           ),
 
           // Sub-Mode 2: Enterprise Payload Studio (Phase 8.3)

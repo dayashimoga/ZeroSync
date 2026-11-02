@@ -295,7 +295,7 @@ class _EncryptedVaultPageState extends State<EncryptedVaultPage> {
     return Scaffold(
       backgroundColor: ZeroSyncColors.trueBlack,
       appBar: AppBar(
-        title: const Text('Encrypted SQLCipher Vault'),
+        title: const Text('Encrypted Vault & Forensic Audit'),
         actions: [
           // Forensic Audit Seal Button
           IconButton(

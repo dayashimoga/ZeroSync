@@ -81,7 +81,7 @@ jobs:
       - name: Security Credential Scanning
         run: |
           echo ">>> Scanning repository for leaked secrets, API keys, or private certificates..."
-          if grep -rn -E --exclude-dir={.git,.dart_tool,build} "(AIzaSy[A-Za-z0-9_-]{33}|-----BEGIN PRIVATE KEY-----)" .; then
+          if grep -rn -E --exclude-dir=.git --exclude-dir=.dart_tool --exclude-dir=build --exclude-dir=.github "(AIzaSy[A-Za-z0-9_-]{33}|-----BEGIN PRIVATE KEY-----)" .; then
             echo "::error::Hardcoded credentials detected in repository!"
             exit 1
           fi

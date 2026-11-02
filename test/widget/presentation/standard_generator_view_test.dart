@@ -28,10 +28,11 @@ void main() {
       tester.view.physicalSize = const Size(1280, 1000);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(buildTestHost());
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       // Schema Chips
       expect(find.text('Text'), findsOneWidget);
       expect(find.text('URL'), findsOneWidget);
@@ -53,10 +54,11 @@ void main() {
       tester.view.physicalSize = const Size(1280, 1000);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(buildTestHost());
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       // Enter new text
       await tester.enterText(
         find.widgetWithText(
@@ -64,7 +66,7 @@ void main() {
         'CLASSIFIED_TOP_SECRET_AIRGAP_PAYLOAD',
       );
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       expect(
           find.text('CLASSIFIED_TOP_SECRET_AIRGAP_PAYLOAD'), findsNWidgets(2));
     });
@@ -75,21 +77,22 @@ void main() {
       tester.view.physicalSize = const Size(1280, 1000);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(buildTestHost());
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       // Switch to URL schema
       await tester.tap(find.text('URL'));
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       // Enter URL with tracker parameters
       await tester.enterText(
         find.widgetWithText(TextField, 'https://zerosync.security'),
         'https://example.com/login?utm_source=facebook&client_id=123',
       );
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       // Verifies stripped parameter badge appears
       expect(
           find.textContaining('Stripped Trackers: utm_source'), findsOneWidget);
@@ -102,14 +105,15 @@ void main() {
       tester.view.physicalSize = const Size(1280, 1000);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(buildTestHost());
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       // Switch to Wi-Fi
       await tester.tap(find.text('Wi-Fi'));
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       expect(find.text('Network SSID'), findsOneWidget);
       expect(find.text('Pre-Shared Key / Password'), findsOneWidget);
 
@@ -127,14 +131,15 @@ void main() {
       tester.view.physicalSize = const Size(1280, 1000);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(buildTestHost());
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       // Switch to Contact
       await tester.tap(find.text('Contact'));
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       expect(find.text('Full Formatted Name *'), findsOneWidget);
 
       // Verify vCard payload preview
@@ -147,13 +152,15 @@ void main() {
       tester.view.physicalSize = const Size(1280, 1000);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(buildTestHost());
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       // Tap Inspect button
       await tester.tap(find.text('Inspect'));
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
       await tester.pump(const Duration(milliseconds: 300));
 
       expect(find.byType(ThreatInspectorSheet), findsOneWidget);
@@ -166,6 +173,7 @@ void main() {
       tester.view.physicalSize = const Size(1280, 1000);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       ScanRecord? savedRecord;
 
@@ -173,11 +181,11 @@ void main() {
         onSaveToVault: (record) => savedRecord = record,
       ));
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       // Tap Save button
       await tester.tap(find.text('Save'));
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       expect(savedRecord, isNotNull);
       expect(savedRecord!.rawValue,
           contains('ZeroSync: Air-Gapped Optical Data Transfer'));
@@ -189,14 +197,15 @@ void main() {
       tester.view.physicalSize = const Size(1280, 1000);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(buildTestHost());
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       // Tap 'H (30%)' choice chip
       await tester.tap(find.text('H (30%)'));
       await tester.pump();
-
+      await tester.pump(const Duration(milliseconds: 100));
       final chip =
           tester.widget<ChoiceChip>(find.widgetWithText(ChoiceChip, 'H (30%)'));
       expect(chip.selected, isTrue);

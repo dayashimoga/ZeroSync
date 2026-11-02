@@ -43,6 +43,7 @@ void main() {
       tester.view.physicalSize = const Size(1280, 2400);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(buildTestHost());
       await tester.pumpAndSettle();
@@ -70,6 +71,7 @@ void main() {
       tester.view.physicalSize = const Size(1280, 1000);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(buildTestHost());
       await tester.pumpAndSettle();
@@ -90,6 +92,7 @@ void main() {
       tester.view.physicalSize = const Size(1280, 1000);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(buildTestHost());
       await tester.pumpAndSettle();
@@ -119,6 +122,7 @@ void main() {
       tester.view.physicalSize = const Size(1280, 2400);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(buildTestHost());
       await tester.pumpAndSettle();
@@ -177,6 +181,7 @@ void main() {
       tester.view.physicalSize = const Size(1280, 1000);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       // Generate a valid signed Pro license
       final payload = LicensePayload(

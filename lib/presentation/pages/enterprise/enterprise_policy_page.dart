@@ -435,12 +435,16 @@ class _EnterprisePolicyPageState extends State<EnterprisePolicyPage> {
                     style: TextStyle(
                         fontSize: 12,
                         color: ZeroSyncColors.lightTextSecondary)),
-                Text(
-                  '${_snapshot.maxOpticalTransferMb} MB per session',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: ZeroSyncColors.emerald,
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    '${_snapshot.maxOpticalTransferMb} MB per session',
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: ZeroSyncColors.emerald,
+                    ),
                   ),
                 ),
               ],
@@ -490,13 +494,18 @@ class _EnterprisePolicyPageState extends State<EnterprisePolicyPage> {
                     borderRadius: BorderRadius.circular(8)),
                 title: Row(
                   children: [
-                    Text(gate.title,
+                    Expanded(
+                      child: Text(
+                        gate.title,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: tierSufficient
                               ? ZeroSyncColors.trueWhite
                               : Colors.white38,
                           fontSize: 13,
-                        )),
+                        ),
+                      ),
+                    ),
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(

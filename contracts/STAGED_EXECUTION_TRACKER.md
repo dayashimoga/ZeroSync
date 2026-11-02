@@ -85,9 +85,10 @@
 | **Stage 6: Presentation Remediation & Unified Shell** | Fix Windows startup hardcoded telemetry, Anti-Placeholder AST gate, 5-Workspace Adaptive Navigation Shell | 2 | 2 | 🟢 COMPLETED |
 | **Stage 7: Multi-Modal QR Scanner Suite** | Camera Scanner, Image/Clipboard Scanner, Batch Scanner UI, Encrypted Vault History & Threat Inspector | 4 | 4 | 🟢 COMPLETED |
 | **Stage 8: Universal, Advanced & Enterprise QR Generator** | Standard QR Generator (8 types), Advanced Visual Styler + SVG/PDF Vector Export, Enterprise Payload Studio | 3 | 3 | 🟢 COMPLETED |
-| **Stage 9: Live Optical Data Transfer & Enterprise Licensing** | Real File/Payload Optical Transmitter & Receiver (Mono + 3x RGB), Free/Pro/Enterprise Licensing, Trial & Policy Controls | 2 | 0 | 🟡 IN PROGRESS (Next: `9.1.1`) |
-| **Stage 10: 5-Platform Native Parity & Commercial Certification** | Linux & macOS Desktop Runners, WCAG AAA Semantics, Full Localization & Production Readiness Attestation | 2 | 0 | 🔒 LOCKED |
-| **v3.0 Subtotal** | **Unified Commercial Platform Expansion** | **13** | **9** | **Ready for Subphase 9.1.1** |
+| **Stage 9: Live Optical Data Transfer & Enterprise Licensing** | Real File/Payload Optical Transmitter & Receiver (Mono + 3x RGB), Free/Pro/Enterprise Licensing, Trial & Policy Controls | 2 | 2 | 🟢 COMPLETED |
+| **Stage 9 Expansion: Multi-Modal Transport & Topology (v3.1)** | Multi-Topology Coordinator (`1:1`, `1:N`, `M:N`), Checkpoint Resume Engine, Adaptive Entropy Compression, Live Benchmarking | 1 | 1 | 🟢 COMPLETED |
+| **Stage 10: 5-Platform Native Parity & Commercial Certification** | Linux & macOS Desktop Runners, WCAG AAA Semantics, Full Localization & Production Readiness Attestation | 2 | 2 | 🟢 COMPLETED |
+| **v3.0 + v3.1 Subtotal** | **Unified Commercial Platform Expansion** | **14** | **14** | **100% COMPLETED** |
 
 ---
 

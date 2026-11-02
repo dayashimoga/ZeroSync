@@ -694,17 +694,21 @@ class _OpticalTransferPageState extends State<OpticalTransferPage> {
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
                             color: ZeroSyncColors.trueWhite)),
-                    Text(
-                      _topologyCoordinator.supportsSimultaneousReceivers
-                          ? 'Multicast Enabled'
-                          : 'Direct Optical Link',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color:
-                            _topologyCoordinator.supportsSimultaneousReceivers
-                                ? ZeroSyncColors.emerald
-                                : ZeroSyncColors.cyan,
-                        fontWeight: FontWeight.bold,
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        _topologyCoordinator.supportsSimultaneousReceivers
+                            ? 'Multicast Enabled'
+                            : 'Direct Optical Link',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 10,
+                          color:
+                              _topologyCoordinator.supportsSimultaneousReceivers
+                                  ? ZeroSyncColors.emerald
+                                  : ZeroSyncColors.cyan,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -863,12 +867,15 @@ class _OpticalTransferPageState extends State<OpticalTransferPage> {
                       Icon(Icons.verified,
                           size: 16, color: ZeroSyncColors.emerald),
                       SizedBox(width: ZeroSyncSpacing.xs),
-                      Text(
-                        'Cryptographic Validation Succeeded',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: ZeroSyncColors.emerald,
+                      Expanded(
+                        child: Text(
+                          'Cryptographic Validation Succeeded',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: ZeroSyncColors.emerald,
+                          ),
                         ),
                       ),
                     ],

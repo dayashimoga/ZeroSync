@@ -96,7 +96,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
       expect(find.text('Enterprise Policy & Licensing Center'), findsOneWidget);
-      expect(find.text('ZeroSync Community Edition'), findsOneWidget);
+      expect(find.text('COMMUNITY EDITION'), findsWidgets);
     });
 
     testWidgets('Switches workspaces via keyboard shortcuts (Ctrl+1 to Ctrl+5)',

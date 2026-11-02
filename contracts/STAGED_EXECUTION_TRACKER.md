@@ -202,13 +202,15 @@
   - **Handoff Requirements:** Unlocks `Subphase 9.2.1`.
 
 #### Phase 9.2: Offline Licensing, Feature Flags, Trial & Enterprise Policy Controls
-- [ ] **Subphase 9.2.1: Enterprise Licensing, Offline Trial, Feature Flags & Policy Control Center** `[PENDING — ACTIVE NEXT]`
+- [x] **Subphase 9.2.1: Enterprise Licensing, Offline Trial, Feature Flags & Policy Control Center** `[COMPLETED]`
   - **Deliverables:**
-    - `lib/domain/services/enterprise_policy_service.dart`, `lib/presentation/blocs/license_policy/license_policy_bloc.dart`, and `lib/presentation/pages/enterprise/enterprise_policy_page.dart`.
-    - Wired to `LicenseVerifierService` (offline `.zslic` Ed25519 signature verification) and `DuressManagerService` (primary vs decoy vault PIN setup).
+    - `lib/domain/entities/enterprise_policy.dart`: Enterprise policy snapshot, feature tier gates, and audit retention policies.
+    - `lib/domain/services/enterprise_policy_service.dart`: Pure Dart enterprise engine managing tier capability evaluation, 14-day offline trial activation, granular feature toggles, security policy invariants, and DuressManagerService coordination.
+    - `lib/presentation/pages/enterprise/enterprise_policy_page.dart`: Interactive control center with status badging, `.zslic` cryptographic import/revoke, trial activation, live feature toggles, full comparison matrix, and Duress Panic PIN evaluation sandbox.
+    - Integrated as Workspace 4 in `UnifiedPlatformShell`.
   - **Acceptance Criteria:**
     - Complete Free vs Pro vs Enterprise comparison matrix, `.zslic` file/QR license import, deterministic offline trial activation, granular feature flag enable/disable toggles, mandatory encryption policy enforcement, and Duress Panic PIN configuration.
-  - **Validation Commands:** All 4 mandatory gates + `flutter test test/unit/domain/enterprise_policy_service_test.dart test/widget/presentation/enterprise_policy_page_test.dart`.
+  - **Validation Commands:** All 4 mandatory gates + `flutter test test/unit/domain/enterprise_policy_service_test.dart test/widget/presentation/enterprise_policy_page_test.dart test/widget/presentation/unified_platform_shell_test.dart`.
   - **Handoff Requirements:** Stage 9 sealed; Stage 10 unlocked.
 
 ---
@@ -216,7 +218,7 @@
 ### STAGE 10: 5-Platform Native Parity (Android, Windows, Linux, macOS, iOS), Accessibility & Commercial Certification
 
 #### Phase 10.1: Linux & macOS Desktop Runners + Cross-Platform Hardware Parity
-- [ ] **Subphase 10.1.1: Scaffold & Harden `linux/` and `macos/` Desktop Runners & 5-Platform Native Guards** `[LOCKED — Depends on 9.2.1]`
+- [ ] **Subphase 10.1.1: Scaffold & Harden `linux/` and `macos/` Desktop Runners & 5-Platform Native Guards** `[PENDING — ACTIVE NEXT]`
   - **Deliverables:**
     - `linux/` (GTK3 C++ runner) and `macos/` (Cocoa Swift runner with zero-network `DebugProfile.entitlements` / `Release.entitlements`).
     - Extend `tool/verify_airgap.dart` to audit `macos/Runner/*.entitlements` for `com.apple.security.network.client`.

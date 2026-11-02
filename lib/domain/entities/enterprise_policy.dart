@@ -77,3 +77,4 @@ class EnterprisePolicySnapshot extends Equatable {
         isDuressActive,
       ];
 }
+

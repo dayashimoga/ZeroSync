@@ -91,3 +91,4 @@ class TransferCheckpointService {
     _checkpoints.clear();
   }
 }
+

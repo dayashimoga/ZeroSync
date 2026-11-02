@@ -246,7 +246,7 @@
 
 ### STAGE 9 EXPANSION (v3.1): Adaptive Multi-Modal Transport, Topology & Benchmarking
 
-- [ ] **Subphase 9.1.2: Intelligent Multi-Modal Transport Advisor (`TransportAdvisorService`), Topology Coordinator (`1:1`, `1:N` Broadcast, `M:N`), Transfer Resume Checkpoints & Benchmark Profiler** `[PENDING — ACTIVE NEXT]`
+- [x] **Subphase 9.1.2: Intelligent Multi-Modal Transport Advisor (`TransportAdvisorService`), Topology Coordinator (`1:1`, `1:N` Broadcast, `M:N`), Transfer Resume Checkpoints & Benchmark Profiler** `[COMPLETED]`
   - **Deliverables:**
     - `lib/domain/services/transport_advisor_service.dart`: Evaluates file size, bandwidth, security policy (`strictOpticalScif` vs `proximityHybridOob` vs `localLan`), device capabilities, and environment to score and recommend:
       1. *Animated QR / LT Fountain Streaming*
@@ -258,6 +258,7 @@
     - `lib/domain/services/transfer_checkpoint_service.dart`: Persists and resumes partial `ChunkAccumulatorEngine` bitmasks and source blocks across sessions.
     - `lib/domain/services/adaptive_compression_service.dart`: Shannon byte-entropy analyzer ($H(X)$) selecting optimal compression level before XChaCha20-Poly1305 encryption.
     - `lib/domain/services/transfer_benchmark_service.dart`: Real-time throughput profiler and auto-tuner for QR version, ECC, and FPS.
+    - `lib/presentation/pages/optical/optical_transfer_page.dart`: Wired with real-time multi-device topology selector (`1:1`, `1:N`, `M:N`) and session checkpoint recovery.
   - **Acceptance Criteria:**
     - Automatic transport recommendation card rendered in the Optical Transfer workspace with estimated duration, KB/s goodput, security posture badge, and topology selector (`1:1`, `1:N`, `M:N`).
     - Interrupted transfers resume from exact percentage via checkpoint recovery without re-transmitting already peeled blocks.
@@ -266,5 +267,5 @@
     - `dart format --output=none --set-exit-if-changed lib/ test/ tool/`
     - `dart analyze --fatal-infos --fatal-warnings`
     - `dart run tool/verify_airgap.dart`
-    - `flutter test test/unit/domain/transport_advisor_service_test.dart test/unit/domain/transfer_checkpoint_service_test.dart`
-  - **Handoff Requirements:** Unlocks `Subphase 9.2.1`.
+    - `flutter test test/unit/domain/transport_advisor_service_test.dart test/unit/domain/transfer_checkpoint_service_test.dart test/unit/domain/adaptive_compression_service_test.dart test/unit/domain/transfer_benchmark_service_test.dart test/unit/domain/multi_topology_coordinator_test.dart test/widget/presentation/optical_transfer_page_test.dart`
+  - **Handoff Requirements:** Stage 9 Expansion sealed; v3.1 Architecture Completed.

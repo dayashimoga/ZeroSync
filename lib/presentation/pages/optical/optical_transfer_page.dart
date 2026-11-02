@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:airdrop_qr/domain/entities/scan_record.dart';
+import 'package:crypto/crypto.dart';
 import 'package:airdrop_qr/domain/services/binary_file_chunker.dart';
+import 'package:airdrop_qr/domain/services/multi_topology_coordinator.dart';
 import 'package:airdrop_qr/domain/services/payload_compression_service.dart';
 import 'package:airdrop_qr/domain/services/payload_encryption_service.dart';
 import 'package:airdrop_qr/domain/services/rgb_channel_splitter.dart';
+import 'package:airdrop_qr/domain/services/transfer_checkpoint_service.dart';
 import 'package:airdrop_qr/domain/services/transport_advisor_service.dart';
 import 'package:airdrop_qr/presentation/blocs/optical_session/optical_session_bloc.dart';
 import 'package:airdrop_qr/presentation/theme/zerosync_design_tokens.dart';
@@ -45,6 +48,10 @@ class _OpticalTransferPageState extends State<OpticalTransferPage> {
   bool _isInternalBloc = false;
 
   final TransportAdvisorService _advisor = const TransportAdvisorService();
+  final MultiTopologyCoordinator _topologyCoordinator =
+      MultiTopologyCoordinator();
+  final TransferCheckpointService _checkpointService =
+      TransferCheckpointService();
   final PayloadCompressionService _compressor =
       const PayloadCompressionService();
   final PayloadEncryptionService _encryptionService =
@@ -117,6 +124,18 @@ class _OpticalTransferPageState extends State<OpticalTransferPage> {
       );
       effectiveBytes = envelope.toWireBytes();
     }
+
+    _checkpointService.saveCheckpoint(
+      TransferCheckpoint(
+        sessionId: 'sess-${DateTime.now().millisecondsSinceEpoch}',
+        fileName: fileName,
+        totalBytes: fileBytes.length,
+        totalChunks: (effectiveBytes.length / chunkSize).ceil(),
+        receivedChunkIndices: const {},
+        expectedSha256: sha256.convert(fileBytes).toString(),
+        checkpointedAt: DateTime.now(),
+      ),
+    );
 
     _sessionBloc.add(
       OpticalSessionPayloadPrepared(
@@ -650,6 +669,72 @@ class _OpticalTransferPageState extends State<OpticalTransferPage> {
                 Text(
                   'Zero network permissions • SQLCipher AES-256 Vault • RAM Zero-Scrubbing',
                   style: TextStyle(fontSize: 11, color: Colors.white60),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: ZeroSyncSpacing.md),
+
+          // Multi-Device Topology Selector
+          Container(
+            padding: const EdgeInsets.all(ZeroSyncSpacing.sm),
+            decoration: BoxDecoration(
+              color: ZeroSyncColors.trueBlack,
+              borderRadius: BorderRadius.circular(ZeroSyncRadii.md),
+              border: Border.all(color: ZeroSyncColors.darkBorder),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Optical Topology:',
+                        style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: ZeroSyncColors.trueWhite)),
+                    Text(
+                      _topologyCoordinator.supportsSimultaneousReceivers
+                          ? 'Multicast Enabled'
+                          : 'Direct Optical Link',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color:
+                            _topologyCoordinator.supportsSimultaneousReceivers
+                                ? ZeroSyncColors.emerald
+                                : ZeroSyncColors.cyan,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: 6,
+                  children: TransferTopology.values.map((top) {
+                    final isSelected =
+                        _topologyCoordinator.activeTopology == top;
+                    return ChoiceChip(
+                      label: Text(top.label,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: isSelected
+                                ? ZeroSyncColors.trueBlack
+                                : ZeroSyncColors.trueWhite,
+                          )),
+                      selected: isSelected,
+                      selectedColor: ZeroSyncColors.cyan,
+                      backgroundColor: ZeroSyncColors.darkSlate,
+                      onSelected: (selected) {
+                        if (selected) {
+                          setState(() {
+                            _topologyCoordinator.setTopology(top);
+                          });
+                        }
+                      },
+                    );
+                  }).toList(),
                 ),
               ],
             ),

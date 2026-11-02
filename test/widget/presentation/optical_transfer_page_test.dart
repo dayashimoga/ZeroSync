@@ -211,5 +211,34 @@ void main() {
       expect(find.text('0 / 0 Chunks'), findsOneWidget);
       expect(find.text('0.0%'), findsOneWidget);
     });
+
+    testWidgets(
+        'Selects Optical Topology and switches between 1:1, 1:N, and M:N',
+        (tester) async {
+      tester.view.physicalSize = const Size(1280, 1000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(buildTestHost());
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      expect(find.text('Optical Topology:'), findsOneWidget);
+      expect(find.text('Direct Optical Link'), findsOneWidget);
+
+      // Select 1:N Optical Multicast
+      await tester.tap(find.text('1:N Optical Multicast'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      expect(find.text('Multicast Enabled'), findsOneWidget);
+
+      // Switch back to 1:1
+      await tester.tap(find.text('1:1 Point-to-Point'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      expect(find.text('Direct Optical Link'), findsOneWidget);
+    });
   });
 }

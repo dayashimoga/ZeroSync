@@ -350,6 +350,19 @@ class CameraViewportWidgetState extends State<CameraViewportWidget>
   }
 
   Widget _buildControlOverlay(Rect scanWindow) {
+    final platform = Theme.of(context).platform;
+    final isDesktop = platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
+
+    final showTorch = widget.config.showTorchControl && !isDesktop;
+    final showFlip = widget.config.showCameraFlipControl && !isDesktop;
+    final showZoom = widget.config.showZoomBadge;
+
+    if (!showTorch && !showFlip && !showZoom) {
+      return const SizedBox.shrink();
+    }
+
     return Positioned(
       bottom: 24,
       left: 16,
@@ -358,8 +371,8 @@ class CameraViewportWidgetState extends State<CameraViewportWidget>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            // Flashlight / Torch Toggle
-            if (widget.config.showTorchControl)
+            // Flashlight / Torch Toggle (Mobile Only)
+            if (showTorch)
               IconButton.filledTonal(
                 onPressed: toggleTorch,
                 icon: Icon(
@@ -373,7 +386,7 @@ class CameraViewportWidgetState extends State<CameraViewportWidget>
               ),
 
             // Zoom Badge
-            if (widget.config.showZoomBadge)
+            if (showZoom)
               GestureDetector(
                 onTap: _handleDoubleTap,
                 child: Container(
@@ -395,8 +408,8 @@ class CameraViewportWidgetState extends State<CameraViewportWidget>
                 ),
               ),
 
-            // Camera Flip Toggle
-            if (widget.config.showCameraFlipControl)
+            // Camera Flip Toggle (Mobile Only)
+            if (showFlip)
               IconButton.filledTonal(
                 onPressed: switchCamera,
                 icon: const Icon(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:airdrop_qr/l10n/app_localizations.dart';
-import 'package:airdrop_qr/presentation/pages/home_page.dart';
+import 'package:airdrop_qr/presentation/pages/unified_platform_shell.dart';
 import 'package:airdrop_qr/presentation/theme/zerosync_design_tokens.dart';
 
 void main() {
@@ -17,19 +17,23 @@ void main() {
 
 /// Root widget for the ZeroSync air-gapped application.
 class ZeroSyncApp extends StatelessWidget {
-  const ZeroSyncApp({super.key});
+  final Widget? home;
+  final ThemeData? theme;
+
+  const ZeroSyncApp({super.key, this.home, this.theme});
 
   @override
   Widget build(BuildContext context) {
+    final effectiveTheme = theme ?? ZeroSyncTheme.oledBlackTheme;
     return MaterialApp(
       title: 'ZeroSync',
       debugShowCheckedModeBanner: false,
-      theme: ZeroSyncTheme.oledBlackTheme,
-      darkTheme: ZeroSyncTheme.oledBlackTheme,
+      theme: effectiveTheme,
+      darkTheme: effectiveTheme,
       themeMode: ThemeMode.dark,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const ZeroSyncHomePage(),
+      home: home ?? const UnifiedPlatformShell(),
     );
   }
 }

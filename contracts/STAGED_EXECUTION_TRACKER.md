@@ -76,12 +76,12 @@
 
 | Stage | Scope | Subphases | Completed | Status |
 |:---|:---|:---:|:---:|:---|
-| **Stage 6: Presentation Remediation & Unified Shell** | Fix Windows startup hardcoded telemetry, Anti-Placeholder AST gate, 5-Workspace Adaptive Navigation Shell | 2 | 1 | 🟡 IN PROGRESS (Next: `6.1.2`) |
-| **Stage 7: Multi-Modal QR Scanner Suite** | Camera Scanner, Image/Clipboard Scanner, Batch Scanner UI, Encrypted Vault History & Threat Inspector | 4 | 0 | 🔒 LOCKED |
+| **Stage 6: Presentation Remediation & Unified Shell** | Fix Windows startup hardcoded telemetry, Anti-Placeholder AST gate, 5-Workspace Adaptive Navigation Shell | 2 | 2 | 🟢 COMPLETED |
+| **Stage 7: Multi-Modal QR Scanner Suite** | Camera Scanner, Image/Clipboard Scanner, Batch Scanner UI, Encrypted Vault History & Threat Inspector | 4 | 0 | 🟡 PENDING (Next: `7.1.1`) |
 | **Stage 8: Universal, Advanced & Enterprise QR Generator** | Standard QR Generator (8 types), Advanced Visual Styler + SVG/PDF Vector Export, Enterprise Payload Studio | 3 | 0 | 🔒 LOCKED |
 | **Stage 9: Live Optical Data Transfer & Enterprise Licensing** | Real File/Payload Optical Transmitter & Receiver (Mono + 3x RGB), Free/Pro/Enterprise Licensing, Trial & Policy Controls | 2 | 0 | 🔒 LOCKED |
 | **Stage 10: 5-Platform Native Parity & Commercial Certification** | Linux & macOS Desktop Runners, WCAG AAA Semantics, Full Localization & Production Readiness Attestation | 2 | 0 | 🔒 LOCKED |
-| **v3.0 Subtotal** | **Unified Commercial Platform Expansion** | **13** | **1** | **Ready for Subphase 6.1.2** |
+| **v3.0 Subtotal** | **Unified Commercial Platform Expansion** | **13** | **2** | **Ready for Subphase 7.1.1** |
 
 ---
 
@@ -106,7 +106,7 @@
     - `flutter test test/widget/presentation/home_page_test.dart`
   - **Handoff Requirements:** Clean git commit recorded; `Subphase 6.1.2` unlocked.
 
-- [ ] **Subphase 6.1.2: Unified 5-Workspace Adaptive Navigation Shell (`Scanner`, `Generator`, `Optical Transfer`, `Encrypted Vault`, `Enterprise & Licensing`)** `[PENDING — ACTIVE NEXT]`
+- [x] **Subphase 6.1.2: Unified 5-Workspace Adaptive Navigation Shell (`Scanner`, `Generator`, `Optical Transfer`, `Encrypted Vault`, `Enterprise & Licensing`)** `[COMPLETED]`
   - **Deliverables:**
     - `lib/presentation/pages/unified_platform_shell.dart` with `NavigationRail` for Desktop/Tablet ($\ge 720\text{dp}$) and `NavigationBar` for Mobile ($< 720\text{dp}$), plus keyboard shortcuts (`Ctrl+1..5`).
     - Platform-aware capability detection in `CameraViewportWidget` hiding mobile-only Torch/Flip buttons on desktop workstations.
@@ -120,7 +120,7 @@
 ### STAGE 7: Unified Multi-Modal QR Scanner Suite (Camera, Image, Batch & Threat Inspector)
 
 #### Phase 7.1: Camera & Static Image Scanner Workspaces
-- [ ] **Subphase 7.1.1: Camera Scanner Workspace & Pre-Action Threat Inspector Sheet** `[LOCKED — Depends on 6.1.2]`
+- [ ] **Subphase 7.1.1: Camera Scanner Workspace & Pre-Action Threat Inspector Sheet** `[PENDING — ACTIVE NEXT]`
   - **Deliverables:**
     - `lib/presentation/pages/scanner/camera_scanner_view.dart` & `lib/presentation/widgets/threat_inspector_sheet.dart`.
     - Live wiring to `DomainInspectorService` (homoglyph/punycode/IP/scheme alerts), `TrackerStripperService` (UTM/fbclid/gclid stripping), and `NativeIntentDispatcher`.

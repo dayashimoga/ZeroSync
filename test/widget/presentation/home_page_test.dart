@@ -13,7 +13,7 @@ void main() {
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
 
-      await tester.pumpWidget(const ZeroSyncApp());
+      await tester.pumpWidget(const ZeroSyncApp(home: ZeroSyncHomePage()));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
 
@@ -43,7 +43,7 @@ void main() {
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
 
-      await tester.pumpWidget(const ZeroSyncApp());
+      await tester.pumpWidget(const ZeroSyncApp(home: ZeroSyncHomePage()));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
 

@@ -8,13 +8,21 @@
   "@scannerTabTitle": {
     "description": "Navigation label for optical scanner"
   },
-  "vaultTabTitle": "Vault",
+  "generatorTabTitle": "Generator",
+  "@generatorTabTitle": {
+    "description": "Navigation label for QR generator"
+  },
+  "transferTabTitle": "Optical Transfer",
+  "@transferTabTitle": {
+    "description": "Navigation label for optical air-gap data transfer"
+  },
+  "vaultTabTitle": "Encrypted Vault",
   "@vaultTabTitle": {
     "description": "Navigation label for encrypted scan vault"
   },
-  "transferTabTitle": "ZeroSync Transfer",
-  "@transferTabTitle": {
-    "description": "Navigation label for optical air-gap data transfer"
+  "enterpriseTabTitle": "Enterprise Policy",
+  "@enterpriseTabTitle": {
+    "description": "Navigation label for enterprise policy & licensing"
   },
   "settingsTabTitle": "Settings",
   "@settingsTabTitle": {
@@ -67,6 +75,45 @@
   "offlineAirGapGuaranteed": "Zero network permissions active. 100% offline air-gapped security.",
   "@offlineAirGapGuaranteed": {
     "description": "Security banner verifying network isolation"
+  },
+  "cameraScannerTitle": "Real-Time Camera Scanner",
+  "@cameraScannerTitle": {
+    "description": "Title for camera scanner subview"
+  },
+  "imageScannerTitle": "Image & File Preprocessor",
+  "@imageScannerTitle": {
+    "description": "Title for image scanner subview"
+  },
+  "batchScannerTitle": "Batch Continuous Scanner",
+  "@batchScannerTitle": {
+    "description": "Title for batch continuous scanner subview"
+  },
+  "standardGeneratorTitle": "Universal QR Generator",
+  "@standardGeneratorTitle": {
+    "description": "Title for standard generator subview"
+  },
+  "advancedStylerTitle": "Advanced QR Styler & Vector Studio",
+  "@advancedStylerTitle": {
+    "description": "Title for advanced styler subview"
+  },
+  "enterpriseStudioTitle": "Enterprise Cryptographic Studio",
+  "@enterpriseStudioTitle": {
+    "description": "Title for enterprise payload generator subview"
+  },
+  "transmitterModeTitle": "Visual ZeroSync Transmitter",
+  "@transmitterModeTitle": {
+    "description": "Title for optical transmitter view"
+  },
+  "receiverModeTitle": "Visual ZeroSync Receiver",
+  "@receiverModeTitle": {
+    "description": "Title for optical receiver view"
+  },
+  "duressPanicTitle": "Duress Panic Guard & Decoy Mode",
+  "@duressPanicTitle": {
+    "description": "Title for duress panic security card"
+  },
+  "offlineTrialTitle": "14-Day Offline Enterprise Trial",
+  "@offlineTrialTitle": {
+    "description": "Title for offline trial activation banner"
   }
 }
-

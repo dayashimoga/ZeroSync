@@ -2,8 +2,10 @@
   "@@locale": "ar",
   "appTitle": "زيرو سينك AirDrop-QR",
   "scannerTabTitle": "الماسح الضوئي",
-  "vaultTabTitle": "الخزنة",
-  "transferTabTitle": "نقل زيرو سينك",
+  "generatorTabTitle": "منشئ الرموز",
+  "transferTabTitle": "النقل البصري",
+  "vaultTabTitle": "الخزنة المشفرة",
+  "enterpriseTabTitle": "سياسات المؤسسة",
   "settingsTabTitle": "الإعدادات",
   "scannerAimingGuidance": "قم بمحاذاة الرمز داخل إطار الشبكة البصرية",
   "scannerSuspendedMessage": "تم إيقاف الكاميرا مؤقتًا بسبب الخمول. انقر على الشاشة للاستئناف.",
@@ -12,6 +14,15 @@
   "streamTransferProgress": "جارٍ استقبال التدفق: {percent}٪ ({current} من {total} قطعة)",
   "streamVerificationSuccess": "نجح التحقق الأمني من الملف. تطابقت سلامة SHA-256.",
   "securityThreatDetected": "تم حظر رابط ضار أو تهديد أمني!",
-  "offlineAirGapGuaranteed": "أذونات الشبكة معطلة بالكامل. أمان معزول دون اتصال بنسبة 100٪."
+  "offlineAirGapGuaranteed": "أذونات الشبكة معطلة بالكامل. أمان معزول دون اتصال بنسبة 100٪.",
+  "cameraScannerTitle": "ماسح الكاميرا المباشر",
+  "imageScannerTitle": "معالج الصور والملفات",
+  "batchScannerTitle": "الماسح المستمر للدفعات",
+  "standardGeneratorTitle": "منشئ الرموز الشامل",
+  "advancedStylerTitle": "محرر التنسيق المتقدم واستوديو المتجهات",
+  "enterpriseStudioTitle": "استوديو التشفير للمؤسسات",
+  "transmitterModeTitle": "مرسل زيرو سينك البصري",
+  "receiverModeTitle": "مستقبل زيرو سينك البصري",
+  "duressPanicTitle": "حماية الطوارئ من الإكراه والوضع التمويهي",
+  "offlineTrialTitle": "نسخة تجريبية للمؤسسات غير متصلة لمدة 14 يومًا"
 }
-

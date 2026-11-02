@@ -2,8 +2,10 @@
   "@@locale": "es",
   "appTitle": "ZeroSync AirDrop-QR",
   "scannerTabTitle": "Escáner",
-  "vaultTabTitle": "Bóveda",
-  "transferTabTitle": "Transferencia ZeroSync",
+  "generatorTabTitle": "Generador",
+  "transferTabTitle": "Transferencia Óptica",
+  "vaultTabTitle": "Bóveda Cifrada",
+  "enterpriseTabTitle": "Políticas Empresariales",
   "settingsTabTitle": "Ajustes",
   "scannerAimingGuidance": "Alinee el código dentro de la retícula óptica",
   "scannerSuspendedMessage": "Cámara suspendida por inactividad. Toque la pantalla para reanudar.",
@@ -12,6 +14,15 @@
   "streamTransferProgress": "Recibiendo transmisión: {percent}% ({current} de {total} fragmentos)",
   "streamVerificationSuccess": "Verificación criptográfica exitosa. Coincidencia de integridad SHA-256.",
   "securityThreatDetected": "¡URL maliciosa o amenaza de seguridad bloqueada!",
-  "offlineAirGapGuaranteed": "Cero permisos de red activos. Seguridad 100% aislada fuera de línea."
+  "offlineAirGapGuaranteed": "Cero permisos de red activos. Seguridad 100% aislada fuera de línea.",
+  "cameraScannerTitle": "Escáner de Cámara en Tiempo Real",
+  "imageScannerTitle": "Preprocesador de Imágenes y Archivos",
+  "batchScannerTitle": "Escáner Continuo por Lotes",
+  "standardGeneratorTitle": "Generador Universal de QR",
+  "advancedStylerTitle": "Estilizador Avanzado y Estudio Vectorial",
+  "enterpriseStudioTitle": "Estudio Criptográfico Empresarial",
+  "transmitterModeTitle": "Transmisor Óptico ZeroSync",
+  "receiverModeTitle": "Receptor Óptico ZeroSync",
+  "duressPanicTitle": "Protección contra Coacción y Modo Señuelo",
+  "offlineTrialTitle": "Prueba Empresarial Fuera de Línea de 14 Días"
 }
-

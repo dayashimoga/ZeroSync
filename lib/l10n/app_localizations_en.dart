@@ -15,10 +15,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scannerTabTitle => 'Scanner';
 
   @override
-  String get vaultTabTitle => 'Vault';
+  String get generatorTabTitle => 'Generator';
 
   @override
-  String get transferTabTitle => 'ZeroSync Transfer';
+  String get transferTabTitle => 'Optical Transfer';
+
+  @override
+  String get vaultTabTitle => 'Encrypted Vault';
+
+  @override
+  String get enterpriseTabTitle => 'Enterprise Policy';
 
   @override
   String get settingsTabTitle => 'Settings';
@@ -55,4 +61,34 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get offlineAirGapGuaranteed =>
       'Zero network permissions active. 100% offline air-gapped security.';
+
+  @override
+  String get cameraScannerTitle => 'Real-Time Camera Scanner';
+
+  @override
+  String get imageScannerTitle => 'Image & File Preprocessor';
+
+  @override
+  String get batchScannerTitle => 'Batch Continuous Scanner';
+
+  @override
+  String get standardGeneratorTitle => 'Universal QR Generator';
+
+  @override
+  String get advancedStylerTitle => 'Advanced QR Styler & Vector Studio';
+
+  @override
+  String get enterpriseStudioTitle => 'Enterprise Cryptographic Studio';
+
+  @override
+  String get transmitterModeTitle => 'Visual ZeroSync Transmitter';
+
+  @override
+  String get receiverModeTitle => 'Visual ZeroSync Receiver';
+
+  @override
+  String get duressPanicTitle => 'Duress Panic Guard & Decoy Mode';
+
+  @override
+  String get offlineTrialTitle => '14-Day Offline Enterprise Trial';
 }

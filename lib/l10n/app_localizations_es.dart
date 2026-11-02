@@ -15,10 +15,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get scannerTabTitle => 'Escáner';
 
   @override
-  String get vaultTabTitle => 'Bóveda';
+  String get generatorTabTitle => 'Generador';
 
   @override
-  String get transferTabTitle => 'Transferencia ZeroSync';
+  String get transferTabTitle => 'Transferencia Óptica';
+
+  @override
+  String get vaultTabTitle => 'Bóveda Cifrada';
+
+  @override
+  String get enterpriseTabTitle => 'Políticas Empresariales';
 
   @override
   String get settingsTabTitle => 'Ajustes';
@@ -55,4 +61,35 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get offlineAirGapGuaranteed =>
       'Cero permisos de red activos. Seguridad 100% aislada fuera de línea.';
+
+  @override
+  String get cameraScannerTitle => 'Escáner de Cámara en Tiempo Real';
+
+  @override
+  String get imageScannerTitle => 'Preprocesador de Imágenes y Archivos';
+
+  @override
+  String get batchScannerTitle => 'Escáner Continuo por Lotes';
+
+  @override
+  String get standardGeneratorTitle => 'Generador Universal de QR';
+
+  @override
+  String get advancedStylerTitle => 'Estilizador Avanzado y Estudio Vectorial';
+
+  @override
+  String get enterpriseStudioTitle => 'Estudio Criptográfico Empresarial';
+
+  @override
+  String get transmitterModeTitle => 'Transmisor Óptico ZeroSync';
+
+  @override
+  String get receiverModeTitle => 'Receptor Óptico ZeroSync';
+
+  @override
+  String get duressPanicTitle => 'Protección contra Coacción y Modo Señuelo';
+
+  @override
+  String get offlineTrialTitle =>
+      'Prueba Empresarial Fuera de Línea de 14 Días';
 }

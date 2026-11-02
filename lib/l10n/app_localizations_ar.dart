@@ -15,10 +15,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get scannerTabTitle => 'الماسح الضوئي';
 
   @override
-  String get vaultTabTitle => 'الخزنة';
+  String get generatorTabTitle => 'منشئ الرموز';
 
   @override
-  String get transferTabTitle => 'نقل زيرو سينك';
+  String get transferTabTitle => 'النقل البصري';
+
+  @override
+  String get vaultTabTitle => 'الخزنة المشفرة';
+
+  @override
+  String get enterpriseTabTitle => 'سياسات المؤسسة';
 
   @override
   String get settingsTabTitle => 'الإعدادات';
@@ -54,4 +60,35 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get offlineAirGapGuaranteed =>
       'أذونات الشبكة معطلة بالكامل. أمان معزول دون اتصال بنسبة 100٪.';
+
+  @override
+  String get cameraScannerTitle => 'ماسح الكاميرا المباشر';
+
+  @override
+  String get imageScannerTitle => 'معالج الصور والملفات';
+
+  @override
+  String get batchScannerTitle => 'الماسح المستمر للدفعات';
+
+  @override
+  String get standardGeneratorTitle => 'منشئ الرموز الشامل';
+
+  @override
+  String get advancedStylerTitle => 'محرر التنسيق المتقدم واستوديو المتجهات';
+
+  @override
+  String get enterpriseStudioTitle => 'استوديو التشفير للمؤسسات';
+
+  @override
+  String get transmitterModeTitle => 'مرسل زيرو سينك البصري';
+
+  @override
+  String get receiverModeTitle => 'مستقبل زيرو سينك البصري';
+
+  @override
+  String get duressPanicTitle => 'حماية الطوارئ من الإكراه والوضع التمويهي';
+
+  @override
+  String get offlineTrialTitle =>
+      'نسخة تجريبية للمؤسسات غير متصلة لمدة 14 يومًا';
 }

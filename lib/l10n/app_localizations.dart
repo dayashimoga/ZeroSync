@@ -112,17 +112,29 @@ abstract class AppLocalizations {
   /// **'Scanner'**
   String get scannerTabTitle;
 
-  /// Navigation label for encrypted scan vault
+  /// Navigation label for QR generator
   ///
   /// In en, this message translates to:
-  /// **'Vault'**
-  String get vaultTabTitle;
+  /// **'Generator'**
+  String get generatorTabTitle;
 
   /// Navigation label for optical air-gap data transfer
   ///
   /// In en, this message translates to:
-  /// **'ZeroSync Transfer'**
+  /// **'Optical Transfer'**
   String get transferTabTitle;
+
+  /// Navigation label for encrypted scan vault
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypted Vault'**
+  String get vaultTabTitle;
+
+  /// Navigation label for enterprise policy & licensing
+  ///
+  /// In en, this message translates to:
+  /// **'Enterprise Policy'**
+  String get enterpriseTabTitle;
 
   /// Navigation label for app settings
   ///
@@ -177,6 +189,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Zero network permissions active. 100% offline air-gapped security.'**
   String get offlineAirGapGuaranteed;
+
+  /// Title for camera scanner subview
+  ///
+  /// In en, this message translates to:
+  /// **'Real-Time Camera Scanner'**
+  String get cameraScannerTitle;
+
+  /// Title for image scanner subview
+  ///
+  /// In en, this message translates to:
+  /// **'Image & File Preprocessor'**
+  String get imageScannerTitle;
+
+  /// Title for batch continuous scanner subview
+  ///
+  /// In en, this message translates to:
+  /// **'Batch Continuous Scanner'**
+  String get batchScannerTitle;
+
+  /// Title for standard generator subview
+  ///
+  /// In en, this message translates to:
+  /// **'Universal QR Generator'**
+  String get standardGeneratorTitle;
+
+  /// Title for advanced styler subview
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced QR Styler & Vector Studio'**
+  String get advancedStylerTitle;
+
+  /// Title for enterprise payload generator subview
+  ///
+  /// In en, this message translates to:
+  /// **'Enterprise Cryptographic Studio'**
+  String get enterpriseStudioTitle;
+
+  /// Title for optical transmitter view
+  ///
+  /// In en, this message translates to:
+  /// **'Visual ZeroSync Transmitter'**
+  String get transmitterModeTitle;
+
+  /// Title for optical receiver view
+  ///
+  /// In en, this message translates to:
+  /// **'Visual ZeroSync Receiver'**
+  String get receiverModeTitle;
+
+  /// Title for duress panic security card
+  ///
+  /// In en, this message translates to:
+  /// **'Duress Panic Guard & Decoy Mode'**
+  String get duressPanicTitle;
+
+  /// Title for offline trial activation banner
+  ///
+  /// In en, this message translates to:
+  /// **'14-Day Offline Enterprise Trial'**
+  String get offlineTrialTitle;
 }
 
 class _AppLocalizationsDelegate

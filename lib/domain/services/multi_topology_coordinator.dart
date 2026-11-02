@@ -72,4 +72,3 @@ class MultiTopologyCoordinator {
       _activeTopology == TransferTopology.oneToMany ||
       _activeTopology == TransferTopology.manyToMany;
 }
-

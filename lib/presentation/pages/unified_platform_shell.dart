@@ -1,3 +1,4 @@
+import 'package:airdrop_qr/presentation/pages/generator/standard_generator_view.dart';
 import 'package:airdrop_qr/presentation/pages/home_page.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/batch_scanner_view.dart';
 import 'package:airdrop_qr/presentation/pages/scanner/camera_scanner_view.dart';
@@ -6,7 +7,6 @@ import 'package:airdrop_qr/presentation/pages/vault/encrypted_vault_page.dart';
 import 'package:airdrop_qr/presentation/theme/zerosync_design_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 /// Top-level unified multi-platform shell housing the 5 core ZeroSync workspaces:
 /// 1. Multi-Modal Scanner (Camera, Image/File, Batch)
@@ -34,9 +34,8 @@ class _UnifiedPlatformShellState extends State<UnifiedPlatformShell> {
   // Scanner workspace sub-mode (0: Camera, 1: Image, 2: Batch)
   int _scannerSubMode = 0;
 
-  // Generator workspace preview state
-  String _generatorPayload = 'https://zerosync.security';
-  int _generatorTypeIndex = 0;
+  // Generator workspace sub-mode (0: Standard 8-Type, 1: Styler Studio, 2: Enterprise Studio)
+  int _generatorSubMode = 0;
 
   @override
   void initState() {
@@ -365,143 +364,121 @@ class _UnifiedPlatformShellState extends State<UnifiedPlatformShell> {
   // WORKSPACE 1: UNIVERSAL & ENTERPRISE QR GENERATOR
   // ============================================================================
   Widget _buildGeneratorWorkspace() {
-    final payloadTypes = [
-      'URL',
-      'Text',
-      'Wi-Fi',
-      'vCard',
-      'TOTP',
-      'Crypto',
-    ];
-
     return Scaffold(
       backgroundColor: ZeroSyncColors.trueBlack,
       appBar: AppBar(
         title: const Text('Universal & Enterprise QR Generator'),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(ZeroSyncSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Payload Type Selector Chips
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: List.generate(payloadTypes.length, (idx) {
-                final isSelected = _generatorTypeIndex == idx;
-                return ChoiceChip(
-                  label: Text(payloadTypes[idx]),
-                  selected: isSelected,
-                  onSelected: (selected) {
-                    if (selected) {
-                      setState(() {
-                        _generatorTypeIndex = idx;
-                        switch (idx) {
-                          case 0:
-                            _generatorPayload = 'https://zerosync.security';
-                            break;
-                          case 1:
-                            _generatorPayload =
-                                'Zero-Trust SCIF Air-Gap Payload';
-                            break;
-                          case 2:
-                            _generatorPayload =
-                                'WIFI:S:AirGap_Secure;T:WPA;P:HardenedKey2026;;';
-                            break;
-                          case 3:
-                            _generatorPayload =
-                                'BEGIN:VCARD\nVERSION:4.0\nFN:ZeroSync Security\nEND:VCARD';
-                            break;
-                          case 4:
-                            _generatorPayload =
-                                'otpauth://totp/ZeroSync:admin?secret=JBSWY3DPEHPK3PXP&issuer=ZeroSync';
-                            break;
-                          case 5:
-                            _generatorPayload =
-                                'ethereum:0x0000000000000000000000000000000000000000';
-                            break;
-                        }
-                      });
-                    }
-                  },
-                );
-              }),
-            ),
-            const SizedBox(height: ZeroSyncSpacing.lg),
-
-            // Live QR Vector Preview Canvas
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: const [
-                  BoxShadow(color: Colors.black45, blurRadius: 10),
-                ],
-              ),
-              child: QrImageView(
-                data: _generatorPayload,
-                version: QrVersions.auto,
-                size: 240,
-                errorCorrectionLevel: QrErrorCorrectLevel.M,
-                padding: const EdgeInsets.all(8),
-              ),
-            ),
-            const SizedBox(height: ZeroSyncSpacing.md),
-
-            // Payload Content Display
-            Container(
-              padding: const EdgeInsets.all(ZeroSyncSpacing.md),
-              decoration: BoxDecoration(
-                color: ZeroSyncColors.darkSlate,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: ZeroSyncColors.darkBorder),
-              ),
-              child: Text(
-                _generatorPayload,
-                style: const TextStyle(
-                  fontFamily: 'monospace',
-                  fontSize: 12,
-                  color: ZeroSyncColors.cyan,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(48.0),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: SegmentedButton<int>(
+              segments: const [
+                ButtonSegment(
+                  value: 0,
+                  label: Text('Standard'),
+                  icon: Icon(Icons.qr_code, size: 14),
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: ZeroSyncSpacing.lg),
-
-            // Export Actions
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OutlinedButton.icon(
-                  icon: const Icon(Icons.copy, size: 16),
-                  label: const Text('Copy Payload'),
-                  onPressed: () {
-                    Clipboard.setData(ClipboardData(text: _generatorPayload));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Payload copied to clipboard.')),
-                    );
-                  },
+                ButtonSegment(
+                  value: 1,
+                  label: Text('Styler Studio'),
+                  icon: Icon(Icons.palette_outlined, size: 14),
                 ),
-                const SizedBox(width: ZeroSyncSpacing.md),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.save_alt, size: 16),
-                  label: const Text('Save to Encrypted Vault'),
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content:
-                            Text('Payload saved to local SQLCipher vault.'),
-                      ),
-                    );
-                  },
+                ButtonSegment(
+                  value: 2,
+                  label: Text('Enterprise'),
+                  icon: Icon(Icons.admin_panel_settings_outlined, size: 14),
                 ),
               ],
+              selected: {_generatorSubMode},
+              onSelectionChanged: (set) {
+                setState(() {
+                  _generatorSubMode = set.first;
+                });
+              },
             ),
-          ],
+          ),
         ),
+      ),
+      body: IndexedStack(
+        index: _generatorSubMode,
+        children: [
+          // Sub-Mode 0: Standard 8-Schema Generator Workspace
+          StandardGeneratorView(
+            onSaveToVault: (record) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Saved "${record.title}" to SQLCipher Vault'),
+                ),
+              );
+            },
+            onActionDispatched: (payload) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Dispatched sandboxed action for: $payload'),
+                ),
+              );
+            },
+          ),
+
+          // Sub-Mode 1: Advanced Visual Styler Studio (Phase 8.2)
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(ZeroSyncSpacing.xl),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.palette_outlined,
+                      size: 56, color: ZeroSyncColors.cyan),
+                  SizedBox(height: ZeroSyncSpacing.md),
+                  Text(
+                    'Advanced QR Styler Studio',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: ZeroSyncColors.trueWhite),
+                  ),
+                  SizedBox(height: ZeroSyncSpacing.xs),
+                  Text(
+                    'Custom finder eyes, module geometries, brand logo embedding with ECC Level H, and SVG/PDF export.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: ZeroSyncColors.lightTextSecondary, fontSize: 13),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Sub-Mode 2: Enterprise Payload Studio (Phase 8.3)
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(ZeroSyncSpacing.xl),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.admin_panel_settings_outlined,
+                      size: 56, color: ZeroSyncColors.emerald),
+                  SizedBox(height: ZeroSyncSpacing.md),
+                  Text(
+                    'Enterprise & Cryptographic Payload Studio',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: ZeroSyncColors.trueWhite),
+                  ),
+                  SizedBox(height: ZeroSyncSpacing.xs),
+                  Text(
+                    'RFC 6238 TOTP authenticators, Web3 crypto payment URIs, and SLIP-39 Shamir secret sharing.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: ZeroSyncColors.lightTextSecondary, fontSize: 13),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

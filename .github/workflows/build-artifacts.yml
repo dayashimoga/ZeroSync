@@ -316,12 +316,111 @@ jobs:
           if-no-files-found: error
 
   # ---------------------------------------------------------------------------
-  # JOB 5: UNIFIED MULTIPLATFORM GITHUB RELEASE PUBLISHING
+  # JOB 5: LINUX RELEASE TAR.GZ PACKAGING
+  # ---------------------------------------------------------------------------
+  build-linux:
+    name: Build Linux (Release x64 TAR.GZ)
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Install Linux Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev
+
+      - name: Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Opt-out of Flutter Analytics
+        run: flutter config --no-analytics
+
+      - name: Enable Linux Desktop Support
+        run: flutter config --enable-linux-desktop
+
+      - name: Resolve Project Dependencies
+        run: flutter pub get
+
+      - name: Build Linux Application
+        run: flutter build linux --release
+
+      - name: Package Linux Archive & Compute SHA-256
+        run: |
+          mkdir -p output-linux
+          tar -czf output-linux/ZeroSync-Linux-x64.tar.gz -C build/linux/x64/release/bundle .
+          cd output-linux
+          sha256sum ZeroSync-Linux-x64.tar.gz > CHECKSUMS_LINUX.sha256
+          cat CHECKSUMS_LINUX.sha256
+
+      - name: Upload Linux x64 Archive Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: airdrop-qr-linux-x64-tar
+          path: output-linux/
+          retention-days: 14
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------------------
+  # JOB 6: MACOS RELEASE ZIP PACKAGING
+  # ---------------------------------------------------------------------------
+  build-macos:
+    name: Build macOS (Release ZIP)
+    needs: lint-and-test
+    runs-on: macos-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Opt-out of Flutter Analytics
+        run: flutter config --no-analytics
+
+      - name: Enable macOS Desktop Support
+        run: flutter config --enable-macos-desktop
+
+      - name: Resolve Project Dependencies
+        run: flutter pub get
+
+      - name: Build macOS Application
+        run: flutter build macos --release --no-codesign
+
+      - name: Package macOS Application & Compute SHA-256
+        run: |
+          mkdir -p output-macos
+          ditto -c -k --sequesterRsrc --keepParent build/macos/Build/Products/Release/*.app output-macos/ZeroSync-macOS.zip
+          cd output-macos
+          shasum -a 256 ZeroSync-macOS.zip > CHECKSUMS_MACOS.sha256
+          cat CHECKSUMS_MACOS.sha256
+
+      - name: Upload macOS ZIP Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: airdrop-qr-macos-zip
+          path: output-macos/
+          retention-days: 14
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------------------
+  # JOB 7: UNIFIED MULTIPLATFORM GITHUB RELEASE PUBLISHING
   # ---------------------------------------------------------------------------
   publish-release:
     name: Publish Multi-Platform Release Matrix
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: [build-android, build-ios, build-windows]
+    needs: [build-android, build-ios, build-windows, build-linux, build-macos]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -351,10 +450,22 @@ jobs:
           name: airdrop-qr-windows-x64-zip
           path: release-assets/windows/
 
+      - name: Download Linux TAR.GZ
+        uses: actions/download-artifact@v4
+        with:
+          name: airdrop-qr-linux-x64-tar
+          path: release-assets/linux/
+
+      - name: Download macOS ZIP
+        uses: actions/download-artifact@v4
+        with:
+          name: airdrop-qr-macos-zip
+          path: release-assets/macos/
+
       - name: Consolidate Binaries & Generate Master Checksums
         run: |
           mkdir -p release-dist
-          find release-assets -type f \( -name "*.apk" -o -name "*.aab" -o -name "*.ipa" -o -name "*.zip" \) -exec cp {} release-dist/ \;
+          find release-assets -type f \( -name "*.apk" -o -name "*.aab" -o -name "*.ipa" -o -name "*.zip" -o -name "*.tar.gz" \) -exec cp {} release-dist/ \;
           cd release-dist
           sha256sum * > SHA256SUMS.txt
           cat SHA256SUMS.txt

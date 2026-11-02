@@ -16,6 +16,19 @@ void main() {
       expect(() => guard.enforceHardwareSecurity(), returnsNormally);
     });
 
+    test(
+        'macOS evaluates to strongBoxOrSecureEnclave and enforces successfully',
+        () async {
+      final guard = HardwareKeystoreGuardImpl(
+        targetPlatform: TargetPlatform.macOS,
+      );
+
+      final level = await guard.getSecurityLevel();
+      expect(level, equals(HardwareSecurityLevel.strongBoxOrSecureEnclave));
+      expect(await guard.isHardwareBackingAvailable(), isTrue);
+      expect(() => guard.enforceHardwareSecurity(), returnsNormally);
+    });
+
     test('Android evaluates to tee and enforces successfully', () async {
       final guard = HardwareKeystoreGuardImpl(
         targetPlatform: TargetPlatform.android,

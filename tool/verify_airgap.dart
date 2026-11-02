@@ -14,13 +14,16 @@ void main() {
   // 1. Audit Android Manifests for forbidden network permissions
   _auditAndroidManifests(violations);
 
-  // 2. Audit lib/ Dart files for network imports & socket invocations
+  // 2. Audit macOS & iOS Entitlements for forbidden network capabilities
+  _auditDesktopAndMobileEntitlements(violations);
+
+  // 3. Audit lib/ Dart files for network imports & socket invocations
   _auditLibNetworkSurface(violations);
 
-  // 3. Audit lib/domain/ for Clean Architecture boundary violations
+  // 4. Audit lib/domain/ for Clean Architecture boundary violations
   _auditDomainLayerIsolation(violations);
 
-  // 4. Audit lib/presentation/ for anti-placeholder and hardcoded telemetry invariants
+  // 5. Audit lib/presentation/ for anti-placeholder and hardcoded telemetry invariants
   _auditAntiPlaceholderAndTelemetry(violations);
 
   stdout.writeln('');
@@ -41,7 +44,7 @@ void main() {
 
 void _auditAndroidManifests(List<String> violations) {
   stdout.writeln(
-      '\n[1/3] Auditing AndroidManifest.xml files for network permissions...');
+      '\n[1/5] Auditing AndroidManifest.xml files for network permissions...');
   final manifestDir = Directory('android/app/src');
   if (!manifestDir.existsSync()) {
     stdout.writeln(
@@ -71,9 +74,59 @@ void _auditAndroidManifests(List<String> violations) {
   }
 }
 
+void _auditDesktopAndMobileEntitlements(List<String> violations) {
+  stdout.writeln(
+      '\n[2/5] Auditing macOS entitlements & mobile plists for network capabilities...');
+  final macosDir = Directory('macos/Runner');
+  if (macosDir.existsSync()) {
+    final forbiddenEntitlements = RegExp(
+      r'com\.apple\.security\.network\.(client|server)',
+      caseSensitive: false,
+    );
+
+    final entitlements = macosDir
+        .listSync(recursive: true)
+        .whereType<File>()
+        .where((f) => f.path.endsWith('.entitlements'));
+
+    for (final ent in entitlements) {
+      final content = ent.readAsStringSync();
+      if (forbiddenEntitlements.hasMatch(content)) {
+        violations.add(
+          'Forbidden network capability in macOS entitlement: ${ent.path}',
+        );
+      } else {
+        stdout.writeln('  [OK] Clean macOS entitlement: ${ent.path}');
+      }
+    }
+  } else {
+    stdout.writeln(
+        '  Notice: macos/Runner directory not found. Skipping macOS entitlements.');
+  }
+
+  final iosDir = Directory('ios/Runner');
+  if (iosDir.existsSync()) {
+    final plistFile = File('ios/Runner/Info.plist');
+    if (plistFile.existsSync()) {
+      final content = plistFile.readAsStringSync();
+      final insecureAts = RegExp(
+        r'<key>\s*NSAllowsArbitraryLoads\s*</key>\s*<true\s*/>',
+        caseSensitive: false,
+      );
+      if (insecureAts.hasMatch(content)) {
+        violations.add(
+          'Insecure ATS arbitrary network load permitted in ios/Runner/Info.plist',
+        );
+      } else {
+        stdout.writeln('  [OK] Clean iOS Info.plist: ${plistFile.path}');
+      }
+    }
+  }
+}
+
 void _auditLibNetworkSurface(List<String> violations) {
   stdout.writeln(
-      '\n[2/3] Auditing lib/ Dart source files for forbidden network libraries...');
+      '\n[3/5] Auditing lib/ Dart source files for forbidden network libraries...');
   final libDir = Directory('lib');
   if (!libDir.existsSync()) {
     violations.add('CRITICAL: lib/ directory does not exist.');
@@ -120,7 +173,7 @@ void _auditLibNetworkSurface(List<String> violations) {
 
 void _auditDomainLayerIsolation(List<String> violations) {
   stdout.writeln(
-      '\n[3/3] Auditing lib/domain/ for Clean Architecture boundary isolation...');
+      '\n[4/5] Auditing lib/domain/ for Clean Architecture boundary isolation...');
   final domainDir = Directory('lib/domain');
   if (!domainDir.existsSync()) {
     stdout.writeln(
@@ -158,7 +211,7 @@ void _auditDomainLayerIsolation(List<String> violations) {
 
 void _auditAntiPlaceholderAndTelemetry(List<String> violations) {
   stdout.writeln(
-      '\n[4/4] Auditing lib/presentation/ for anti-placeholder & hardcoded telemetry invariants...');
+      '\n[5/5] Auditing lib/presentation/ for anti-placeholder & hardcoded telemetry invariants...');
   final presentationDir = Directory('lib/presentation');
   if (!presentationDir.existsSync()) {
     stdout.writeln(

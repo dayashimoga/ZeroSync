@@ -218,18 +218,20 @@
 ### STAGE 10: 5-Platform Native Parity (Android, Windows, Linux, macOS, iOS), Accessibility & Commercial Certification
 
 #### Phase 10.1: Linux & macOS Desktop Runners + Cross-Platform Hardware Parity
-- [ ] **Subphase 10.1.1: Scaffold & Harden `linux/` and `macos/` Desktop Runners & 5-Platform Native Guards** `[PENDING — ACTIVE NEXT]`
+- [x] **Subphase 10.1.1: Scaffold & Harden `linux/` and `macos/` Desktop Runners & 5-Platform Native Guards** `[COMPLETED]`
   - **Deliverables:**
-    - `linux/` (GTK3 C++ runner) and `macos/` (Cocoa Swift runner with zero-network `DebugProfile.entitlements` / `Release.entitlements`).
-    - Extend `tool/verify_airgap.dart` to audit `macos/Runner/*.entitlements` for `com.apple.security.network.client`.
-    - Extend `.github/workflows/build-artifacts.yml` with `build-linux` and `build-macos` jobs.
+    - `linux/`: Native GTK3 C++ desktop runner.
+    - `macos/`: Native Cocoa Swift runner with hardened zero-network entitlements (`DebugProfile.entitlements` and `Release.entitlements` stripped of all network capabilities).
+    - `tool/verify_airgap.dart`: Expanded AST and platform linter auditing Android, macOS, and iOS manifests/entitlements for zero network surface.
+    - `.github/workflows/build-artifacts.yml`: Expanded CI pipeline with `build-linux` and `build-macos` release packaging jobs and consolidated 5-platform release matrix.
+    - `test/unit/core/hardware_keystore_guard_test.dart`: 5-platform evaluation and hardware-backing enforcement test suite.
   - **Acceptance Criteria:**
     - All 5 platforms (`Android`, `Windows`, `Linux`, `macOS`, `iOS`) pass zero-network manifest/entitlement audits and compile cleanly in CI.
   - **Validation Commands:** All 4 mandatory gates + `flutter test test/unit/core/hardware_keystore_guard_test.dart`.
   - **Handoff Requirements:** Unlocks `Subphase 10.2.1`.
 
 #### Phase 10.2: WCAG AAA Accessibility, Localization & Final Production Certification
-- [ ] **Subphase 10.2.1: Full `AccessibleQrSemantics` Integration, Multi-Locale (`en`, `es`, `ar`) Completion & v2.0 Production Certification** `[LOCKED — Depends on 10.1.1]`
+- [ ] **Subphase 10.2.1: Full `AccessibleQrSemantics` Integration, Multi-Locale (`en`, `es`, `ar`) Completion & v2.0 Production Certification** `[PENDING — ACTIVE NEXT]`
   - **Deliverables:**
     - Complete `app_en.arb`, `app_es.arb`, and `app_ar.arb` translations for all 5 workspaces.
     - Full `AccessibleQrSemantics` screen-reader annotations and keyboard focus traversal across all interactive views.
